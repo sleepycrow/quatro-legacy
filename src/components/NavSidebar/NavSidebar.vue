@@ -136,6 +136,7 @@
 
 .sidebar-id{
 	height: 4rem;
+	max-height: 4rem;
 	width: calc(100% - 8px);
 	max-width: calc(100% - 8px);
 	
@@ -147,7 +148,7 @@
 	background-color: rgba(255, 255, 255, 0.15);
 	border-radius: 8px;
 	margin: 16px 4px;
-	overflow-x: hidden;
+	overflow: hidden;
 	transition: background-color 0.2s;
 	cursor: pointer;
 }
@@ -178,11 +179,17 @@
 }
 
 .sidebar-id__name{
+	height: 1rem;
+	max-height: 1rem;
+	overflow: hidden;
 	font-weight: bold;
 	color: #FFF;
 }
 
 .sidebar-id__username{
+	height: 1rem;
+	max-height: 1rem;
+	overflow: hidden;
 	font-weight: normal;
 	color: #EEE;
 }
