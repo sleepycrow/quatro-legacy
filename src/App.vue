@@ -7,9 +7,9 @@ import NavSidebar from './components/NavSidebar/NavSidebar.vue'
 <template>
 	<NavSidebar></NavSidebar>
 
-	<main>
+	<div class="page">
 		<router-view></router-view>
-	</main>
+	</div>
 </template>
 
 <style src="./assets/style.css"></style>
