@@ -23,17 +23,17 @@
 		<!-- -->
 		<nav>
 			<ul>
-				<li><router-link class="nav__link" to="/">
+				<li><router-link class="nav__link" active-class="active" to="/">
 					<span class="nav__icon material-icons">home</span>
 					<span class="nav__label">Explore</span>
 				</router-link></li>
 
-				<li><router-link class="nav__link" to="/search">
+				<li><router-link class="nav__link" active-class="active" to="/search">
 					<span class="nav__icon material-icons">search</span>
 					<span class="nav__label">Search</span>
 				</router-link></li>
 
-				<li><router-link class="nav__link" to="/helloworld">
+				<li><router-link class="nav__link" active-class="active" to="/helloworld">
 					<span class="nav__icon material-icons">star</span>
 					<span class="nav__label">Hello World!</span>
 				</router-link></li>
@@ -90,9 +90,20 @@
 	transition: background-color 0.25s;
 }
 
-.sidebar nav li .nav__link:hover,
-.sidebar nav li .active{
+.sidebar nav li .nav__link:hover{
 	background-color: rgba(255, 255, 255, 0.25);
+}
+
+.sidebar nav li .active{
+	background-color: transparent;
+}
+
+.sidebar .active .nav__icon{
+	color: #FFF;
+}
+
+.sidebar .active .nav__label{
+	font-weight: bold;
 }
 
 .sidebar nav .nav__icon{
