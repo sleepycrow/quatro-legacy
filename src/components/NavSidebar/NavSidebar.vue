@@ -2,7 +2,22 @@
   	<div class="sidebar">
 		<!-- -->
 		<section class="user-section">
+			<div class="sidebar-id">
+				<div class="sidebar-id__avatar">
+					<img src="../../assets/avatar.jpg" alt="a sleepy crow">
+				</div>
 
+				<div class="sidebar-id__info">
+					<div class="sidebar-id__name">a sleepy crow</div>
+					<div class="sidebar-id__username">@sleepycrow@gamedev.mastodon.social</div>
+				</div>
+
+				<div class="sidebar-id__btn">
+					<button class="btn icon-btn">
+						<span class="material-icons">arrow_drop_down</span>
+					</button>
+				</div>
+			</div>
 		</section>
 
 		<!-- -->
@@ -41,7 +56,7 @@
 	height: 100vh;
 
 	display: grid;
-	grid-template-rows: 150px auto 150px;
+	grid-template-rows: 5rem auto 150px;
 	overflow: hidden auto;
 
 	background-color: #347FC4;
@@ -84,7 +99,7 @@
 	text-align: center;
 	width: 48px;
 	line-height: 48px;
-	color: var(--black-400)
+	color: #CCC;
 }
 
 .sidebar nav .nav__avatar{
@@ -105,6 +120,71 @@
 	width: 100%;
 	padding: 0;
 	margin: 4px 0;
-	border-bottom: 1px solid var(--black-700);
+	border-bottom: 1px solid #CCC;
+}
+
+.sidebar-id{
+	height: 4rem;
+	width: calc(100% - 8px);
+	max-width: calc(100% - 8px);
+	
+	position: relative;
+	display: table;
+	table-layout: fixed;
+	border-spacing: 4px;
+
+	background-color: rgba(255, 255, 255, 0.15);
+	border-radius: 8px;
+	margin: 16px 4px;
+	overflow-x: hidden;
+	transition: background-color 0.2s;
+	cursor: pointer;
+}
+
+.sidebar-id:hover{
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-id__avatar{
+	display: table-cell;
+	width: 3rem;
+	min-width: 3rem;
+	max-width: 3rem;
+	vertical-align: middle;
+}
+
+.sidebar-id__avatar img{
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	vertical-align: middle;
+}
+
+.sidebar-id__info{
+	display: table-cell;
+	vertical-align: middle;
+	overflow: hidden;
+}
+
+.sidebar-id__name{
+	font-weight: bold;
+	color: #FFF;
+}
+
+.sidebar-id__username{
+	font-weight: normal;
+	color: #EEE;
+}
+
+.sidebar-id__btn{
+	display: table-cell;
+	width: var(--icon-button-size);
+	min-width: var(--icon-button-size);
+	max-width: var(--icon-button-size);
+	vertical-align: middle;
+}
+
+.sidebar-id__btn button{
+	vertical-align: middle;
 }
 </style>
