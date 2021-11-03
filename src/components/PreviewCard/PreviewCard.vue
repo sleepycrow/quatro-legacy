@@ -19,7 +19,9 @@
 
 <script>
 export default {
-	props: ['card'],
+	props: {
+		card: { type: Object, required: true }
+	},
 
 	computed: {
 		previewCardHost(){

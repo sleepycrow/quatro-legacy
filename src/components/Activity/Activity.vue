@@ -43,7 +43,7 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 			<div v-if="status.media_attachments && status.media_attachments.length > 0" style="color:red;">Has media attachments!!</div> <!-- FIXME: actually implement media attachments in posts -->
 
 			<!-------------- Preview Cards -------------->
-			<PreviewCard v-if="status.card" :card="status.card"></PreviewCard>
+			<PreviewCard v-if="status.card" :card="status.card" />
 			
 			<!-------------- Status Menu -------------->
 			<div class="card__menu">
@@ -77,7 +77,10 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 <script>
 export default {
 	components: { PreviewCard },
-	props: ['activity'],
+	
+	props: {
+		activity: { type: Object }
+	},
 
 	created(){
 		this.status = this.activity.reblog !== null ? this.activity.reblog : this.activity
