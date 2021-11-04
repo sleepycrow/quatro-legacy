@@ -1,6 +1,6 @@
 <template>
-  	<div class="sidebar">
-		<!-- -->
+	<div class="sidebar">
+		<!-------------- User ID -------------->
 		<section class="user-section">
 			<div class="sidebar-id">
 				<div class="sidebar-id__avatar">
@@ -20,31 +20,37 @@
 			</div>
 		</section>
 
-		<!-- -->
+		<!-------------- Navigation -------------->
 		<nav>
 			<ul>
-				<li><router-link class="nav__link" active-class="active" to="/">
-					<span class="nav__icon material-icons">home</span>
-					<span class="nav__label">Explore</span>
-				</router-link></li>
+				<li>
+					<router-link class="nav__link" active-class="active" to="/">
+						<span class="nav__icon material-icons">home</span>
+						<span class="nav__label">Explore</span>
+					</router-link>
+				</li>
 
-				<li><router-link class="nav__link" active-class="active" to="/search">
-					<span class="nav__icon material-icons">search</span>
-					<span class="nav__label">Search</span>
-				</router-link></li>
+				<li>
+					<router-link class="nav__link" active-class="active" to="/search">
+						<span class="nav__icon material-icons">search</span>
+						<span class="nav__label">Search</span>
+					</router-link>
+				</li>
 
-				<li><router-link class="nav__link" active-class="active" to="/helloworld">
-					<span class="nav__icon material-icons">star</span>
-					<span class="nav__label">Hello World!</span>
-				</router-link></li>
+				<li>
+					<router-link class="nav__link" active-class="active" to="/helloworld">
+						<span class="nav__icon material-icons">star</span>
+						<span class="nav__label">Hello World!</span>
+					</router-link>
+				</li>
 			</ul>
 		</nav>
 
-		<!-- -->
+		<!-------------- Footer -------------->
 		<footer>
-
+			<!-- content goes here -->
 		</footer>
-  	</div>
+	</div>
 </template>
 
 <style>

@@ -6,13 +6,16 @@ import Activity from '../Activity/Activity.vue'
 <template>
 	<div class="page-content page-content--feed">
 		<main>
-			<h1 v-if="!loaded">loanding...</h1>
+			<h1 v-if="!loaded">
+				loanding...
+			</h1>
 
 			<div v-if="loaded" class="page-content page-content--feed">
-				<Activity v-for="activity in activities"
+				<Activity
+					v-for="activity in activities"
 					:key="activity.id"
-					:activity="activity">
-				</Activity>
+					:activity="activity"
+				/>
 			</div>
 		</main>
 		<aside>
@@ -36,16 +39,16 @@ export default {
 
 	created(){
 		apiService.fetchTimeline('public')
-		.then(resp => {
-			if(resp.error) throw resp.error;
+			.then(resp => {
+				if(resp.error) throw resp.error;
 
-			this.activities = resp
-			this.loaded = true
-		})
-		.catch(err => {
-			console.error(err)
-			window.alert("an error okurded!!\n"+String(err))
-		})
+				this.activities = resp
+				this.loaded = true
+			})
+			.catch(err => {
+				console.error(err)
+				window.alert("an error okurded!!\n"+String(err))
+			})
 	}	
 }
 </script>

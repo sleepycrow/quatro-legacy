@@ -4,16 +4,16 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 </script>
 
 <template>
-	<article class="card activity" v-if="status">
+	<article v-if="status" class="card activity">
 		<!-------------- Repost Info -------------->
 		<div v-if="activity.reblog !== null" class="card__note">
-			Reposted by <strong v-html="rebloggerDisplayName"></strong>
+			Reposted by <strong v-html="rebloggerDisplayName" />
 		</div>
 
 		<div class="card__content">
 			<!-------------- Author Info -------------->
 			<div class="activity-meta">
-				<img class="activity-meta__avatar" :src="status.account.avatar" :alt="status.account.acct" />
+				<img class="activity-meta__avatar" :src="status.account.avatar" :alt="status.account.acct">
 			
 				<div class="activity-meta__info">
 					<!-- When no display name is set, mastodon makes `display_name` an empty string, while pleroma makes it equal to the username,
@@ -21,7 +21,7 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 					<!-- TODO: or do we? technically, this is supposed to be a pleroma frontend, not a mastodon one, so maybe we can omit the mastodon case?? -->
 					<template v-if="status.account.display_name !== '' && status.account.display_name !== status.account.acct">
 						<div class="activity-meta__author">
-							<span class="author__name" v-html="authorDisplayName"></span>
+							<span class="author__name" v-html="authorDisplayName" />
 							<span class="author__username">&nbsp;(@{{ status.account.acct }})</span>
 						</div>
 					</template>
@@ -39,15 +39,20 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 			</div>
 			
 			<!-------------- Status Content -------------->
-			<div class="activity-content" v-html="statusContent"></div>
-			<div v-if="status.media_attachments && status.media_attachments.length > 0" style="color:red;">Has media attachments!!</div> <!-- FIXME: actually implement media attachments in posts -->
+			<div class="activity-content" v-html="statusContent" />
+
+			<!-- FIXME: actually implement media attachments in posts -->
+			<div v-if="status.media_attachments && status.media_attachments.length > 0" style="color:red;">
+				Has media attachments!!
+			</div>
 
 			<!-------------- Preview Cards -------------->
 			<PreviewCard v-if="status.card" :card="status.card" />
 			
 			<!-------------- Status Menu -------------->
 			<div class="card__menu">
-				<button class="btn icon-btn" @click="logActivityData"> <!-- DEBUG: remove before release -->
+				<!-- DEBUG: remove before release -->
+				<button class="btn icon-btn" @click="logActivityData">
 					<span class="material-icons">more_horiz</span>
 				</button>
 			</div>
@@ -77,20 +82,9 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 <script>
 export default {
 	components: { PreviewCard },
-	
+
 	props: {
-		activity: { type: Object }
-	},
-
-	created(){
-		this.status = this.activity.reblog !== null ? this.activity.reblog : this.activity
-	},
-
-	methods: {
-		logActivityData(){
-			console.log(Object.assign({}, this.activity)) // copy the activity into a new object to avoid logging a Proxy object
-			window.alert("hey debugger, we heard you liek status data so we logged the status data in your console.\nno problem :>")
-		}
+		activity: { type: Object, required: true }
 	},
 
 	computed: {
@@ -117,6 +111,17 @@ export default {
 
 		statusContent(){
 			return htmlizeCustomEmoji(this.status.content, this.status.emojis)
+		}
+	},
+
+	created(){
+		this.status = this.activity.reblog !== null ? this.activity.reblog : this.activity
+	},
+
+	methods: {
+		logActivityData(){
+			console.log(Object.assign({}, this.activity)) // copy the activity into a new object to avoid logging a Proxy object
+			window.alert("hey debugger, we heard you liek status data so we logged the status data in your console.\nno problem :>")
 		}
 	}
 }

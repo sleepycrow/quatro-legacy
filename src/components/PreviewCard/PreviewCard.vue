@@ -1,5 +1,5 @@
 <template>
-  	<!-- Link/Photo/Video Preview -->
+	<!-- Link/Photo/Video Preview -->
 	<!-- We'll use the same card for all types for now, it works well enough and saves us some headache. -->
 	<template v-if="card.type === 'link' || card.type === 'photo' || card.type === 'video'">
 		<a class="preview-card-wrapper" :href="card.url" :title="card.title" target="_blank">

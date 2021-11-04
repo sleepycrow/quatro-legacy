@@ -1,5 +1,4 @@
 import * as Vue from 'vue'
-import * as Vuex from 'vuex'
 
 import App from './App.vue'
 import router from './router.js'
