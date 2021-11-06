@@ -56,6 +56,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			<MediaAttachmentGrid
 				v-if="!contentHidden && hasMediaAttachments"
 				:attachments="status.media_attachments"
+				:sensitive="status.sensitive"
 			/>
 
 			<!-- Preview Cards -->

@@ -1,5 +1,7 @@
 <template>
 	<!-- TODO: replace me with actual attachment grid with a lightbox -->
+	<p v-if="sensitive" style="color: red; text-align: center; font-weight: bold;">sensitive media!!</p>
+
 	<div :class="attachments.length > 1 ? 'attachment-grid' : 'single-attachment'">
 		<a v-for="attachment in attachments" :key="attachment.id" :href="attachment.remote_url ? attachment.remote_url : attachment.text_url">
 			<img
@@ -15,7 +17,8 @@
 <script>
 export default {
 	props: {
-		attachments: { type: Array, required: true }
+		attachments: { type: Array, required: true },
+		sensitive: { type: Boolean, default: false }
 	}
 }
 </script>
