@@ -1,6 +1,7 @@
 <script setup>
 import { htmlizeCustomEmoji, htmlSpecialChars } from '../../lib/utils'
 import PreviewCard from '../PreviewCard/PreviewCard.vue'
+import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 </script>
 
 <template>
@@ -52,9 +53,10 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 			<div v-if="!contentHidden" class="status-content" v-html="statusContent" />
 
 			<!-- FIXME: actually implement media attachments in posts -->
-			<div v-if="status.media_attachments && status.media_attachments.length > 0" style="color:red;">
-				Has media attachments!!
-			</div>
+			<MediaAttachmentGrid
+				v-if="!contentHidden && hasMediaAttachments"
+				:attachments="status.media_attachments"
+			/>
 
 			<!-- Preview Cards -->
 			<PreviewCard v-if="!contentHidden && (status.card && !hasMediaAttachments)" :card="status.card" />
@@ -94,7 +96,7 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 
 <script>
 export default {
-	components: { PreviewCard },
+	components: { PreviewCard, MediaAttachmentGrid },
 
 	props: {
 		activity: { type: Object, required: true }
@@ -134,6 +136,7 @@ export default {
 	created(){
 		this.status = this.activity.reblog !== null ? this.activity.reblog : this.activity
 		this.hasSpoiler = typeof(this.status.spoiler_text) == "string" && this.status.spoiler_text.length > 0
+		this.hasMediaAttachments = this.status.media_attachments && this.status.media_attachments.length > 0
 		this.contentHidden = this.hasSpoiler
 	},
 
