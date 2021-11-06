@@ -5,6 +5,9 @@
 	--sidebar-width: 280px;
 	--inner-page-width: 1000px;
 	--icon-button-size: 32px;
+
+	--accent: #347FC4;
+	--accent-light: #5ca9f1;
 }
 
 body{
@@ -118,7 +121,7 @@ img{
 	border: 0;
 	border-radius: 2px;
 	padding: 0.75rem 1.25rem;
-	background-color: var(--accent-500);
+	background-color: var(--accent);
 	color: #FFF;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -131,7 +134,12 @@ img{
 }
 
 .btn:hover{
-	background-color: var(--accent-400);
+	background-color: var(--accent-light);
+}
+
+.btn--mini{
+	padding: 0.5rem 1rem;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
 }
 
 .icon-btn{
