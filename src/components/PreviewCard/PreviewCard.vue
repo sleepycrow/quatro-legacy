@@ -63,7 +63,7 @@ export default {
 .preview-card__preview--link img{
 	width: 100%;
 	height: auto;
-	max-height: 300px;
+	max-height: 200px;
 	object-fit: cover;
 	background-size: cover;
 	background-position: 50%;
