@@ -10,7 +10,7 @@ export function reorderTimeline(timeline){
 	var output_timeline = []
 
 	// Loop 1: Find replies in the timeline
-	for(var i = 0; i < timeline.length; i++){
+	for(let i = 0; i < timeline.length; i++){
 		let post = timeline[i]
 
 		if(typeof(post.in_reply_to_id) === "string" && post.in_reply_to_id.length !== "")
@@ -21,11 +21,12 @@ export function reorderTimeline(timeline){
 	}
 
 	// Loop 2: Reorder the timeline
-	for(var i = 0; i < timeline.length; i++){
+	for(let i = 0; i < timeline.length; i++){
 		let post = timeline[i]
 
 		if(needed.includes(post.id)) continue;
 
+		/* eslint-disable  no-prototype-builtins */
 		if(typeof(post.in_reply_to_id) === "string" && found.hasOwnProperty(post.in_reply_to_id)){
 			let post_chain = []
 			let last_post = post
@@ -40,6 +41,7 @@ export function reorderTimeline(timeline){
 		}else{
 			output_timeline.push(post)
 		}
+		/* eslint-enable  no-prototype-builtins */
 	}
 
 	return output_timeline

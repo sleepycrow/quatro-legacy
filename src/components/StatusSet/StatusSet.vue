@@ -4,7 +4,7 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 
 <template>
 	<article class="card status-set">
-		<div class="card__note" v-if="threadElement">Part of a Thread</div>
+		<div v-if="threadElement" class="card__note">Part of a Thread</div>
 
 		<template v-if="multipleActivities">
 			<StatusSetItem
