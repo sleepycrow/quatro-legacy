@@ -5,10 +5,27 @@
 	<div :class="attachments.length > 1 ? 'attachment-grid' : 'single-attachment'">
 		<a v-for="attachment in attachments" :key="attachment.id" :href="attachment.remote_url ? attachment.remote_url : attachment.text_url">
 			<img
+				v-if="attachment.type === 'image'"
 				:src="attachment.preview_url"
 				:alt="attachment.description"
 				:title="attachment.description"
 			>
+
+			<video
+				v-if="attachment.type === 'video'"
+				:src="attachment.text_url"
+				controls
+			>
+				<p>no video</p>
+			</video>
+
+			<audio
+				v-if="attachment.type === 'audio'"
+				:src="attachment.text_url"
+				controls
+			>
+				<p>no audio</p>
+			</audio>
 		</a>
 	</div>
 </template>
@@ -44,6 +61,12 @@ export default {
 	object-fit: cover;
 }
 
+.attachment-grid video, audio{
+	height: 250px;
+	width: 100%;
+	max-width: 100%;
+}
+
 /* Single attachment */
 .single-attachment{
 	text-align: center;
@@ -54,5 +77,11 @@ export default {
 	max-height: 600px;
 	object-fit: cover;
 	height: auto;
+}
+
+.single-attachment video, audio{
+	width: 100%;
+	max-width: 100%;
+	max-height: 600px;
 }
 </style>
