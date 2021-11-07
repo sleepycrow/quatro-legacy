@@ -1,6 +1,7 @@
 <script setup>
 import * as apiService from '../../services/ApiService.js'
-import Activity from '../Activity/Activity.vue'
+import { reorderTimeline } from '../../lib/timeline_utils'
+import StatusSet from '../StatusSet/StatusSet.vue'
 </script>
 
 <template>
@@ -11,10 +12,10 @@ import Activity from '../Activity/Activity.vue'
 			</h1>
 
 			<div v-if="loaded" class="page-content page-content--feed">
-				<Activity
+				<StatusSet
 					v-for="activity in activities"
-					:key="activity.id"
-					:activity="activity"
+					:key="getActivityKey(activity)"
+					:activities="activity"
 				/>
 			</div>
 		</main>
@@ -30,7 +31,7 @@ import Activity from '../Activity/Activity.vue'
 
 <script>
 export default {
-	components: { Activity },
+	components: { StatusSet },
 
 	data: () => ({
 		loaded: false,
@@ -42,14 +43,20 @@ export default {
 			.then(resp => {
 				if(resp.error) throw resp.error;
 
-				this.activities = resp
+				this.activities = reorderTimeline(resp)
 				this.loaded = true
 			})
 			.catch(err => {
 				console.error(err)
 				window.alert("an error okurded!!\n"+String(err))
 			})
-	}	
+	},
+
+	methods: {
+		getActivityKey(activity){
+			return (Array.isArray(activity) ? activity[activity.length - 1].id : activity.id)
+		}
+	}
 }
 </script>
 
