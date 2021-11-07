@@ -1,5 +1,6 @@
 /**
- * Reorder an array of posts to group threads together
+ * Reorder an array of posts to group threads together.
+ * Works only in reverse-chronological order, refactor if needed.
  * @param {Array} timeline -- an array of status objects 
  * @returns An array of status objects and threads (arrays of status objects)
  */
