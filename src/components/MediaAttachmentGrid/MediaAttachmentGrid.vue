@@ -52,7 +52,7 @@ export default {
 	width: calc(50% - 8px);
 	margin: 4px;
 	flex-shrink: 0;
-	flex-grow: 0;
+	flex-grow: 1;
 }
 
 .attachment-grid img{
