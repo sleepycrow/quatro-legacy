@@ -37,7 +37,8 @@ export default {
 		},
 
 		threadElement(){
-			let status = Array.isArray(this.activities) ? this.activities[this.activities.length - 1] : this.activities
+			let status = Array.isArray(this.activities) ? this.activities[0] : this.activities
+			status = (status.reblog !== null ? status.reblog : status)
 			return typeof(status.in_reply_to_id) === "string" && status.in_reply_to_id !== ""
 		}
 	}
