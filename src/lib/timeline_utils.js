@@ -28,12 +28,12 @@ export function reorderTimeline(timeline){
 
 		/* eslint-disable  no-prototype-builtins */
 		if(typeof(post.in_reply_to_id) === "string" && found.hasOwnProperty(post.in_reply_to_id)){
-			let post_chain = []
+			let post_chain = [post]
 			let last_post = post
 
 			while(typeof(last_post.in_reply_to_id) === "string" && found.hasOwnProperty(last_post.in_reply_to_id)){
-				post_chain.splice(0, 0, last_post)
 				last_post = found[last_post.in_reply_to_id]
+				post_chain.splice(0, 0, last_post)
 			}
 
 			output_timeline.push(post_chain)
