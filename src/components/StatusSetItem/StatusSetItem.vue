@@ -20,7 +20,6 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 				<div class="status-meta__info">
 					<!-- When no display name is set, mastodon makes `display_name` an empty string, while pleroma makes it equal to the username,
 						so we have to check both cases. Fair enough. -->
-					<!-- TODO: or do we? technically, this is supposed to be a pleroma frontend, not a mastodon one, so maybe we can omit the mastodon case?? -->
 					<template v-if="status.account.display_name !== '' && status.account.display_name !== status.account.acct">
 						<div class="status-meta__author">
 							<span class="author__name"><bdi v-html="authorDisplayName" /></span>
@@ -52,7 +51,6 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			<!-- Status Content -->
 			<div v-if="!contentHidden" class="status-content" v-html="statusContent" />
 
-			<!-- FIXME: actually implement media attachments in posts -->
 			<MediaAttachmentGrid
 				v-if="!contentHidden && hasMediaAttachments"
 				:attachments="status.media_attachments"
@@ -78,13 +76,13 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 				{{ status.replies_count }}
 			</div>
 			
-			<div class="card__action">
-				<span class="material-icons">refresh</span>
+			<div class="card__action" :class="( status.reblogged ? 'card__action--done' : '' )">
+				<span class="material-icons">{{ status.reblogged ? 'repeat_on' : 'repeat' }}</span>
 				{{ status.reblogs_count }}
 			</div>
 			
-			<div class="card__action">
-				<span class="material-icons">favorite_border</span>
+			<div class="card__action" :class="( status.favourited ? 'card__action--done' : '' )">
+				<span class="material-icons">{{ status.favourited ? 'favorite' : 'favorite_border' }}</span>
 				{{ status.favourites_count }}
 			</div>
 			
@@ -144,7 +142,6 @@ export default {
 	methods: {
 		toggleContentVisibility(){
 			this.contentHidden = !this.contentHidden
-			console.log(this.contentHidden)
 		},
 
 		// DEBUG: remove before release
