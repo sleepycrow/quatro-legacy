@@ -43,7 +43,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			<div v-if="hasSpoiler" class="card__spoiler">
 				<div class="card__spoiler__text">
 					<span class="card__spoiler__icon material-icons">warning</span>
-					{{ status.spoiler_text }}
+					<span class="card__spoiler__text" v-html="spoilerText" />
 				</div>
 				<button class="btn btn--mini" @click="toggleContentVisibility">{{ contentHidden ? "Show" : "Hide" }}</button>
 			</div>
@@ -124,11 +124,15 @@ export default {
 		},
 
 		authorDisplayName(){
-			return htmlizeCustomEmoji(htmlSpecialChars(this.status.account.display_name), this.activity.account.emojis)
+			return htmlizeCustomEmoji(htmlSpecialChars(this.status.account.display_name), this.status.account.emojis)
 		},
 
 		statusContent(){
 			return htmlizeCustomEmoji(this.status.content, this.status.emojis)
+		},
+
+		spoilerText(){
+			return htmlizeCustomEmoji(htmlSpecialChars(this.status.spoiler_text), this.status.emojis)
 		}
 	},
 
