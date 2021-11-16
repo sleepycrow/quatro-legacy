@@ -4,10 +4,10 @@
  * @param {Array} timeline -- an array of status objects 
  * @returns An array of status objects, possibly with a new property - ancestors (array or status objects)
  */
-export function groupThreads(timeline){
+export function groupThreads(timeline, hideShown = true){
 	var needed = []
 	var found = {}
-	var output_timeline = []
+	var outputTimeline = []
 
 	// Loop 1: Find replies in the timeline
 	for(let i = 0; i < timeline.length; i++){
@@ -29,19 +29,21 @@ export function groupThreads(timeline){
 		/* eslint-disable  no-prototype-builtins */
 		if(typeof(post.in_reply_to_id) === "string" && found.hasOwnProperty(post.in_reply_to_id)){
 			let ancestors = []
-			let last_post = post
+			let lastPost = post
 
-			while(typeof(last_post.in_reply_to_id) === "string" && found.hasOwnProperty(last_post.in_reply_to_id)){
-				last_post = found[last_post.in_reply_to_id]
-				ancestors.splice(0, 0, last_post)
+			while(typeof(lastPost.in_reply_to_id) === "string" && found.hasOwnProperty(lastPost.in_reply_to_id)){
+				lastPost = found[lastPost.in_reply_to_id]
+				ancestors.splice(0, 0, lastPost)
+
+				if(hideShown) delete found[lastPost.id]
 			}
 
 			post.ancestors = ancestors
 		}
 		/* eslint-enable  no-prototype-builtins */
 
-		output_timeline.push(post)
+		outputTimeline.push(post)
 	}
 
-	return output_timeline
+	return outputTimeline
 }
