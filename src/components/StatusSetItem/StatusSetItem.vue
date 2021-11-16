@@ -89,12 +89,18 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			<div class="card__action">
 				<span class="material-icons">collections_bookmark</span>
 			</div>
+
+			<!-- DEBUG: just here for debugging -->
+			<a class="card__action" :href="status.url">
+				<span class="material-icons">arrow_forward</span>
+			</a>
 		</div>
 	</section>
 </template>
 
 <script>
 export default {
+	// TODO: make long statuses half-hidden (wrapped) by default (so they say, like, "read more" or something)
 	components: { PreviewCard, MediaAttachmentGrid },
 
 	props: {
@@ -112,7 +118,7 @@ export default {
 			var fmt = (elem) => elem.toString().padStart(2, '0')
 
 			var day = fmt(date.getDate())
-			var month = fmt(date.getMonth())
+			var month = fmt(date.getMonth() + 1)
 			var hours = fmt(date.getHours())
 			var minutes = fmt(date.getMinutes())
 
