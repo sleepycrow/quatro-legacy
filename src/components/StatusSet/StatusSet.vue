@@ -7,9 +7,9 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 		<div v-if="isThreadPart" class="card__note">Part of a Thread</div>
 
 		<StatusSetItem
-			v-for="activity in activity.ancestors"
-			:key="activity.id"
-			:activity="activity"
+			v-for="ancestor in activity.ancestors"
+			:key="ancestor.id"
+			:activity="ancestor"
 		/>
 
 		<StatusSetItem
@@ -18,9 +18,9 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 		/>
 
 		<StatusSetItem
-			v-for="activity in activity.children"
-			:key="activity.id"
-			:activity="activity"
+			v-for="child in activity.children"
+			:key="child.id"
+			:activity="child"
 		/>
 	</article>
 </template>

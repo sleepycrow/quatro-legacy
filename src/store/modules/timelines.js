@@ -56,12 +56,14 @@ const mutations = {
 
 		// If a timeline by the given ID already exists, compare the params for
 		// the two to see if we even need to (re)initialize anything.
+		/* eslint-disable  no-prototype-builtins */
 		if(state.info.hasOwnProperty(tlId) && info !== null){
 			var template = generateTlInfo(info)
 			reinitNeeded = !isEqual(state.info[tlId], template)
 		}else{
 			reinitNeeded = true
 		}
+		/* eslint-enable  no-prototype-builtins */
 
 		// If the requested timeline isn't the same as the timeline that has been
 		// saved, reinit.
@@ -91,13 +93,13 @@ const mutations = {
 		if(!Array.isArray(statuses)) return false;
 		var timeline = state.state[tlId]
 
-		for(var theStatus of statuses){
+		for(let theStatus of statuses){
 			timeline.statuses.push(theStatus)
 		}
 
 		// Reorder timeline
 		statuses = groupThreads(statuses)
-		for(var theStatus of statuses){
+		for(let theStatus of statuses){
 			timeline.grouped.push(theStatus)
 		}
 		
