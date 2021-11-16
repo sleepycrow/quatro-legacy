@@ -4,22 +4,24 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 
 <template>
 	<article class="card status-set">
-		<div v-if="threadElement" class="card__note">Part of a Thread</div>
+		<div v-if="isThreadPart" class="card__note">Part of a Thread</div>
 
-		<template v-if="multipleActivities">
-			<StatusSetItem
-				v-for="activity in activities"
-				:key="activity.id"
-				:activity="activity"
-			/>
-		</template>
+		<StatusSetItem
+			v-for="activity in activity.ancestors"
+			:key="activity.id"
+			:activity="activity"
+		/>
 
-		<template v-else>
-			<StatusSetItem
-				:key="activities.id"
-				:activity="activities"
-			/>
-		</template>
+		<StatusSetItem
+			:key="activity.id"
+			:activity="activity"
+		/>
+
+		<StatusSetItem
+			v-for="activity in activity.children"
+			:key="activity.id"
+			:activity="activity"
+		/>
 	</article>
 </template>
 
@@ -28,18 +30,14 @@ export default {
 	components: { StatusSetItem },
 
 	props: {
-		activities: { type: [Array, Object], required: true }
+		activity: { type: Object, required: true }
 	},
 
 	computed: {
-		multipleActivities(){
-			return Array.isArray(this.activities)
-		},
-
-		threadElement(){
-			let status = Array.isArray(this.activities) ? this.activities[0] : this.activities
-			status = (status.reblog !== null ? status.reblog : status)
-			return typeof(status.in_reply_to_id) === "string" && status.in_reply_to_id !== ""
+		isThreadPart(){
+			let topStatus = this.activity.reblog !== null ? this.activity.reblog : this.activity
+			topStatus = Array.isArray(topStatus.ancestors) ? topStatus.ancestors[0] : topStatus
+			return typeof(topStatus.in_reply_to_id) === "string" && topStatus.in_reply_to_id !== ""
 		}
 	}
 }
