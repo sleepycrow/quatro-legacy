@@ -191,11 +191,15 @@ export default {
 	flex-shrink: 0;
 }
 
-.status-meta .status-meta__info{
-	margin: 0 0 0 8px;
+.status-meta__info{
+	margin: 0 0 0 10px;
 	flex-grow: 1;
 	flex-shrink: 0;
 	overflow: hidden;
+}
+
+.status-meta__info div{
+	margin: 4px 0;
 }
 
 .status-meta .author__name{
