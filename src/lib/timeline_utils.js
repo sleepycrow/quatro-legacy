@@ -1,10 +1,10 @@
 /**
- * Reorder an array of posts to group threads together.
+ * Group threads in a timeline together.
  * Works only in reverse-chronological order, refactor if needed.
  * @param {Array} timeline -- an array of status objects 
- * @returns An array of status objects and threads (arrays of status objects)
+ * @returns An array of status objects, possibly with a new property - ancestors (array or status objects)
  */
-export function reorderTimeline(timeline){
+export function groupThreads(timeline){
 	var needed = []
 	var found = {}
 	var output_timeline = []
@@ -28,20 +28,19 @@ export function reorderTimeline(timeline){
 
 		/* eslint-disable  no-prototype-builtins */
 		if(typeof(post.in_reply_to_id) === "string" && found.hasOwnProperty(post.in_reply_to_id)){
-			let post_chain = [post]
+			let ancestors = []
 			let last_post = post
 
 			while(typeof(last_post.in_reply_to_id) === "string" && found.hasOwnProperty(last_post.in_reply_to_id)){
 				last_post = found[last_post.in_reply_to_id]
-				post_chain.splice(0, 0, last_post)
+				ancestors.splice(0, 0, last_post)
 			}
 
-			output_timeline.push(post_chain)
-
-		}else{
-			output_timeline.push(post)
+			post.ancestors = ancestors
 		}
 		/* eslint-enable  no-prototype-builtins */
+
+		output_timeline.push(post)
 	}
 
 	return output_timeline
