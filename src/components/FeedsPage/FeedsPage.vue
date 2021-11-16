@@ -1,23 +1,16 @@
 <script setup>
-import * as apiService from '../../services/ApiService.js'
-import { reorderTimeline } from '../../lib/timeline_utils'
-import StatusSet from '../StatusSet/StatusSet.vue'
+import FeedHeader from '../FeedHeader/FeedHeader.vue'
+import Timeline from '../Timeline/Timeline.vue'
 </script>
 
 <template>
 	<div class="page-content page-content--feed">
 		<main>
-			<h1 v-if="!loaded">
-				loanding...
-			</h1>
+			<FeedHeader />
 
-			<div v-if="loaded" class="page-content page-content--feed">
-				<StatusSet
-					v-for="activity in activities"
-					:key="getActivityKey(activity)"
-					:activities="activity"
-				/>
-			</div>
+			<Timeline
+				timeline="public"
+			/>
 		</main>
 		<aside>
 			<div class="card">
@@ -31,7 +24,7 @@ import StatusSet from '../StatusSet/StatusSet.vue'
 
 <script>
 export default {
-	components: { StatusSet },
+	components: { FeedHeader, Timeline },
 
 	data: () => ({
 		loaded: false,
@@ -39,17 +32,7 @@ export default {
 	}),
 
 	created(){
-		apiService.fetchTimeline('public')
-			.then(resp => {
-				if(resp.error) throw resp.error;
-
-				this.activities = reorderTimeline(resp)
-				this.loaded = true
-			})
-			.catch(err => {
-				console.error(err)
-				window.alert("an error okurded!!\n"+String(err))
-			})
+		// nothing
 	},
 
 	methods: {

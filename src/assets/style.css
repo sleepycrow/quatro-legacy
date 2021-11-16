@@ -39,6 +39,12 @@ img{
 	max-width: 100%;
 }
 
+blockquote{
+	border-left: 3px solid var(--accent);
+	margin: 0.5rem 0 0.5rem 1rem;
+	padding: 0.5rem 0 0.5rem 1rem;
+}
+
 /* --- LAYOUT COMPONENTS --- */
 .page{
 	margin: 0 0 0 var(--sidebar-width);
@@ -71,7 +77,6 @@ img{
 /* --- UNIVERSAL COMPONENTS --- */
 /* Page header */
 .flex-header{
-	color: #FFF;
 	padding: 0 16px;
 	margin: 12px 0; /* css is v. nice :) */
 	display: flex;
@@ -87,7 +92,6 @@ img{
 .flex-header .flex-header__title h1{
 	line-height: var(--icon-button-size);
 	margin: 0;
-	color: #FFF;
 	font-weight: bold;
 	font-size: 1.33rem;
 }
@@ -95,7 +99,6 @@ img{
 .flex-header .flex-header__title h2{
 	line-height: var(--icon-button-size);
 	margin: 0;
-	color: #FFF;
 	font-weight: bold;
 	font-size: 1rem;
 }
@@ -106,12 +109,51 @@ img{
 }
 
 .flex-header__dropdown{
+	position: relative;
+}
+
+.flex-header__dropdown__title{
+	margin: 0 0 0 -8px;
+	padding: 0 8px;
+	background-color: transparent;
+	border: none;
+	border-radius: 8px;
 	line-height: var(--icon-button-size);
-	color: #FFF;
 	font-weight: bold;
 	font-size: 1.33rem;
 	cursor: pointer;
 	display: inline-block;
+	transition: background-color 0.1s;
+}
+
+.flex-header__dropdown__title:hover{
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+.flex-header__dropdown__content{
+	display: none;
+	position: absolute;
+	background-color: #FFF;
+	box-shadow: 0 2px 4px #777;
+	padding: 0;
+	margin: 8px 0;
+	list-style-type: none;
+	z-index: 10;
+}
+
+.flex-header__dropdown__content--visible{
+	display: block;
+}
+
+.flex-header__dropdown__content li{
+	padding: 1rem 1rem 1rem 1.25rem;
+	background-color: transparent;
+	cursor: pointer;
+	transition: background-color 0.1s;
+}
+
+.flex-header__dropdown__content li:hover{
+	background-color: rgba(0, 0, 0, 0.25);
 }
 
 /* Buttons */
@@ -263,6 +305,10 @@ img{
 .card__actions .card__action:hover,
 .card__actions .card__action:active{
 	background-color: #CCC;
+}
+
+.card__action--done{
+	font-weight: bold;
 }
 
 .card .card__img{
