@@ -33,7 +33,6 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 export default {
 	//TODO: implement error handling
 	//TODO: implement infinite scroll
-	//TODO: Implement dynamic status grouping (probably in the timelines store)
 	components: { StatusSet },
 
 	props: {

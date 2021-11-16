@@ -2,7 +2,6 @@
 	<header class="flex-header">
 		<div class="flex-header__title">
 			<div class="flex-header__dropdown">
-				<!-- TODO: convert the dropdown title into a button and content into links for accessibility reasons -->
 				<button class="flex-header__dropdown__title" @click="toggleFeedDropdown">
 					Your Feed
 					<span class="material-icons">arrow_drop_down</span>

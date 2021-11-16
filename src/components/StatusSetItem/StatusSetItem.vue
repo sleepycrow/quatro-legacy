@@ -62,7 +62,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			
 			<!-- Status Menu -->
 			<div class="card__menu">
-				<!-- DEBUG: remove before release -->
+				<!-- DEBUG: currently used for debugging, make it a dropdown -->
 				<button class="btn icon-btn" @click="logActivityData">
 					<span class="material-icons">more_horiz</span>
 				</button>
