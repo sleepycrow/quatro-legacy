@@ -189,6 +189,7 @@ export default {
 	border-radius: 50%;
 	flex-grow: 0;
 	flex-shrink: 0;
+	background-color: #CCC;
 }
 
 .status-meta__info{
