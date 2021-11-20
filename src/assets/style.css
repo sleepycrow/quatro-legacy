@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons+Outlined);
 
 /* --- SETUP RULES --- */
 :root{
@@ -16,10 +17,6 @@ body{
 
 *{
 	box-sizing: border-box;
-}
-
-.material-icons{
-	vertical-align: middle;
 }
 
 img.emoji{
@@ -44,6 +41,17 @@ blockquote{
 	margin: 0.5rem 0 0.5rem 1rem;
 	padding: 0.5rem 0 0.5rem 1rem;
 }
+
+/* --- MATERIAL ICONS --- */
+.material-icons,
+.material-icons-outlined{
+	vertical-align: middle;
+}
+
+.md-18 { font-size: 18px; }
+.md-24 { font-size: 24px; }
+.md-36 { font-size: 36px; }
+.md-48 { font-size: 48px; }
 
 /* --- LAYOUT COMPONENTS --- */
 .page{
@@ -177,6 +185,12 @@ blockquote{
 
 .btn:hover{
 	background-color: var(--accent-light);
+}
+
+.btn:disabled{
+	background-color: var(--accent-light);
+	color: rgba(255, 255, 255, 0.75);
+	cursor: default;
 }
 
 .btn--mini{

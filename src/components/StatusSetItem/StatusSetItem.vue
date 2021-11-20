@@ -8,6 +8,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 	<section v-if="status" class="status">
 		<!-------------- Repost Info -------------->
 		<div v-if="activity.reblog !== null" class="card__note">
+			<span class="material-icons md-18">repeat</span>
 			Reposted by <strong v-html="rebloggerDisplayName" />
 		</div>
 
@@ -190,6 +191,7 @@ export default {
 	flex-grow: 0;
 	flex-shrink: 0;
 	background-color: #CCC;
+	overflow: hidden;
 }
 
 .status-meta__info{

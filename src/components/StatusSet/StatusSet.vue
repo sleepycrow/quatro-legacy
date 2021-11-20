@@ -4,7 +4,10 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 
 <template>
 	<article class="card status-set">
-		<div v-if="isThreadPart" class="card__note">Part of a Thread</div>
+		<div v-if="isThreadPart" class="card__note">
+			<span class="material-icons-outlined md-18">library_books</span>
+			Part of a Thread
+		</div>
 
 		<StatusSetItem
 			v-for="ancestor in activity.ancestors"
