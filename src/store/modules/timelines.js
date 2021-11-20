@@ -85,23 +85,39 @@ const mutations = {
 		state.state[tlId].stale = true
 	},
 
+	unmarkTimelineAsStale(state, tlId){
+		state.state[tlId].stale = false
+	},
+
 	clearTimeline(state, tlId){
 		state.state[tlId] = generateTlState()
 	},
 
-	addStatuses(state, { tlId, statuses }){
+	appendStatuses(state, { tlId, statuses }){
 		if(!Array.isArray(statuses)) return false;
 		var timeline = state.state[tlId]
 
-		for(let theStatus of statuses){
-			timeline.statuses.push(theStatus)
-		}
+		timeline.statuses.push(...statuses)
 
 		// Reorder timeline
 		statuses = groupThreads(statuses)
-		for(let theStatus of statuses){
-			timeline.grouped.push(theStatus)
+		timeline.grouped.push(...statuses)
+		
+		if(timeline.statuses.length > 0){
+			timeline.newestId = timeline.statuses[0].id
+			timeline.oldestId = timeline.statuses[timeline.statuses.length - 1].id
 		}
+	},
+
+	prependStatuses(state, { tlId, statuses }){
+		if(!Array.isArray(statuses)) return false;
+		var timeline = state.state[tlId]
+
+		timeline.statuses.splice(0, 0, ...statuses)
+
+		// Reorder timeline
+		statuses = groupThreads(statuses)
+		timeline.grouped.splice(0, 0, ...statuses)
 		
 		if(timeline.statuses.length > 0){
 			timeline.newestId = timeline.statuses[0].id

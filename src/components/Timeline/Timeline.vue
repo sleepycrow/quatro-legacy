@@ -6,9 +6,11 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 <template>
 	<div class="timeline">
 		<div class="page-content page-content--feed">
-			<h1 v-if="fetcher.cache.state.stale" align="center">
-				NEW STATUSESEE SAE NEW NEW
-			</h1>
+			<div v-if="isStale" class="load-new-container">
+				<button class="btn" @click="fetchNewer()" :disabled="isLoading">
+					{{ this.isLoading ? "Loading..." : "Load new statuses" }}
+				</button>
+			</div>
 
 			<StatusSet
 				v-for="status in statuses"
@@ -16,23 +18,18 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 				:activity="status"
 			/>
 
-			<div style="text-align: center;">
-				<button class="btn" @click="fetchMore()">
-					More...
+			<div class="load-more-container">
+				<button class="btn" @click="fetchOlder()" :disabled="isLoading">
+					{{ this.isLoading ? "Loading..." : "Load more" }}
 				</button>
 			</div>
 		</div>
-
-		<h1 v-if="isLoading" align="center">
-			loanding...
-		</h1>
 	</div>
 </template>
 
 <script>
 export default {
 	//TODO: implement error handling
-	//TODO: implement infinite scroll
 	components: { StatusSet },
 
 	props: {
@@ -51,6 +48,10 @@ export default {
 			return this.fetcher.state.loading
 		},
 
+		isStale(){
+			return this.fetcher.state.stale
+		},
+
 		statuses(){
 			return this.fetcher.grouped
 		}
@@ -60,10 +61,7 @@ export default {
 		let timelineInfo = {
 			type: 'public'
 		}
-		if(window.tlInfo) timelineInfo = window.tlInfo
 		this.fetcher = new TimelineFetcher(this.$store, 'public', timelineInfo)
-
-		this.fetcher.startListening(console.log)
 
 		// if the cached timeline is empty, fetch some posts to populate it
 		if(this.fetcher.statuses.length <= 0)
@@ -86,13 +84,30 @@ export default {
 			return (Array.isArray(activity) ? activity[activity.length - 1].id : activity.id)
 		},
 
-		fetchMore(){
+		fetchOlder(){
 			this.fetcher.fetchOlderStatuses()
+		},
+
+		fetchNewer(){
+			this.fetcher.fetchNewerStatuses()
+				.then(() => {
+					window.scroll({ top: 0, behavior: 'smooth' })
+					this.fetcher.checkForNewer()
+				})
 		}
 	}
 }
 </script>
 
 <style>
+.load-new-container{
+	position: sticky;
+	top: 8px;
+	z-index: 10;
+	text-align: center;
+}
 
+.load-more-container{
+	text-align: center;
+}
 </style>

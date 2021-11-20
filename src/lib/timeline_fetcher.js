@@ -33,11 +33,9 @@ export default class TimelineFetcher {
 		return this.cache.state
 	}
 
-	async startListening(callback){
-		callback("sex time")
-	}
+	async fetchStatuses(params = {}, mutation = 'appendStatuses'){
+		if(this.cache.state.loading) console.error("no don't do that") //TODO: DO SOMETHING!!!
 
-	async fetchStatuses(params = {}){
 		this.store.commit('markTimelineAsLoading', this.tlId)
 
 		var requestParams = Object.assign({}, this.tlInfo.params, params)
@@ -46,7 +44,7 @@ export default class TimelineFetcher {
 		
 		// update store
 		this.store.commit({
-			type: 'addStatuses',
+			type: mutation,
 			tlId: this.tlId,
 			statuses: resp
 		})
@@ -58,6 +56,15 @@ export default class TimelineFetcher {
 		return this.fetchStatuses({
 			'max_id': this.cache.state.oldestId
 		})
+	}
+
+	async fetchNewerStatuses(){
+		return this.fetchStatuses({
+			'min_id': this.cache.state.newestId
+		}, 'prependStatuses')
+			.then(() => {
+				this.store.commit('unmarkTimelineAsStale', this.tlId)
+			})
 	}
 
 	async checkForNewer(){
