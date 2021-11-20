@@ -290,7 +290,7 @@ blockquote{
 	background-color: #FFF;
 	border-radius: 2px;
 	overflow: hidden;
-	box-shadow: 0 2px 4px #777;
+	box-shadow: 0 2px 6px #777;
 }
 
 .card__content{
