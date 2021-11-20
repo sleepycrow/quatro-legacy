@@ -2,7 +2,7 @@
 	<!-- TODO: replace me with actual attachment grid with a lightbox -->
 	<p v-if="sensitive" style="color: red; text-align: center; font-weight: bold;">sensitive media!!</p>
 
-	<div :class="attachments.length > 1 ? 'attachment-grid' : 'single-attachment'">
+	<div class="status__attachments" :class="attachments.length > 1 ? 'attachment-grid' : 'single-attachment'">
 		<a v-for="attachment in attachments" :key="attachment.id" :href="attachment.remote_url ? attachment.remote_url : attachment.text_url">
 			<img
 				v-if="attachment.type === 'image'"
@@ -15,6 +15,7 @@
 				v-if="attachment.type === 'video'"
 				:src="attachment.text_url"
 				controls
+				loop
 			>
 				<p>no video</p>
 			</video>
@@ -83,5 +84,19 @@ export default {
 	width: 100%;
 	max-width: 100%;
 	max-height: 600px;
+}
+
+/* Make the video and audio players look presentable */
+.status__attachments video{
+	background-color: #000;
+}
+
+.status__attachments audio{
+	background-color: green;
+	/*
+	The green is just a placeholder.
+	If we want to keep/build off of this instead of starting from scratch, we should give
+	audio elements some kind of background image.
+	*/
 }
 </style>
