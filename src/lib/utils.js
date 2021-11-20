@@ -30,7 +30,7 @@ export function htmlizeCustomEmoji(text, emoji){
 	for(var i = 0; i < emoji.length; i++){
 		text = text.replaceAll(
 			`:${emoji[i].shortcode}:`,
-			'<img class="emoji" src="'+encodeURI(emoji[i].url)+'" alt=":'+emoji[i].shortcode+':">'
+			'<img class="emoji" src="'+encodeURI(emoji[i].url)+'" alt=":'+emoji[i].shortcode+':" title=":'+emoji[i].shortcode+':">'
 		)
 	}
 
