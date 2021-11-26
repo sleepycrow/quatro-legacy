@@ -75,7 +75,7 @@ export default {
 
 .single-attachment img{
 	width: 100%;
-	max-height: 600px;
+	max-height: 400px;
 	object-fit: cover;
 	height: auto;
 }
@@ -83,7 +83,7 @@ export default {
 .single-attachment video, audio{
 	width: 100%;
 	max-width: 100%;
-	max-height: 600px;
+	max-height: 400px;
 }
 
 /* Make the video and audio players look presentable */
