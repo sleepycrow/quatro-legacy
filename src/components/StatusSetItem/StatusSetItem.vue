@@ -1,6 +1,7 @@
 <script setup>
 import { htmlizeCustomEmoji, htmlSpecialChars } from '../../lib/utils'
 import PreviewCard from '../PreviewCard/PreviewCard.vue'
+import FuzzyDate from '../FuzzyDate/FuzzyDate.vue'
 import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 </script>
 
@@ -35,7 +36,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 					</template>
 
 					<div class="status-meta__date">
-						{{ dateCreated }}
+						<FuzzyDate :datetime="this.status.created_at" :autoupdate="60" />
 					</div>
 				</div>
 			</div>
@@ -102,7 +103,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 <script>
 export default {
 	// TODO: make long statuses half-hidden (wrapped) by default (so they say, like, "read more" or something)
-	components: { PreviewCard, MediaAttachmentGrid },
+	components: { PreviewCard, MediaAttachmentGrid, FuzzyDate },
 
 	props: {
 		activity: { type: Object, required: true }
@@ -113,19 +114,6 @@ export default {
 	}),
 
 	computed: {
-		dateCreated(){
-			var date = new Date(this.status.created_at)
-
-			var fmt = (elem) => elem.toString().padStart(2, '0')
-
-			var day = fmt(date.getDate())
-			var month = fmt(date.getMonth() + 1)
-			var hours = fmt(date.getHours())
-			var minutes = fmt(date.getMinutes())
-
-			return `${date.getFullYear()}.${month}.${day} ${hours}:${minutes}`
-		},
-
 		rebloggerDisplayName(){
 			return htmlizeCustomEmoji(htmlSpecialChars(this.activity.account.display_name), this.activity.account.emojis)
 		},
