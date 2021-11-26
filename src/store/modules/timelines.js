@@ -97,11 +97,11 @@ const mutations = {
 		if(!Array.isArray(statuses)) return false;
 		var timeline = state.state[tlId]
 
-		timeline.statuses.push(...statuses)
+		timeline.statuses = timeline.statuses.concat(statuses)
 
 		// Reorder timeline
 		statuses = groupThreads(statuses)
-		timeline.grouped.push(...statuses)
+		timeline.grouped = timeline.grouped.concat(statuses)
 		
 		if(timeline.statuses.length > 0){
 			timeline.newestId = timeline.statuses[0].id
@@ -113,11 +113,11 @@ const mutations = {
 		if(!Array.isArray(statuses)) return false;
 		var timeline = state.state[tlId]
 
-		timeline.statuses.splice(0, 0, ...statuses)
+		timeline.statuses = statuses.concat(timeline.statuses)
 
 		// Reorder timeline
 		statuses = groupThreads(statuses)
-		timeline.grouped.splice(0, 0, ...statuses)
+		timeline.grouped = statuses.concat(timeline.grouped)
 		
 		if(timeline.statuses.length > 0){
 			timeline.newestId = timeline.statuses[0].id
