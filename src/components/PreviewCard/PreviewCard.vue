@@ -44,6 +44,12 @@ export default {
 	text-decoration: none;
 	cursor: pointer;
 	margin: 1rem 0;
+	color: #000;
+	text-decoration: none;
+}
+
+.preview-card-wrapper:hover{
+	text-decoration: none;
 }
 
 .preview-card{

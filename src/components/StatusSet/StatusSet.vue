@@ -48,7 +48,7 @@ export default {
 
 <style>
 .status-set .status{
-	border-bottom: 1px solid #777;
+	border-bottom: 1px solid #999;
 }
 
 .status-set .status:last-child{

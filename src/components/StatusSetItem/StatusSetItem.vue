@@ -214,9 +214,9 @@ export default {
 	margin: 1rem 0 0 0;
 }
 
-.status-image{
-	text-align: center;
-	margin: 1rem 0 0 0;
+.status-content .emoji{
+	width: 32px;
+	height: 32px;
 }
 
 .card__spoiler{
