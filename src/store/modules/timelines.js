@@ -13,7 +13,7 @@
  * if this is nonsense garbage blah blah just read source and it should make some sense!!
  */
 import { groupThreads } from '../../lib/timeline_utils'
-import { isEqual } from 'lodash'
+import { isEqual, cloneDeep } from 'lodash'
 
 // tlInfo describes a timeline, for fetching
 function generateTlInfo(params = {}){
@@ -23,7 +23,7 @@ function generateTlInfo(params = {}){
 		hashtag: null,
 		listId: null,
 		params: {}
-	}, params)
+	}, cloneDeep(params))
 }
 
 // tlState describes a timeline's state -- the statuses we'd fetched, whether

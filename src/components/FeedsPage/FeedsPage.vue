@@ -6,10 +6,15 @@ import Timeline from '../Timeline/Timeline.vue'
 <template>
 	<div class="page-content page-content--feed">
 		<main>
-			<FeedHeader />
+			<FeedHeader
+				:timelines="timelines"
+				@timeline-change="onTlChanged"
+				@settings-change="onSettingsChanged"
+			/>
 
 			<Timeline
-				timeline="public"
+				storeId="public"
+				:info="timeline"
 			/>
 		</main>
 		<aside>
@@ -28,16 +33,25 @@ export default {
 
 	data: () => ({
 		loaded: false,
-		activities: {}
+
+		timelines: [
+			{ id: 'home', name: 'Your Timeline' },
+			{ id: 'local', name: 'Community Timeline' },
+			{ id: 'public', name: 'Global Timeline' }
+		],
+
+		timeline: {
+			type: 'public',
+			params: {
+				local: false
+			}
+		}
 	}),
 
-	created(){
-		// nothing
-	},
-
 	methods: {
-		getActivityKey(activity){
-			return (Array.isArray(activity) ? activity[activity.length - 1].id : activity.id)
+		onTlChanged(tlId){
+			if(tlId == 'local') this.timeline.params.local = true
+			else this.timeline.params.local = false
 		}
 	}
 }

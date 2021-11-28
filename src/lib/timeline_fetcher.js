@@ -1,9 +1,13 @@
 import * as api from './api'
+import { toRaw } from 'vue'
 
 
 export default class TimelineFetcher {
 
 	constructor(store, tlId, tlInfo){
+		tlId = toRaw(tlId)
+		tlInfo = toRaw(tlInfo)
+		
 		this.store = store
 		
 		this.store.commit({

@@ -16,7 +16,7 @@ function fetchJson(endpoint, params){
 
 
 export function fetchTimeline(timelineId, params = {}){
-	var endpoint = TIMELINE_ENDPOINT(timelineId)+'?limit=20'
+	var endpoint = TIMELINE_ENDPOINT(timelineId)+'?'
 		
 	if(typeof(params) == "object"){
 		for(var key in params)

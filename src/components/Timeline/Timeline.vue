@@ -33,14 +33,15 @@ export default {
 	components: { StatusSet },
 
 	props: {
-		timeline: { type: String, required: true },
-		userId: { type: String, default: null }
+		storeId: { type: String, required: true },
+		info: { type: Object, required: true }
 	},
 
 	data: () => ({
 		loaded: false,
 		activities: {},
-		interval: null
+		interval: null,
+		fetcher: null
 	}),
 
 	computed: {
@@ -58,14 +59,8 @@ export default {
 	},
 
 	created(){
-		let timelineInfo = {
-			type: 'public'
-		}
-		this.fetcher = new TimelineFetcher(this.$store, 'public', timelineInfo)
-
-		// if the cached timeline is empty, fetch some posts to populate it
-		if(this.fetcher.statuses.length <= 0)
-			this.fetcher.fetchStatuses()
+		this.$watch('info', this.resetFetcher, { deep: true })
+		this.resetFetcher()
 		
 		// Check for newer posts, and set up an interval to do so periodically, as well
 		this.fetcher.checkForNewer()
@@ -94,6 +89,14 @@ export default {
 					window.scroll({ top: 0, behavior: 'smooth' })
 					this.fetcher.checkForNewer()
 				})
+		},
+
+		resetFetcher(){
+			this.fetcher = new TimelineFetcher(this.$store, this.$props.storeId, this.$props.info)
+
+			// if the cached timeline is empty, fetch some posts to populate it
+			if(this.fetcher.statuses.length <= 0)
+				this.fetcher.fetchStatuses()
 		}
 	}
 }
