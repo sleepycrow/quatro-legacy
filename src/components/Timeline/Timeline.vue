@@ -62,8 +62,7 @@ export default {
 		this.$watch('info', this.resetFetcher, { deep: true })
 		this.resetFetcher()
 		
-		// Check for newer posts, and set up an interval to do so periodically, as well
-		this.fetcher.checkForNewer()
+		// Set up an interval to periodically check for newer posts
 		this.interval = window.setInterval(() => {
 			this.fetcher.checkForNewer()
 				.then(console.log)
@@ -94,9 +93,12 @@ export default {
 		resetFetcher(){
 			this.fetcher = new TimelineFetcher(this.$store, this.$props.storeId, this.$props.info)
 
-			// if the cached timeline is empty, fetch some posts to populate it
+			// if the cached timeline is empty, fetch some posts to populate it.
+			// if it's not, check if there are newer posts than what we have
 			if(this.fetcher.statuses.length <= 0)
 				this.fetcher.fetchStatuses()
+			else
+				this.fetcher.checkForNewer()
 		}
 	}
 }

@@ -13,7 +13,7 @@ import Timeline from '../Timeline/Timeline.vue'
 			/>
 
 			<Timeline
-				storeId="public"
+				:storeId="tlId"
 				:info="timeline"
 			/>
 		</main>
@@ -40,6 +40,8 @@ export default {
 			{ id: 'public', name: 'Global Timeline' }
 		],
 
+		tlId: 'public',
+
 		timeline: {
 			type: 'public',
 			params: {
@@ -52,6 +54,9 @@ export default {
 		onTlChanged(tlId){
 			if(tlId == 'local') this.timeline.params.local = true
 			else this.timeline.params.local = false
+
+			if(tlId == 'local') this.tlId = 'local'
+			else this.tlId = 'public'
 		}
 	}
 }
