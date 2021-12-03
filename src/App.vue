@@ -8,7 +8,7 @@ import TheSidebar from './components/TheSidebar/TheSidebar.vue'
 	<TheSidebar />
 
 	<div class="page">
-		<router-view />
+		<router-view :key="$route.fullPath" />
 	</div>
 </template>
 

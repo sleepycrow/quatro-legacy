@@ -8,13 +8,13 @@ import Timeline from '../Timeline/Timeline.vue'
 		<main>
 			<FeedHeader
 				:timelines="timelines"
+				:selected="tlId"
 				@timeline-change="onTlChanged"
-				@settings-change="onSettingsChanged"
 			/>
 
 			<Timeline
-				:storeId="tlId"
-				:info="timeline"
+				:store-id="tlId"
+				:info="tlInfo"
 			/>
 		</main>
 		<aside>
@@ -31,18 +31,22 @@ import Timeline from '../Timeline/Timeline.vue'
 export default {
 	components: { FeedHeader, Timeline },
 
+	props: {
+		timeline: { type: String, default: 'public' }
+	},
+
 	data: () => ({
 		loaded: false,
 
 		timelines: [
-			{ id: 'home', name: 'Your Timeline' },
-			{ id: 'local', name: 'Community Timeline' },
-			{ id: 'public', name: 'Global Timeline' }
+			{ id: 'home', name: 'Your Timeline', target: '/timelines/home' },
+			{ id: 'local', name: 'Community Timeline', target: '/timelines/community' },
+			{ id: 'public', name: 'Global Timeline', target: '/timelines/global' }
 		],
 
 		tlId: 'public',
 
-		timeline: {
+		tlInfo: {
 			type: 'public',
 			params: {
 				local: false
@@ -50,10 +54,30 @@ export default {
 		}
 	}),
 
+	created(){
+		switch(this.$props.timeline){
+		case 'home':
+			this.tlId = 'home'
+			this.tlInfo.type = 'home'
+			break
+		
+		case 'local':
+			this.tlId = 'local'
+			this.tlInfo.type = 'public'
+			this.tlInfo.params.local = true
+			break
+		
+		case 'public':
+		default:
+			this.tlId = 'public'
+			this.tlInfo.type = 'public'
+		}
+	},
+
 	methods: {
 		onTlChanged(tlId){
-			if(tlId == 'local') this.timeline.params.local = true
-			else this.timeline.params.local = false
+			if(tlId == 'local') this.tlInfo.params.local = true
+			else this.tlInfo.params.local = false
 
 			if(tlId == 'local') this.tlId = 'local'
 			else this.tlId = 'public'

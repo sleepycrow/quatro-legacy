@@ -31,7 +31,7 @@
 				</li>
 
 				<li>
-					<router-link class="nav__link" active-class="active" to="/search">
+					<router-link class="nav__link" active-class="active" to="/helloworld">
 						<span class="nav__icon material-icons">search</span>
 						<span class="nav__label">Search</span>
 					</router-link>
@@ -39,8 +39,22 @@
 
 				<li>
 					<router-link class="nav__link" active-class="active" to="/helloworld">
-						<span class="nav__icon material-icons">star</span>
-						<span class="nav__label">Hello World!</span>
+						<span class="nav__icon material-icons">collections_bookmark</span>
+						<span class="nav__label">Collections</span>
+					</router-link>
+				</li>
+
+				<li>
+					<router-link class="nav__link" active-class="active" to="/helloworld">
+						<span class="nav__icon material-icons">chat</span>
+						<span class="nav__label">Chats</span>
+					</router-link>
+				</li>
+
+				<li>
+					<router-link class="nav__link" active-class="active" to="/helloworld">
+						<span class="nav__icon material-icons">notifications</span>
+						<span class="nav__label">Notifications</span>
 					</router-link>
 				</li>
 			</ul>

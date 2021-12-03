@@ -8,8 +8,10 @@
 				</button>
 
 				<ul ref="selectorDropdown" class="flex-header__dropdown__content">
-					<li v-for="tl in timelines" :key="tl.id" @click="onTimelineSelect(tl.id)">
-						{{ tl.name }}
+					<li v-for="tl in timelines" :key="tl.id">
+						<router-link :to="tl.target">
+							{{ tl.name }}
+						</router-link>
 					</li>
 				</ul>
 			</div>
@@ -27,7 +29,8 @@
 export default {
 
 	props: {
-		timelines: { type: Array, required: true }
+		timelines: { type: Array, required: true },
+		selected: { type: String, default: '' }
 	},
 
 	emits: ['timelineChange', 'settingsChange'],
@@ -37,7 +40,7 @@ export default {
 	}),
 
 	created(){
-		let tlId = (this.$props.selected ? this.$props.selected : this.$props.timelines[0].id)
+		let tlId = (this.$props.selected.length > 0 ? this.$props.selected : this.$props.timelines[0].id)
 		this.selectTl(tlId)
 
 		document.addEventListener('click', this.onDocumentClick)

@@ -158,14 +158,17 @@ blockquote{
 	display: block;
 }
 
-.flex-header__dropdown__content li{
+.flex-header__dropdown__content li a{
+	display: block;
+	color: #000;
+	text-decoration: none;
 	padding: 1rem 1rem 1rem 1.25rem;
 	background-color: transparent;
 	cursor: pointer;
 	transition: background-color 0.1s;
 }
 
-.flex-header__dropdown__content li:hover{
+.flex-header__dropdown__content li a:hover{
 	background-color: rgba(0, 0, 0, 0.25);
 }
 
