@@ -36,7 +36,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 					</template>
 
 					<div class="status-meta__date">
-						<FuzzyDate :datetime="this.status.created_at" :autoupdate="60" />
+						<FuzzyDate :datetime="status.created_at" :autoupdate="60" />
 					</div>
 				</div>
 			</div>

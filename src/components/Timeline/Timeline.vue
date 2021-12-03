@@ -7,8 +7,8 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 	<div class="timeline">
 		<div class="page-content page-content--feed">
 			<div v-if="isStale" class="load-new-container">
-				<button class="btn" @click="fetchNewer()" :disabled="isLoading">
-					{{ this.isLoading ? "Loading..." : "Load new statuses" }}
+				<button class="btn" :disabled="isLoading" @click="fetchNewer()">
+					{{ isLoading ? "Loading..." : "Load new statuses" }}
 				</button>
 			</div>
 
@@ -19,8 +19,8 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 			/>
 
 			<div class="load-more-container">
-				<button class="btn" @click="fetchOlder()" :disabled="isLoading">
-					{{ this.isLoading ? "Loading..." : "Load more" }}
+				<button class="btn" :disabled="isLoading" @click="fetchOlder()">
+					{{ isLoading ? "Loading..." : "Load more" }}
 				</button>
 			</div>
 		</div>
