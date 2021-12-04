@@ -45,23 +45,26 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			<div v-if="hasSpoiler" class="card__spoiler">
 				<div class="card__spoiler__text">
 					<span class="card__spoiler__icon material-icons">warning</span>
+					<span v-if="hasMediaAttachments" class="card__spoiler__icon material-icons">image</span>
 					<span class="card__spoiler__text" v-html="spoilerText" />
 				</div>
 				<button class="btn btn--mini" @click="toggleContentVisibility">{{ contentHidden ? "Show" : "Hide" }}</button>
 			</div>
 			
 			<!-- Status Content -->
-			<div v-if="!contentHidden" class="status-content" v-html="statusContent" />
+			<div class="status-content" :class="(contentHidden ? 'status-content--hidden' : '')">
+				<div ref="textContent" class="status-text" v-html="statusContent" />
 
-			<MediaAttachmentGrid
-				v-if="!contentHidden && hasMediaAttachments"
-				:attachments="status.media_attachments"
-				:sensitive="status.sensitive"
-			/>
+				<MediaAttachmentGrid
+					v-if="hasMediaAttachments"
+					:attachments="status.media_attachments"
+					:sensitive="status.sensitive"
+				/>
 
-			<!-- Preview Cards -->
-			<PreviewCard v-if="!contentHidden && (status.card && !hasMediaAttachments)" :card="status.card" />
-			
+				<!-- Preview Cards -->
+				<PreviewCard v-if="status.card && !hasMediaAttachments" :card="status.card" />
+			</div>
+				
 			<!-- Status Menu -->
 			<div class="card__menu">
 				<!-- DEBUG: currently used for debugging, make it a dropdown -->
@@ -138,6 +141,11 @@ export default {
 		this.contentHidden = this.hasSpoiler
 	},
 
+	mounted(){
+		if(this.status.mentions.length > 0 || this.status.tags.length > 0)
+			this.localizeLinks()
+	},
+
 	methods: {
 		toggleContentVisibility(){
 			this.contentHidden = !this.contentHidden
@@ -147,6 +155,50 @@ export default {
 		logActivityData(){
 			console.log(Object.assign({}, this.activity)) // copy the activity into a new object to avoid logging a Proxy object
 			window.alert("hey debugger, we heard you liek status data so we logged the status data in your console.\nno problem :>")
+		},
+
+		onLocalizedLinkClick(targetUrl, e){
+			if (e.button !== 0 || e.ctrlKey || e.metaKey) return
+
+			e.preventDefault()
+			this.$router.push(targetUrl)
+		},
+
+		_localizeMention(link){
+			var subject = link.innerText
+			subject = (subject.substr(0, 1) === '@' ? subject.slice(1) : subject)
+
+			for(var mention of this.status.mentions){
+				if(mention.acct === subject || mention.username === subject){
+					var targetUrl = (mention.acct.includes('@') ? `/users/${mention.id}` : `/@${mention.acct}`)
+
+					link.innerHTML = `@${mention.acct}`
+					link.title = mention.acct
+					link.href = targetUrl
+
+					link.addEventListener('click', this.onLocalizedLinkClick.bind(this, targetUrl), false)
+				}
+			}
+		},
+
+		_localizeHashtag(link){
+			var tag = link.textContent.slice(1)
+			var targetUrl = `/tags/${tag}`
+
+			link.href = targetUrl
+			
+			link.addEventListener('click', this.onLocalizedLinkClick.bind(this, targetUrl), false)
+		},
+
+		localizeLinks(){
+			var links = this.$refs.textContent.querySelectorAll('a')
+			
+			for(var link of links){
+				if(link.classList.contains('mention'))
+					this._localizeMention(link)
+				else if(link.textContent[0] === '#')
+					this._localizeHashtag(link)
+			}
 		}
 	}
 }
@@ -210,11 +262,15 @@ export default {
 	color: #333;
 }
 
-.status-content{
+.status-content--hidden{
+	display: none;
+}
+
+.status-text{
 	margin: 1rem 0 0 0;
 }
 
-.status-content .emoji{
+.status-text .emoji{
 	width: 32px;
 	height: 32px;
 }
@@ -231,5 +287,6 @@ export default {
 
 .card__spoiler .card__spoiler__icon{
 	font-size: 1.5rem;
+	margin: 6px;
 }
 </style>
