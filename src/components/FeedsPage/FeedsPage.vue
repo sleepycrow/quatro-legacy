@@ -9,7 +9,6 @@ import Timeline from '../Timeline/Timeline.vue'
 			<FeedHeader
 				:timelines="timelines"
 				:selected="tlId"
-				@timeline-change="onTlChanged"
 			/>
 
 			<Timeline
@@ -71,16 +70,6 @@ export default {
 		default:
 			this.tlId = 'public'
 			this.tlInfo.type = 'public'
-		}
-	},
-
-	methods: {
-		onTlChanged(tlId){
-			if(tlId == 'local') this.tlInfo.params.local = true
-			else this.tlInfo.params.local = false
-
-			if(tlId == 'local') this.tlId = 'local'
-			else this.tlId = 'public'
 		}
 	}
 }

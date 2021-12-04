@@ -33,7 +33,7 @@ export default {
 		selected: { type: String, default: '' }
 	},
 
-	emits: ['timelineChange', 'settingsChange'],
+	emits: ['settingsChange'],
 
 	data: () => ({
 		selectedTl: null
@@ -41,7 +41,12 @@ export default {
 
 	created(){
 		let tlId = (this.$props.selected.length > 0 ? this.$props.selected : this.$props.timelines[0].id)
-		this.selectTl(tlId)
+		for(let tl of this.$props.timelines){
+			if(tl.id == tlId){
+				this.selectedTl = tl
+				break
+			}
+		}
 
 		document.addEventListener('click', this.onDocumentClick)
 	},
@@ -51,34 +56,22 @@ export default {
 	},
 
 	methods: {
-		selectTl(tlId){
-			if(typeof(tlId) !== 'string') return
-
-			for(let tl of this.$props.timelines){
-				if(tl.id == tlId){
-					this.selectedTl = tl
-					this.$emit('timelineChange', this.selectedTl.id)
-					return
-				}
-			}
-		},
-
-		onTimelineSelect(tlId){
-			this.toggleFeedDropdown(false)
-			this.selectTl(tlId)
-		},
-
 		toggleFeedDropdown(makeVisible = null){
 			var visibleClass = 'flex-header__dropdown__content--visible'
 
-			if(makeVisible === null) makeVisible = !this.$refs.selectorDropdown.classList.contains(visibleClass)
+			if(makeVisible === null)
+				makeVisible = !this.$refs.selectorDropdown.classList.contains(visibleClass)
 			
-			if(makeVisible) this.$refs.selectorDropdown.classList.add(visibleClass)
-			else this.$refs.selectorDropdown.classList.remove(visibleClass)
+			if(makeVisible)
+				this.$refs.selectorDropdown.classList.add(visibleClass)
+			else
+				this.$refs.selectorDropdown.classList.remove(visibleClass)
 		},
 
 		onDocumentClick(e){
-			if(this.hidden || this.$refs.dropdownContainer.contains(e.target)) return
+			if(this.hidden || this.$refs.dropdownContainer.contains(e.target))
+				return
+			
 			this.toggleFeedDropdown(false)
 		}
 	}
