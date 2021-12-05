@@ -24,35 +24,35 @@
 		<nav>
 			<ul>
 				<li>
-					<router-link class="nav__link" active-class="active" to="/">
+					<router-link class="nav__link" :class="(isOnTimelinePage ? 'nav__link--active' : '')" to="/">
 						<span class="nav__icon material-icons">home</span>
 						<span class="nav__label">{{ $t('menu.timelines') }}</span>
 					</router-link>
 				</li>
 
 				<li>
-					<router-link class="nav__link" active-class="active" to="/helloworld">
+					<router-link class="nav__link" active-class="nav__link--active" to="/helloworld">
 						<span class="nav__icon material-icons">search</span>
 						<span class="nav__label">{{ $t('menu.search') }}</span>
 					</router-link>
 				</li>
 
 				<li>
-					<router-link class="nav__link" active-class="active" to="/helloworld">
+					<router-link class="nav__link" active-class="nav__link--active" to="/helloworld">
 						<span class="nav__icon material-icons">bookmarks</span>
 						<span class="nav__label">{{ $t('menu.bookmarks') }}</span>
 					</router-link>
 				</li>
 
 				<li>
-					<router-link class="nav__link" active-class="active" to="/helloworld">
+					<router-link class="nav__link" active-class="nav__link--active" to="/helloworld">
 						<span class="nav__icon material-icons">chat</span>
 						<span class="nav__label">{{ $t('menu.chats') }}</span>
 					</router-link>
 				</li>
 
 				<li>
-					<router-link class="nav__link" active-class="active" to="/helloworld">
+					<router-link class="nav__link" active-class="nav__link--active" to="/helloworld">
 						<span class="nav__icon material-icons">notifications</span>
 						<span class="nav__label">{{ $t('menu.notifications') }}</span>
 					</router-link>
@@ -66,6 +66,16 @@
 		</footer>
 	</div>
 </template>
+
+<script>
+export default {
+	computed: {
+		isOnTimelinePage(){
+			return this.$route.fullPath.includes('timelines')
+		}
+	}
+}
+</script>
 
 <style>
 .sidebar{
@@ -114,15 +124,15 @@
 	background-color: rgba(255, 255, 255, 0.25);
 }
 
-.sidebar nav li .active{
+.sidebar nav li .nav__link--active{
 	background-color: transparent;
 }
 
-.sidebar .active .nav__icon{
+.sidebar .nav__link--active .nav__icon{
 	color: #FFF;
 }
 
-.sidebar .active .nav__label{
+.sidebar .nav__link--active .nav__label{
 	font-weight: bold;
 }
 
