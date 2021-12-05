@@ -36,7 +36,6 @@ export function getFuzzyDate(date){
 	}else if(diff < DAY){
 		message = 'fuzzy_dates.hours_ago'
 		amount = Math.floor(diff / HOUR)
-		return ['fuzzy_dates.hours_ago', [Math.floor(diff / HOUR)]]
 	}else if(diff < WEEK){
 		message = 'fuzzy_dates.days_ago'
 		amount = Math.floor(diff / DAY)
