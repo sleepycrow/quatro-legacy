@@ -6,7 +6,7 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 	<article class="card status-set">
 		<div v-if="isThreadPart" class="card__note">
 			<span class="material-icons-outlined md-18">library_books</span>
-			Part of a Thread
+			{{ $t('statuses.part_of_a_thread') }}
 		</div>
 
 		<StatusSetItem

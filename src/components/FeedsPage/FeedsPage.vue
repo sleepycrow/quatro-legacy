@@ -38,9 +38,9 @@ export default {
 		loaded: false,
 
 		timelines: [
-			{ id: 'home', name: 'Your Timeline', target: '/timelines/home' },
-			{ id: 'local', name: 'Community Timeline', target: '/timelines/community' },
-			{ id: 'public', name: 'Global Timeline', target: '/timelines/global' }
+			{ id: 'home', target: '/timelines/home' },
+			{ id: 'local', target: '/timelines/community' },
+			{ id: 'public', target: '/timelines/global' }
 		],
 
 		tlId: 'public',

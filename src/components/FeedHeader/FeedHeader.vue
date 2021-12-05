@@ -3,14 +3,14 @@
 		<div class="flex-header__title">
 			<div ref="dropdownContainer" class="flex-header__dropdown">
 				<button class="flex-header__dropdown__title" @click="toggleFeedDropdown()">
-					{{ selectedTl.name }}
+					{{ $t('timelines.'+selectedTl.id) }}
 					<span class="material-icons">arrow_drop_down</span>
 				</button>
 
 				<ul ref="selectorDropdown" class="flex-header__dropdown__content">
 					<li v-for="tl in timelines" :key="tl.id">
 						<router-link :to="tl.target">
-							{{ tl.name }}
+							{{ $t('timelines.'+tl.id) }}
 						</router-link>
 					</li>
 				</ul>

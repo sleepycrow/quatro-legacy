@@ -26,35 +26,35 @@
 				<li>
 					<router-link class="nav__link" active-class="active" to="/">
 						<span class="nav__icon material-icons">home</span>
-						<span class="nav__label">Explore</span>
+						<span class="nav__label">{{ $t('menu.timelines') }}</span>
 					</router-link>
 				</li>
 
 				<li>
 					<router-link class="nav__link" active-class="active" to="/helloworld">
 						<span class="nav__icon material-icons">search</span>
-						<span class="nav__label">Search</span>
+						<span class="nav__label">{{ $t('menu.search') }}</span>
 					</router-link>
 				</li>
 
 				<li>
 					<router-link class="nav__link" active-class="active" to="/helloworld">
-						<span class="nav__icon material-icons">collections_bookmark</span>
-						<span class="nav__label">Collections</span>
+						<span class="nav__icon material-icons">bookmarks</span>
+						<span class="nav__label">{{ $t('menu.bookmarks') }}</span>
 					</router-link>
 				</li>
 
 				<li>
 					<router-link class="nav__link" active-class="active" to="/helloworld">
 						<span class="nav__icon material-icons">chat</span>
-						<span class="nav__label">Chats</span>
+						<span class="nav__label">{{ $t('menu.chats') }}</span>
 					</router-link>
 				</li>
 
 				<li>
 					<router-link class="nav__link" active-class="active" to="/helloworld">
 						<span class="nav__icon material-icons">notifications</span>
-						<span class="nav__label">Notifications</span>
+						<span class="nav__label">{{ $t('menu.notifications') }}</span>
 					</router-link>
 				</li>
 			</ul>

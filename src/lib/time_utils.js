@@ -18,26 +18,40 @@ export function getDateText(date){
 	var hours = fmt(date.getHours())
 	var minutes = fmt(date.getMinutes())
 
-	return `${date.getFullYear()}.${month}.${day} ${hours}:${minutes}`
+	return `${date.getFullYear()}-${month}-${day} ${hours}:${minutes}`
 }
 
 
 export function getFuzzyDate(date){
 	date = (typeof(date) === 'string') ? new Date(date) : date
 	let diff = Math.abs( Date.now() - date )
+	let message = null
+	let amount = null
 
-	if(diff < MINUTE)
-		return 'Just now'
-	else if(diff < HOUR)
-		return Math.floor(diff / MINUTE) + ' minutes ago'
-	else if(diff < DAY)
-		return Math.floor(diff / HOUR) + ' hours ago'
-	else if(diff < WEEK)
-		return Math.floor(diff / DAY) + ' days ago'
-	else if(diff < MONTH)
-		return Math.floor(diff / WEEK) + ' weeks ago'
-	else if(diff < YEAR)
-		return Math.floor(diff / MONTH) + ' months ago'
-	else
+	if(diff < MINUTE){
+		message = 'fuzzy_dates.just_now'
+	}else if(diff < HOUR){
+		message = 'fuzzy_dates.minutes_ago'
+		amount = Math.floor(diff / MINUTE)
+	}else if(diff < DAY){
+		message = 'fuzzy_dates.hours_ago'
+		amount = Math.floor(diff / HOUR)
+		return ['fuzzy_dates.hours_ago', [Math.floor(diff / HOUR)]]
+	}else if(diff < WEEK){
+		message = 'fuzzy_dates.days_ago'
+		amount = Math.floor(diff / DAY)
+	}else if(diff < MONTH){
+		message = 'fuzzy_dates.weeks_ago'
+		amount = Math.floor(diff / WEEK)
+	}else if(diff < YEAR){
+		message = 'fuzzy_dates.months_ago'
+		amount = Math.floor(diff / MONTH)
+	}
+
+	if(message !== null){
+		if(amount === 1) message = message + '_singular'
+		return [message, [amount]]
+	}else{
 		return getDateText(date)
+	}
 }

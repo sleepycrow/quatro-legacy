@@ -1,0 +1,42 @@
+{
+	"menu": {
+		"timelines": "Timelines",
+		"search": "Search",
+		"bookmarks": "Bookmarks",
+		"chats": "Chats",
+		"notifications": "Notifications"
+	},
+
+	"timelines": {
+		"home": "Your Timeline",
+		"local": "Community Timeline",
+		"public": "Global Timeline"
+	},
+
+	"fuzzy_dates": {
+		"just_now": "Just now",
+
+		"minutes_ago": "{0} minutes ago",
+		"hours_ago": "{0} hours ago",
+		"days_ago": "{0} days ago",
+		"weeks_ago": "{0} weeks ago",
+		"months_ago": "{0} months ago",
+
+		"minutes_ago_singular": "A minute ago",
+		"hours_ago_singular": "An hour ago",
+		"days_ago_singular": "A day ago",
+		"weeks_ago_singular": "A week ago",
+		"months_ago_singular": "A month ago"
+	},
+
+	"statuses": {
+		"part_of_a_thread": "Part of a Thread",
+		"reposted_by": "Reposted by %s"
+	},
+
+	"loading": "Loading...",
+	"load_more": "Load More",
+	"load_new_statuses": "Load New Statuses",
+	"show": "Show",
+	"hide": "Hide"
+}

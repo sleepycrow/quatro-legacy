@@ -10,7 +10,8 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 		<!-------------- Repost Info -------------->
 		<div v-if="activity.reblog !== null" class="card__note">
 			<span class="material-icons md-18">repeat</span>
-			Reposted by <strong v-html="rebloggerDisplayName" />
+			<!-- TODO: When profiles are implemented, implement this -->
+			{{ $t('statuses.reposted_by') }} <router-link class="card-note__username" to="/" v-html="rebloggerDisplayName" />
 		</div>
 
 		<!-------------- The Actual Status -------------->
@@ -48,7 +49,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 					<span v-if="hasMediaAttachments" class="card__spoiler__icon material-icons">image</span>
 					<span class="card__spoiler__text" v-html="spoilerText" />
 				</div>
-				<button class="btn btn--mini" @click="toggleContentVisibility">{{ contentHidden ? "Show" : "Hide" }}</button>
+				<button class="btn btn--mini" @click="toggleContentVisibility">{{ contentHidden ? $t('show') : $t('hide') }}</button>
 			</div>
 			
 			<!-- Status Content -->
@@ -92,7 +93,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			</div>
 			
 			<div class="card__action">
-				<span class="material-icons">collections_bookmark</span>
+				<span class="material-icons">bookmark_border</span>
 			</div>
 
 			<!-- DEBUG: just here for debugging -->
@@ -288,5 +289,10 @@ export default {
 .card__spoiler .card__spoiler__icon{
 	font-size: 1.5rem;
 	margin: 6px;
+}
+
+.card-note__username{
+	font-weight: bold;
+	color: inherit;
 }
 </style>

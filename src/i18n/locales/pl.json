@@ -1,0 +1,42 @@
+{
+	"menu": {
+		"timelines": "Osie Czasu",
+		"search": "Szukaj",
+		"bookmarks": "Zakładki",
+		"chats": "Czaty",
+		"notifications": "Powiadomienia"
+	},
+
+	"timelines": {
+		"home": "Twoja Oś Czasu",
+		"local": "Oś Czasu Społeczności",
+		"public": "Globalna Oś Czasu"
+	},
+
+	"fuzzy_dates": {
+		"just_now": "Przed chwilą",
+
+		"minutes_ago": "{0} min. temu",
+		"hours_ago": "{0} godz. temu",
+		"days_ago": "{0} dni temu",
+		"weeks_ago": "{0} tyg. temu",
+		"months_ago": "{0} mies. temu",
+
+		"minutes_ago_singular": "Minutę temu",
+		"hours_ago_singular": "Godzinę temu",
+		"days_ago_singular": "Dzień temu",
+		"weeks_ago_singular": "Tydzień temu",
+		"months_ago_singular": "Miesiąc temu"
+	},
+
+	"statuses": {
+		"part_of_a_thread": "Część dłuższego wątku",
+		"reposted_by": "Powtórzone przez"
+	},
+
+	"loading": "Ładowanie...",
+	"load_more": "Załaduj Więcej",
+	"load_new_statuses": "Załaduj Nowe Wpisy",
+	"show": "Pokaż",
+	"hide": "Ukryj"
+}
