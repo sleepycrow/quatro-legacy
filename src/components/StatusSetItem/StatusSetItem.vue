@@ -144,7 +144,7 @@ export default {
 
 	mounted(){
 		if(this.status.mentions.length > 0 || this.status.tags.length > 0)
-			this.localizeLinks()
+			this.processLinks()
 	},
 
 	methods: {
@@ -191,7 +191,7 @@ export default {
 			link.addEventListener('click', this.onLocalizedLinkClick.bind(this, targetUrl), false)
 		},
 
-		localizeLinks(){
+		processLinks(){
 			var links = this.$refs.textContent.querySelectorAll('a')
 			
 			for(var link of links){
@@ -199,6 +199,8 @@ export default {
 					this._localizeMention(link)
 				else if(link.textContent[0] === '#')
 					this._localizeHashtag(link)
+				else
+					link.target = '_blank'
 			}
 		}
 	}
