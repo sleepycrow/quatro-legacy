@@ -1,6 +1,7 @@
-import {createStore, createLogger} from 'vuex'
+import { createStore, createLogger } from 'vuex'
 
 import timelinesModule from './modules/timelines'
+import instanceModule from './modules/instance'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -9,6 +10,7 @@ export default createStore({
 	plugins: debug ? [createLogger()] : [],
 
 	modules: {
-		timelines: timelinesModule
+		timelines: timelinesModule,
+		instance: instanceModule
 	}
 }) 

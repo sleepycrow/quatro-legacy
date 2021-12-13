@@ -1,4 +1,6 @@
 const TIMELINE_ENDPOINT = timelineId => `/api/v1/timelines/${timelineId}`
+const INSTANCE_ENDPOINT = '/api/v1/instance'
+const NODEINFO_ENDPOINT = '/nodeinfo/2.0.json'
 
 // Helper function that injects various headers and automatically converts response to json
 function fetchJson(endpoint, params){
@@ -15,6 +17,7 @@ function fetchJson(endpoint, params){
 }
 
 
+// TODO: Document this function when we figure out how to fetch different types of timelines
 export function fetchTimeline(timelineId, params = {}){
 	var endpoint = TIMELINE_ENDPOINT(timelineId)+'?'
 		
@@ -24,4 +27,22 @@ export function fetchTimeline(timelineId, params = {}){
 	}
 		
 	return fetchJson(endpoint)
+}
+
+
+/**
+ * Fetches mastodon-style instance info (/api/v1/instance)
+ * @returns {Promise} Promise that resolves with an Object
+ */
+export function fetchInstanceInfo(){
+	return fetchJson(INSTANCE_ENDPOINT)
+}
+
+
+/**
+ * Fetches diaspora-style NodeInfo (/nodeinfo/2.0.json)
+ * @returns {Promise} Promise that resolves with an Object
+ */
+export function fetchNodeInfo(){
+	return fetchJson(NODEINFO_ENDPOINT)
 }
