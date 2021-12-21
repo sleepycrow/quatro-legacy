@@ -8,8 +8,8 @@
 				</div>
 
 				<div class="sidebar-id__info">
-					<div class="sidebar-id__name">a sleepy crow</div>
-					<div class="sidebar-id__username">@sleepycrow@gamedev.mastodon.social</div>
+					<div class="sidebar-id__name">a crow!!</div>
+					<div class="sidebar-id__username">@crow</div>
 				</div>
 
 				<div class="sidebar-id__btn">
@@ -173,7 +173,7 @@ export default {
 	position: relative;
 	display: table;
 	table-layout: fixed;
-	border-spacing: 4px;
+	border-spacing: 6px;
 
 	background-color: rgba(255, 255, 255, 0.15);
 	border-radius: 8px;
@@ -206,6 +206,10 @@ export default {
 	display: table-cell;
 	vertical-align: middle;
 	overflow: hidden;
+}
+
+.sidebar-id__info div{
+	margin: 4px 0;
 }
 
 .sidebar-id__name{

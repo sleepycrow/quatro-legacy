@@ -4,7 +4,8 @@
 /* --- SETUP RULES --- */
 :root{
 	--sidebar-width: 280px;
-	--inner-page-width: 1000px;
+	--inner-page-width: 800px;
+	--inner-page-width--wide: 1000px;
 	--icon-button-size: 32px;
 
 	--accent: #347FC4;
@@ -66,22 +67,26 @@ blockquote{
 .page-content{
 	width: 100%;
 	max-width: var(--inner-page-width);
-	margin: 0.5rem auto;
+	margin: 1rem auto;
 }
 
-.page-content--feed main,
-.page-content--feed aside{
+.page-content--2col{
+	max-width: var(--inner-page-width--wide);
+}
+
+.page-content--2col main,
+.page-content--2col aside{
 	width: 100%;
 	margin-bottom: 2rem;
 }
 
 @media screen and (min-width: 768px) {
-	.page-content--feed main{
+	.page-content--2col main{
 		float: left;
 		width: 66.6%;
 	}
 
-	.page-content--feed aside{
+	.page-content--2col aside{
 		float: right;
 		width: 33.3%;
 	}
@@ -90,7 +95,7 @@ blockquote{
 /* --- UNIVERSAL COMPONENTS --- */
 /* Page header */
 .flex-header{
-	padding: 0 16px;
+	padding: 0 8px;
 	margin: 12px 0; /* css is v. nice :) */
 	display: flex;
 	width: 100%;

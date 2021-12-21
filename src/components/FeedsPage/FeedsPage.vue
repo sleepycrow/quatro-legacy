@@ -16,13 +16,6 @@ import Timeline from '../Timeline/Timeline.vue'
 				:info="tlInfo"
 			/>
 		</main>
-		<aside>
-			<div class="card">
-				<div class="card__content">
-					<p>test</p>
-				</div>
-			</div>
-		</aside>
 	</div>
 </template>
 
@@ -35,8 +28,6 @@ export default {
 	},
 
 	data: () => ({
-		loaded: false,
-
 		timelines: [
 			{ id: 'home', target: '/timelines/home' },
 			{ id: 'local', target: '/timelines/community' },
