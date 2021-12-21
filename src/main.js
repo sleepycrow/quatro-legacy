@@ -29,8 +29,8 @@ prepareForApp()
 
 async function prepareForApp(){
 	var info = await Promise.all([ fetchInstanceInfo(), fetchNodeInfo() ])
-	var instanceInfo = info[0] 
-	var nodeInfo = info[1]
+	var instanceInfo = info[0].data 
+	var nodeInfo = info[1].data
 
 	store.commit('setInstanceValue', { key: 'nodeName', value: nodeInfo.metadata.nodeName })
 	store.commit('setInstanceValue', { key: 'nodeDescription', value: nodeInfo.metadata.nodeDescription })

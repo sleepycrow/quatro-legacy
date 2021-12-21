@@ -7,7 +7,7 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 	<div class="timeline">
 		<div class="page-content page-content--feed">
 			<div v-if="isStale" class="load-new-container">
-				<button class="btn" :disabled="isLoading" @click="fetchNewer()">
+				<button class="btn" :disabled="isLoading" @click="fetchPrev()">
 					{{ isLoading ? $t('loading') : $t('load_new_statuses') }}
 				</button>
 			</div>
@@ -19,7 +19,7 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 			/>
 
 			<div class="load-more-container">
-				<button class="btn" :disabled="isLoading" @click="fetchOlder()">
+				<button class="btn" :disabled="isLoading" @click="fetchNext()">
 					{{ isLoading ? $t('loading') : $t('load_more') }}
 				</button>
 			</div>
@@ -78,16 +78,16 @@ export default {
 			return (Array.isArray(activity) ? activity[activity.length - 1].id : activity.id)
 		},
 
-		fetchOlder(){
-			this.fetcher.fetchOlderStatuses()
-		},
-
-		fetchNewer(){
-			this.fetcher.fetchNewerStatuses()
+		fetchPrev(){
+			this.fetcher.fetchPrev()
 				.then(() => {
 					window.scroll({ top: 0, behavior: 'smooth' })
 					this.fetcher.checkForNewer()
 				})
+		},
+
+		fetchNext(){
+			this.fetcher.fetchNext()
 		},
 
 		resetFetcher(){
@@ -96,7 +96,7 @@ export default {
 			// if the cached timeline is empty, fetch some posts to populate it.
 			// if it's not, check if there are newer posts than what we have
 			if(this.fetcher.statuses.length <= 0)
-				this.fetcher.fetchStatuses()
+				this.fetcher.fetchStatuses({}, { setNext: true, setPrev: true })
 			else
 				this.fetcher.checkForNewer()
 		}

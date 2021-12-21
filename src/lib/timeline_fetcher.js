@@ -37,46 +37,65 @@ export default class TimelineFetcher {
 		return this.cache.state
 	}
 
-	async fetchStatuses(params = {}, mutation = 'appendStatuses'){
+	async fetchStatuses(params = {}, config = {}){
 		if(this.cache.state.loading) console.error("no don't do that") //TODO: DO SOMETHING!!!
 
 		this.store.commit('markTimelineAsLoading', this.tlId)
 
+		// Populate the config with default values
+		config = Object.assign({
+			mutation: 'appendStatuses',
+			setPrev: false,
+			setNext: false
+		}, config)
+
 		var requestParams = Object.assign({}, this.tlInfo.params, params)
 		var resp = await api.fetchTimeline(this.tlInfo.type, requestParams)
-		if(resp.error) throw resp.error //TODO: Consider making a custom class for these kinds of errors???
+		if(resp.data.error) throw resp.data.error //TODO: Consider making a custom class for these kinds of errors???
 		
-		// update store
+		// add the posts to the store
 		this.store.commit({
-			type: mutation,
+			type: config.mutation,
 			tlId: this.tlId,
-			statuses: resp
+			statuses: resp.data
 		})
+
+		// if wanted, set the params for next and prev
+		if((config.setNext || config.setPrev) && resp.links){
+			var values = { tlId: this.tlId }
+
+			if(config.setNext && resp.links.next){
+				delete resp.links.next.href
+				values.next = resp.links.next
+			}
+			if(config.setPrev && resp.links.prev){
+				delete resp.links.prev.href
+				values.prev = resp.links.prev
+			}
+
+			this.store.commit('setTimelineStateValues', values)
+		}
 
 		this.store.commit('unmarkTimelineAsLoading', this.tlId)
 	}
 
-	async fetchOlderStatuses(){
-		return this.fetchStatuses({
-			'max_id': this.cache.state.oldestId
-		})
-	}
-
-	async fetchNewerStatuses(){
-		return this.fetchStatuses({
-			'min_id': this.cache.state.newestId
-		}, 'prependStatuses')
+	async fetchPrev(){
+		return this.fetchStatuses(this.cache.state.prev, { mutation: 'prependStatuses', setPrev: true })
 			.then(() => {
 				this.store.commit('unmarkTimelineAsStale', this.tlId)
 			})
 	}
 
-	async checkForNewer(){
-		var requestParams = Object.assign({}, this.tlInfo.params, { since_id: this.cache.state.newestId, limit: 1 })
-		var resp = await api.fetchTimeline(this.tlInfo.type, requestParams)
-		if(resp.error || !Array.isArray(resp)) throw resp.error //TODO: Consider making a custom class for these kinds of errors???
+	async fetchNext(){
+		return this.fetchStatuses(this.cache.state.next, { setNext: true })
+	}
 
-		if(resp.length > 0) this.store.commit('markTimelineAsStale', this.tlId)
+	async checkForNewer(){
+		var requestParams = Object.assign({}, this.cache.state.prev, { limit: 1 })
+		var resp = await api.fetchTimeline(this.tlInfo.type, requestParams)
+		if(resp.data.error || !Array.isArray(resp.data)) throw resp.data.error //TODO: Consider making a custom class for these kinds of errors???
+
+		if(resp.data.length > 0) this.store.commit('markTimelineAsStale', this.tlId)
 		
 		return this.cache.state.stale
 	}

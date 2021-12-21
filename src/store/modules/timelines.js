@@ -34,8 +34,8 @@ function generateTlState(){
 		stale: false,
 		statuses: [],
 		grouped: [],
-		newestId: null,
-		oldestId: null
+		next: {}, // The query params for the next page. These are obtained automatically from the HTTP "Link" header in API responses, not written by hand!
+		prev: {} // As above.
 	}
 }
 
@@ -73,6 +73,15 @@ const mutations = {
 		}
 	},
 
+	setTimelineStateValues(state, values){
+		if(!state.state[values.tlId]) return
+
+		var tlId = values.tlId
+		delete values.tlId
+
+		state.state[tlId] = Object.assign(state.state[tlId], values)
+	},
+
 	markTimelineAsLoading(state, tlId){
 		state.state[tlId].loading = true
 	},
@@ -102,11 +111,6 @@ const mutations = {
 		// Reorder timeline
 		statuses = groupThreads(statuses)
 		timeline.grouped = timeline.grouped.concat(statuses)
-		
-		if(timeline.statuses.length > 0){
-			timeline.newestId = timeline.statuses[0].id
-			timeline.oldestId = timeline.statuses[timeline.statuses.length - 1].id
-		}
 	},
 
 	prependStatuses(state, { tlId, statuses }){
@@ -118,11 +122,6 @@ const mutations = {
 		// Reorder timeline
 		statuses = groupThreads(statuses)
 		timeline.grouped = statuses.concat(timeline.grouped)
-		
-		if(timeline.statuses.length > 0){
-			timeline.newestId = timeline.statuses[0].id
-			timeline.oldestId = timeline.statuses[timeline.statuses.length - 1].id
-		}
 	}
 }
 

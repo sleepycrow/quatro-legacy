@@ -1,19 +1,59 @@
+import * as axios from 'axios'
+
 const TIMELINE_ENDPOINT = timelineId => `/api/v1/timelines/${timelineId}`
 const INSTANCE_ENDPOINT = '/api/v1/instance'
 const NODEINFO_ENDPOINT = '/nodeinfo/2.0.json'
 
-// Helper function that injects various headers and automatically converts response to json
-function fetchJson(endpoint, params){
-	var options = {
-		'Accept': 'application/json',
-		'Content-Type': 'application/json',
-		...params
-	}
-	var baseUrl = 'https://critters.us.to' //DEBUG: this can be an empty string in release
-	// https://tailswish.industries   |   https://snaggletooth.life
+// Set up axios defaults
+axios.defaults.baseURL = 'https://critters.us.to' // Should be blank in release.
+axios.defaults.responseType = 'json'
+axios.defaults.headers.post['Accept'] = 'application/json'
+axios.defaults.headers.post['Content-Type'] = 'application/json'
 
-	return fetch(baseUrl+endpoint, options)
-		.then((response) => response.json())
+axios.interceptors.response.use((resp) => {
+	if(resp.headers.link)
+		resp.links = parseLinkHeader(resp.headers.link)
+	
+	return resp
+})
+
+
+/**
+ * A "good enough" link header parser. Beware, ignores all properties except
+ * rel!!
+ * @param {String} header - the HTTP Link header
+ * @returns {Object} figure it out lol
+ */
+function parseLinkHeader(header){
+	var input_links = header.split(', ')
+	var output = {}
+
+	for(let linkStr of input_links){
+		let linkData = linkStr.match(/<([^>]+)>; ?rel="([^"]+)"/i)
+		if(linkData.length < 3) continue
+
+		var link = {}
+
+		let queryParams = linkData[1].match(/(?:\?|\&)([^\?\&]+)/gi)
+		for(let paramStr of queryParams){
+			let param = paramStr.slice(1).split('=')
+			if(param.length < 2) continue
+
+			link[param[0]] = param[1]
+		}
+
+		link.href = linkData[1]
+		output[linkData[2]] = link
+	}
+
+	return output
+}
+
+
+// Helper function that injects various headers and automatically converts response to json
+// TODO: either use it when we start working on auth, or remove it
+function fetchJson(endpoint, params){
+	return axios.get(endpoint, { params })
 }
 
 
