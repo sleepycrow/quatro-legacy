@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 
 import FeedsPage from "./components/FeedsPage/FeedsPage.vue"
+import TagTimelinePage from "./components/TagTimelinePage/TagTimelinePage.vue"
 import HelloWorld from "./components/HelloWorld/HelloWorld.vue"
 import TestPage from "./components/TestPage/TestPage.vue"
 
@@ -40,8 +41,8 @@ const router = createRouter({
 		},
 		{
 			name: 'tagTimeline',
-			path: '/tags/:bitch',
-			component: TestPage,
+			path: '/tags/:tag',
+			component: TagTimelinePage,
 			props: true
 		},
 
