@@ -4,7 +4,7 @@ import { getDateText, getFuzzyDate } from '../../lib/time_utils'
 
 <template>
 	<time :datetime="datetime" :title="dateText">
-		{{ $t(...fuzzyDate) }}
+		{{ ( fuzzyDate !== null ? $t(...fuzzyDate) : dateText ) }}
 	</time>
 </template>
 

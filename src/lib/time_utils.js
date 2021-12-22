@@ -51,6 +51,6 @@ export function getFuzzyDate(date){
 		if(amount === 1) message = message + '_singular'
 		return [message, [amount]]
 	}else{
-		return getDateText(date)
+		return null
 	}
 }
