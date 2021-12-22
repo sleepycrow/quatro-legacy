@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
+import store from "./store"
 
 import FeedsPage from "./components/FeedsPage/FeedsPage.vue"
 import TagTimelinePage from "./components/TagTimelinePage/TagTimelinePage.vue"
@@ -23,21 +24,19 @@ const router = createRouter({
 			path: '/timelines/home',
 			component: FeedsPage,
 			props: { timeline: 'home' },
-			meta: { auth: true, i18nTitle: 'timelines.home' } // FIXME: add auth validation
+			meta: { auth: true } // FIXME: add auth validation
 		},
 		{
 			name: 'communityTimeline',
 			path: '/timelines/community',
 			component: FeedsPage,
-			props: { timeline: 'local' },
-			meta: { i18nTitle: 'timelines.local' }
+			props: { timeline: 'local' }
 		},
 		{
 			name: 'globalTimeline',
 			path: '/timelines/global',
 			component: FeedsPage,
-			props: { timeline: 'public' },
-			meta: { i18nTitle: 'timelines.public' } 
+			props: { timeline: 'public' }
 		},
 		{
 			name: 'tagTimeline',
@@ -65,6 +64,11 @@ const router = createRouter({
 			component: HelloWorld
 		},
 	]
+})
+
+router.afterEach(() => {
+	// Reset the page title everytime we navigate.
+	store.dispatch('setPageTitle', '')
 })
 
 export default router

@@ -31,6 +31,10 @@ export default {
 
 	created(){
 		this.tlInfo.tag = this.$props.tag
+	},
+
+	mounted(){
+		this.$store.dispatch('setPageTitle', '#'+this.$props.tag)
 	}
 }
 </script>

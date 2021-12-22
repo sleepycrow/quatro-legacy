@@ -62,6 +62,10 @@ export default {
 			this.tlId = 'public'
 			this.tlInfo.type = 'public'
 		}
+	},
+
+	mounted(){
+		this.$store.dispatch('setPageTitle', this.$t('timelines.'+this.tlId))
 	}
 }
 </script>
