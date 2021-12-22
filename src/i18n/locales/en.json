@@ -31,7 +31,7 @@
 
 	"statuses": {
 		"part_of_a_thread": "Part of a Thread",
-		"reposted_by": "Reposted by %s"
+		"reposted_by": "Reposted by"
 	},
 
 	"loading": "Loading...",
