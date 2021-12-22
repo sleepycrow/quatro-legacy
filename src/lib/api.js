@@ -1,6 +1,7 @@
 import * as axios from 'axios'
 
 const TIMELINE_ENDPOINT = timelineId => `/api/v1/timelines/${timelineId}`
+const TAG_TIMELINE_ENDPOINT = tag => `/api/v1/timelines/tag/${tag}`
 const INSTANCE_ENDPOINT = '/api/v1/instance'
 const NODEINFO_ENDPOINT = '/nodeinfo/2.0.json'
 
@@ -28,6 +29,7 @@ function parseLinkHeader(header){
 	var input_links = header.split(', ')
 	var output = {}
 
+	/* eslint-disable  no-useless-escape */
 	for(let linkStr of input_links){
 		let linkData = linkStr.match(/<([^>]+)>; ?rel="([^"]+)"/i)
 		if(linkData.length < 3) continue
@@ -45,6 +47,7 @@ function parseLinkHeader(header){
 		link.href = linkData[1]
 		output[linkData[2]] = link
 	}
+	/* eslint-enable  no-useless-escape */
 
 	return output
 }
@@ -58,14 +61,28 @@ function fetchJson(endpoint, params){
 
 
 // TODO: Document this function when we figure out how to fetch different types of timelines
-export function fetchTimeline(timelineId, params = {}){
-	var endpoint = TIMELINE_ENDPOINT(timelineId)+'?'
-		
+export function fetchTimeline({
+	type,
+	userId = null,
+	tag = null,
+	listId = null,
+}, params = {}){
+	var endpoint = null
+
+	// Set the correct endpoint
+	if(type === 'tag' && typeof(tag) === 'string')
+		endpoint = TAG_TIMELINE_ENDPOINT(tag)
+	else
+		endpoint = TIMELINE_ENDPOINT(type)
+	
+	// Add the params
+	endpoint += '?'
 	if(typeof(params) == "object"){
 		for(var key in params)
 			endpoint += `&${key}=${params[key]}`
 	}
-		
+	
+	// Fetch!
 	return fetchJson(endpoint)
 }
 
