@@ -1,5 +1,5 @@
 <script setup>
-import { htmlizeCustomEmoji, htmlSpecialChars } from '../../lib/utils'
+import { htmlizeCustomEmoji, htmlSpecialChars, getProfileUrl } from '../../lib/utils'
 import PreviewCard from '../PreviewCard/PreviewCard.vue'
 import FuzzyDate from '../FuzzyDate/FuzzyDate.vue'
 import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
@@ -10,31 +10,38 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 		<!-------------- Repost Info -------------->
 		<div v-if="activity.reblog !== null" class="card__note">
 			<span class="material-icons md-18">repeat</span>
-			<!-- TODO: When profiles are implemented, implement this -->
-			{{ $t('statuses.reposted_by') }} <router-link class="card-note__username" to="/" v-html="rebloggerDisplayName" />
+			{{ $t('statuses.reposted_by') }}
+			<router-link
+				class="card-note__username"
+				:to="getProfileUrl(activity.account)"
+				v-html="rebloggerDisplayName"
+			/>
 		</div>
 
 		<!-------------- The Actual Status -------------->
 		<div class="card__content">
 			<!-- Author Info -->
 			<div class="status-meta">
-				<img class="status-meta__avatar" :src="status.account.avatar" :alt="status.account.acct">
+				<router-link class="status-meta__avatar" :to="getProfileUrl(status.account)">
+					<img :src="status.account.avatar" :alt="status.account.acct">
+				</router-link>
 			
 				<div class="status-meta__info">
-					<!-- When no display name is set, mastodon makes `display_name` an empty string, while pleroma makes it equal to the username,
-						so we have to check both cases. Fair enough. -->
-					<template v-if="status.account.display_name !== '' && status.account.display_name !== status.account.acct">
-						<div class="status-meta__author">
-							<span class="author__name"><bdi v-html="authorDisplayName" /></span>
-							<span class="author__username">&nbsp;(@{{ status.account.acct }})</span>
-						</div>
-					</template>
+					<div class="status-meta__author">
+						<router-link :to="getProfileUrl(status.account)">
+							<span v-if="authorDisplayName !== null" class="author__name">
+								<bdi v-html="authorDisplayName" />
+							</span>
 
-					<template v-if="status.account.display_name === '' || status.account.display_name === status.account.acct">
-						<div class="status-meta__author">
-							<span class="author__username author__username--only">@{{ status.account.acct }}</span>
-						</div>
-					</template>
+							<span v-if="authorDisplayName !== null" class="author__username">
+								(@{{ status.account.acct }})
+							</span>
+
+							<span v-if="authorDisplayName === null" class="author__username author__username--only">
+								@{{ status.account.acct }}
+							</span>
+						</router-link>
+					</div>
 
 					<div class="status-meta__date">
 						<FuzzyDate :datetime="status.created_at" :autoupdate="60" />
@@ -119,10 +126,20 @@ export default {
 
 	computed: {
 		rebloggerDisplayName(){
-			return htmlizeCustomEmoji(htmlSpecialChars(this.activity.account.display_name), this.activity.account.emojis)
+			var display_name = this.activity.account.display_name
+			
+			// If no display name is set, use the reblogger's @ as their display name
+			if(this.activity.account.display_name === '' || this.activity.account.display_name === this.activity.account.acct)
+				display_name = `@${this.activity.account.acct}`
+
+			return htmlizeCustomEmoji(htmlSpecialChars(display_name), this.activity.account.emojis)
 		},
 
 		authorDisplayName(){
+			// When no display name is set, mastodon sets display_name to '', while Pleroma sets it to acct. why????
+			if(this.status.account.display_name === '' || this.status.account.display_name === this.status.account.acct)
+				return null
+			
 			return htmlizeCustomEmoji(htmlSpecialChars(this.status.account.display_name), this.status.account.emojis)
 		},
 
@@ -171,7 +188,7 @@ export default {
 
 			for(var mention of this.status.mentions){
 				if(mention.acct === subject || mention.username === subject){
-					var targetUrl = (mention.acct.includes('@') ? `/users/${mention.id}` : `/@${mention.acct}`)
+					var targetUrl = getProfileUrl(mention)
 
 					link.innerHTML = `@${mention.acct}`
 					link.title = mention.acct
@@ -225,7 +242,7 @@ export default {
 	margin: 16px 0;
 }
 
-.status-meta__avatar{
+.status-meta__avatar img{
 	width: 48px;
 	height: 48px;
 	max-width: 48px;
@@ -246,6 +263,15 @@ export default {
 
 .status-meta__info div{
 	margin: 4px 0;
+}
+
+.status-meta a{
+	color: inherit;
+	text-decoration: none;
+}
+
+.status-meta a:hover{
+	text-decoration: none;
 }
 
 .status-meta .author__name{

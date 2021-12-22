@@ -36,3 +36,13 @@ export function htmlizeCustomEmoji(text, emoji){
 
 	return text
 }
+
+
+/**
+ * Given a Mastodon API-style account object, returns a URL to their profile in Quatro-FE
+ * @param {Object} account - A Mastodon API-style "account" object
+ * @returns {string} A path to their profile
+ */
+export function getProfileUrl(account){
+	return (account.acct.includes('@') ? `/users/${account.id}` : `/@${account.acct}`)
+}
