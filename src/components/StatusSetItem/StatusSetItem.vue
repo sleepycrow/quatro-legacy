@@ -243,6 +243,7 @@ export default {
 }
 
 .status-meta__avatar img{
+	display: block;
 	width: 48px;
 	height: 48px;
 	max-width: 48px;
