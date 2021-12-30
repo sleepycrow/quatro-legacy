@@ -18,12 +18,13 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 		<StatusSetItem
 			:key="activity.id"
 			:activity="activity"
+			:highlighted="highlightFocus"
 		/>
 
 		<StatusSetItem
-			v-for="child in activity.children"
-			:key="child.id"
-			:activity="child"
+			v-for="descendant in activity.descendants"
+			:key="descendant.id"
+			:activity="descendant"
 		/>
 	</article>
 </template>
@@ -33,13 +34,14 @@ export default {
 	components: { StatusSetItem },
 
 	props: {
-		activity: { type: Object, required: true }
+		activity: { type: Object, required: true },
+		highlightFocus: { type: Boolean, default: false }
 	},
 
 	computed: {
 		isThreadPart(){
 			let topStatus = this.activity.reblog !== null ? this.activity.reblog : this.activity
-			topStatus = Array.isArray(topStatus.ancestors) ? topStatus.ancestors[0] : topStatus
+			topStatus = (Array.isArray(topStatus.ancestors) && topStatus.ancestors.length > 0) ? topStatus.ancestors[0] : topStatus
 			return typeof(topStatus.in_reply_to_id) === "string" && topStatus.in_reply_to_id !== ""
 		}
 	}

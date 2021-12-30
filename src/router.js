@@ -3,6 +3,7 @@ import store from "./store"
 
 import FeedsPage from "./components/FeedsPage/FeedsPage.vue"
 import TagTimelinePage from "./components/TagTimelinePage/TagTimelinePage.vue"
+import StatusPage from "./components/StatusPage/StatusPage.vue"
 import HelloWorld from "./components/HelloWorld/HelloWorld.vue"
 import TestPage from "./components/TestPage/TestPage.vue"
 
@@ -62,6 +63,15 @@ const router = createRouter({
 		{
 			path: '/helloworld',
 			component: HelloWorld
+		},
+
+
+		// ------ Idk ------ \\
+		{
+			name: 'status',
+			path: '/statuses/:statusId',
+			component: StatusPage,
+			props: true
 		},
 	]
 })

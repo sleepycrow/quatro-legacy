@@ -2,6 +2,8 @@ import * as axios from 'axios'
 
 const TIMELINE_ENDPOINT = timelineId => `/api/v1/timelines/${timelineId}`
 const TAG_TIMELINE_ENDPOINT = tag => `/api/v1/timelines/tag/${tag}`
+const STATUS_ENDPOINT = statusId => `/api/v1/statuses/${statusId}`
+const STATUS_CONTEXT_ENDPOINT = statusId => `/api/v1/statuses/${statusId}/context`
 const INSTANCE_ENDPOINT = '/api/v1/instance'
 const NODEINFO_ENDPOINT = '/nodeinfo/2.0.json'
 
@@ -102,4 +104,28 @@ export function fetchInstanceInfo(){
  */
 export function fetchNodeInfo(){
 	return fetchJson(NODEINFO_ENDPOINT)
+}
+
+
+/**
+ * Fetches a status and (optionally) it's context
+ * @param {String} statusId
+ * @param {Boolean} includeContext 
+ * @returns {Object}
+ */
+export async function fetchStatus(statusId, includeContext = false){
+	var promises = [ fetchJson(STATUS_ENDPOINT(statusId)) ]
+	if(includeContext) promises.push(fetchJson(STATUS_CONTEXT_ENDPOINT(statusId)))
+	var results = await Promise.all(promises)
+	
+	var status = results[0].data
+
+	if(includeContext){
+		var context = results[1].data
+		
+		status.ancestors = context.ancestors
+		status.descendants = context.descendants
+	}
+
+	return status
 }

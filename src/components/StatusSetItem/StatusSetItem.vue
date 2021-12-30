@@ -6,7 +6,11 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 </script>
 
 <template>
-	<section v-if="status" class="status">
+	<section
+		v-if="status"
+		class="status"
+		:class="(highlighted ? 'status--highlighted' : '')"
+	>
 		<!-------------- Repost Info -------------->
 		<div v-if="activity.reblog !== null" class="card__note">
 			<span class="material-icons md-18">repeat</span>
@@ -104,9 +108,9 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			</div>
 
 			<!-- DEBUG: just here for debugging -->
-			<a class="card__action" :href="status.url">
+			<router-link class="card__action" :to="'/statuses/'+status.id">
 				<span class="material-icons">arrow_forward</span>
-			</a>
+			</router-link>
 		</div>
 	</section>
 </template>
@@ -117,7 +121,8 @@ export default {
 	components: { PreviewCard, MediaAttachmentGrid, FuzzyDate },
 
 	props: {
-		activity: { type: Object, required: true }
+		activity: { type: Object, required: true },
+		highlighted: { type: Boolean, default: false }
 	},
 
 	data: () => ({
@@ -225,6 +230,14 @@ export default {
 </script>
 
 <style>
+.status{
+	overflow: auto;
+}
+
+.status--highlighted{
+	background-color: #EEE;
+}
+
 /* Post card elements */
 .status-title{
 	font-size: 1.5rem;
@@ -233,8 +246,8 @@ export default {
 }
 
 .status-meta{
-	width: 100%;
-	max-width: 100%;
+	width: calc(100% - var(--icon-button-size));
+	max-width: calc(100% - var(--icon-button-size));
 	display: flex;
 	text-align: left;
 	align-items: center;
@@ -294,6 +307,10 @@ export default {
 
 .status-content--hidden{
 	display: none;
+}
+
+.status--highlighted .status-text{
+	font-size: 1.33rem;
 }
 
 .status-text{

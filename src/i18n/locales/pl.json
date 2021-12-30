@@ -31,7 +31,8 @@
 
 	"statuses": {
 		"part_of_a_thread": "Część dłuższego wątku",
-		"reposted_by": "Powtórzone przez"
+		"reposted_by": "Powtórzone przez",
+		"status_page_title": "Status użytkownika {0}"
 	},
 
 	"loading": "Ładowanie...",

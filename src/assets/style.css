@@ -357,14 +357,10 @@ blockquote{
 	position: absolute;
 	top: 0;
 	right: 0;
-	background-color: #FFF;
-	box-shadow: -8px 0 8px #FFF;
 }
 
 .card__menu--mini{
 	position: absolute;
 	top: 12px;
 	right: 12px;
-	background-color: #FFF;
-	box-shadow: -8px 0 8px #FFF;
 }
