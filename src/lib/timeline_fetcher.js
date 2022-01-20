@@ -91,13 +91,17 @@ export default class TimelineFetcher {
 	}
 
 	async checkForNewer(){
-		var requestParams = Object.assign({}, this.cache.state.prev, { limit: 1 })
+		var requestParams = Object.assign({}, this.cache.state.prev)
 		var resp = await api.fetchTimeline(this.tlInfo, requestParams)
 		if(resp.data.error || !Array.isArray(resp.data)) throw resp.data.error //TODO: Consider making a custom class for these kinds of errors???
 
-		if(resp.data.length > 0) this.store.commit('markTimelineAsStale', this.tlId)
+		if(resp.data.length > 0) this.store.commit('markTimelineAsStale', { tlId: this.tlId, amount: resp.data.length })
 		
-		return this.cache.state.stale
+		return resp.data.length
+	}
+
+	clearTimeline(){
+		this.store.commit('clearTimeline', this.tlId)
 	}
 
 }

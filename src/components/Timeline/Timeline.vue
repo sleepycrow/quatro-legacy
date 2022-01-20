@@ -1,4 +1,5 @@
 <script setup>
+import { PAGE_SIZE } from '../../lib/api'
 import StatusSet from '../StatusSet/StatusSet.vue'
 import TimelineFetcher from '../../lib/timeline_fetcher'
 </script>
@@ -50,7 +51,7 @@ export default {
 		},
 
 		isStale(){
-			return this.fetcher.state.stale
+			return this.fetcher.state.staleBy > 0
 		},
 
 		statuses(){
@@ -79,7 +80,16 @@ export default {
 		},
 
 		fetchPrev(){
-			this.fetcher.fetchPrev()
+			var promise;
+
+			if(this.fetcher.state.staleBy >= PAGE_SIZE){
+				this.fetcher.clearTimeline()
+				promise = this.fetcher.fetchStatuses({}, { setNext: true, setPrev: true })
+			}else{
+				promise = this.fetcher.fetchPrev()
+			}
+			
+			promise
 				.then(() => {
 					window.scroll({ top: 0, behavior: 'smooth' })
 					this.fetcher.checkForNewer()

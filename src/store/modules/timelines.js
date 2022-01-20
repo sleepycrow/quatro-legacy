@@ -29,14 +29,14 @@ function generateTlInfo(params = {}){
 // tlState describes a timeline's state -- the statuses we'd fetched, whether
 // or not it's loading, etc...
 function generateTlState(){
-	return {
+	return Object.assign({
 		loading: false,
-		stale: false,
+		staleBy: 0,
 		statuses: [],
 		grouped: [],
 		next: {}, // The query params for the next page. These are obtained automatically from the HTTP "Link" header in API responses, not written by hand!
 		prev: {} // As above.
-	}
+	}, {})
 }
 
 const state = () => ({
@@ -90,16 +90,21 @@ const mutations = {
 		state.state[tlId].loading = false
 	},
 
-	markTimelineAsStale(state, tlId){
-		state.state[tlId].stale = true
+	markTimelineAsStale(state, { tlId, amount }){
+		state.state[tlId].staleBy = amount
 	},
 
 	unmarkTimelineAsStale(state, tlId){
-		state.state[tlId].stale = false
+		state.state[tlId].staleBy = 0
 	},
 
 	clearTimeline(state, tlId){
-		state.state[tlId] = generateTlState()
+		// if I just do `tl = generateTlState` vue reactivity seems to break completely???
+		var newTl = generateTlState()
+		var tl = state.state[tlId]
+
+		for(var i in newTl)
+			tl[i] = newTl[i]
 	},
 
 	appendStatuses(state, { tlId, statuses }){

@@ -1,5 +1,6 @@
 import * as axios from 'axios'
 
+export const PAGE_SIZE = 20
 const TIMELINE_ENDPOINT = timelineId => `/api/v1/timelines/${timelineId}`
 const TAG_TIMELINE_ENDPOINT = tag => `/api/v1/timelines/tag/${tag}`
 const STATUS_ENDPOINT = statusId => `/api/v1/statuses/${statusId}`
