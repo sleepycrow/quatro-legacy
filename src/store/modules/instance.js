@@ -1,3 +1,5 @@
+import { fetchInstanceInfo, fetchNodeInfo } from '../../lib/api'
+
 // Initial state
 const state = () => ({
 	// NodeInfo/Instance
@@ -16,7 +18,20 @@ const mutations = {
 	}
 }
 
-const actions = {}
+const actions = {
+	async fetchInstanceInfo({ commit }){
+		var info = await Promise.all([ fetchInstanceInfo(), fetchNodeInfo() ])
+		var instanceInfo = info[0].data 
+		var nodeInfo = info[1].data
+
+		commit('setInstanceValue', { key: 'nodeName', value: nodeInfo.metadata.nodeName })
+		commit('setInstanceValue', { key: 'nodeDescription', value: nodeInfo.metadata.nodeDescription })
+		commit('setInstanceValue', { key: 'openRegistrations', value: nodeInfo.metadata.openRegistrations })
+		commit('setInstanceValue', { key: 'maxStatusLength', value: instanceInfo.max_toot_chars })
+
+		return
+	}
+}
 
 export default {
 	state,

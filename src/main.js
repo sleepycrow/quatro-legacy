@@ -1,6 +1,5 @@
 import * as Vue from 'vue'
 import * as I18n from './i18n'
-import { fetchInstanceInfo, fetchNodeInfo } from './lib/api'
 
 import App from './App.vue'
 import router from './router.js'
@@ -14,7 +13,7 @@ I18n.setLanguage(i18n, locale)
 var app
 
 // Set up app
-prepareForApp()
+store.dispatch('fetchInstanceInfo')
 	.then(() => {
 		app = Vue.createApp(App)
 
@@ -24,16 +23,3 @@ prepareForApp()
 
 		app.mount('#app')
 	})
-
-// --- that's it! below's just the nitty-gritty ---
-
-async function prepareForApp(){
-	var info = await Promise.all([ fetchInstanceInfo(), fetchNodeInfo() ])
-	var instanceInfo = info[0].data 
-	var nodeInfo = info[1].data
-
-	store.commit('setInstanceValue', { key: 'nodeName', value: nodeInfo.metadata.nodeName })
-	store.commit('setInstanceValue', { key: 'nodeDescription', value: nodeInfo.metadata.nodeDescription })
-	store.commit('setInstanceValue', { key: 'openRegistrations', value: nodeInfo.metadata.openRegistrations })
-	store.commit('setInstanceValue', { key: 'maxStatusLength', value: instanceInfo.max_toot_chars })
-}
