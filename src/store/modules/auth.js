@@ -27,10 +27,10 @@ const mutations = {
 }
 
 const actions = {
-	async attemptTokenRecovery({ dispatch }){
+	attemptTokenRecovery({ dispatch }){
 		var token = window.localStorage.getItem('authToken')
 		if(token !== null && token.length > 0) 
-			dispatch('verifyCredentials', token)
+			return dispatch('verifyCredentials', token)
 	},
 
 	async loginUser({ dispatch }, { username, password }){
