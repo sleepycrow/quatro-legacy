@@ -13,7 +13,10 @@ I18n.setLanguage(i18n, locale)
 var app
 
 // Set up app
-store.dispatch('fetchInstanceInfo')
+Promise.all([
+	store.dispatch('fetchInstanceInfo'),
+	store.dispatch('attemptTokenRecovery')
+])
 	.then(() => {
 		app = Vue.createApp(App)
 

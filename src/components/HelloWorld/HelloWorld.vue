@@ -1,20 +1,16 @@
 <script setup>
 import { ref } from 'vue'
 
-defineProps({
-	msg: String
-})
-
 const count = ref(0)
 </script>
 
 <template>
 	<div class="page-content">
 		<div style="text-align: center">
-			<img src="../../assets/logo.png" alt="vue" />
+			<img src="../../assets/logo.png" alt="vue">
 		</div>
 
-		<h1>{{ msg }}</h1>
+		<h1>Hello, World!</h1>
 
 		<p>
 			Recommended IDE setup:
@@ -32,6 +28,21 @@ const count = ref(0)
 		</p>
 
 		<button type="button" @click="count++">count is: {{ count }}</button>
+
+		<form @submit="login">
+			<h3>Login</h3>
+
+			<input ref="usr" type="text" placeholder="Username"><br>
+			<input ref="pwd" type="password" placeholder="Password"><br>
+			<button>Log in</button>
+		</form>
+
+		<form @submit="logout">
+			<h3>Logout</h3>
+
+			<button>Log out</button>
+		</form>
+
 		<p>
 			Edit
 			<code>components/HelloWorld.vue</code> to test hot module replacement.
@@ -40,8 +51,38 @@ const count = ref(0)
 	</div>
 </template>
 
+<script>
+export default {
+	methods: {
+		login(e){
+			e.preventDefault()
+			this.$store.dispatch('loginUser', { username: this.$refs.usr.value, password: this.$refs.pwd.value })
+
+			this.$refs.usr.value = ''
+			this.$refs.pwd.value = ''
+		},
+
+		logout(e){
+			e.preventDefault()
+			this.$store.dispatch('logoutUser')
+		}
+	}
+}
+</script>
+
 <style scoped>
 a {
 	color: #42b983;
+}
+
+form{
+	border: 1px solid #000;
+	padding: 8px;
+	margin: 8px 0;
+}
+
+form input,
+form button{
+	margin: 4px 0;
 }
 </style>

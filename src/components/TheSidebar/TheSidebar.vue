@@ -2,18 +2,23 @@
 	<div class="sidebar">
 		<!-------------- User ID -------------->
 		<section class="user-section">
-			<div class="sidebar-id">
+			<!-- DEBUG: the v-if is a temporary thing, in the finished version we will likely want to switch layouts depending on login state, like on misskey -->
+			<div v-if="$store.state.auth.loggedIn" class="sidebar-id"> 
 				<div class="sidebar-id__avatar">
-					<img src="../../assets/avatar.jpg" alt="a sleepy crow">
+					<img
+						:src="$store.state.auth.userInfo.avatar"
+						:alt="$store.state.auth.userInfo.display_name"
+						:title="$store.state.auth.userInfo.display_name"
+					>
 				</div>
 
 				<div class="sidebar-id__info">
-					<div class="sidebar-id__name">a crow!!</div>
-					<div class="sidebar-id__username">@crow</div>
+					<div class="sidebar-id__name">{{ $store.state.auth.userInfo.display_name }}</div>
+					<div class="sidebar-id__username">@{{ $store.state.auth.userInfo.username }}</div>
 				</div>
 
 				<div class="sidebar-id__btn">
-					<button class="btn icon-btn">
+					<button class="btn icon-btn" @click="$store.dispatch('fetchUserInfo')">
 						<span class="material-icons">arrow_drop_down</span>
 					</button>
 				</div>

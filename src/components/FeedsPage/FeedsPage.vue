@@ -38,9 +38,7 @@ export default {
 
 		tlInfo: {
 			type: 'public',
-			params: {
-				local: false
-			}
+			params: {}
 		}
 	}),
 
@@ -60,6 +58,7 @@ export default {
 		case 'public':
 		default:
 			this.tlId = 'public'
+			this.tlInfo.params.local = false
 			this.tlInfo.type = 'public'
 		}
 	},
