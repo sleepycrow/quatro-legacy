@@ -67,7 +67,8 @@
 
 		<!-------------- Footer -------------->
 		<footer>
-			<!-- content goes here -->
+			<!-- TODO: make this take the user to an instance info page, like in the old misskey layout -->
+			<img src="../../assets/logo.png" :alt="$store.state.instance.nodeName" :title="$store.state.instance.nodeName">
 		</footer>
 	</div>
 </template>
@@ -91,13 +92,19 @@ export default {
 	height: 100vh;
 
 	display: grid;
-	grid-template-rows: 5rem auto 150px;
+	grid-template-rows: 5rem auto calc(var(--sidebar-logo-height) + 10px);
 	overflow: hidden auto;
 
 	background-color: #347FC4;
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.75);
 
 	color: #FFF;
+}
+
+.sidebar footer img{
+	width: 100%;
+	height: var(--sidebar-logo-height);
+	object-fit: contain;
 }
 
 .sidebar nav ul{
