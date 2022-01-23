@@ -3,13 +3,14 @@
 	<p v-if="sensitive" style="color: red; text-align: center; font-weight: bold;">sensitive media!!</p>
 
 	<div class="status__attachments" :class="attachments.length > 1 ? 'attachment-grid' : 'single-attachment'">
-		<a v-for="attachment in attachments" :key="attachment.id" :href="attachment.remote_url ? attachment.remote_url : attachment.text_url">
-			<img
+		<template v-for="attachment in attachments" :key="attachment.id">
+			<a
 				v-if="attachment.type === 'image'"
-				:src="attachment.preview_url"
-				:alt="attachment.description"
-				:title="attachment.description"
+				:href="attachment.remote_url ? attachment.remote_url : attachment.text_url"
+				target="_blank"
 			>
+				<img :src="attachment.preview_url" :alt="attachment.description" :title="attachment.description">
+			</a>
 
 			<video
 				v-if="attachment.type === 'video'"
@@ -27,7 +28,7 @@
 			>
 				<p>no audio</p>
 			</audio>
-		</a>
+		</template>
 	</div>
 </template>
 
@@ -42,6 +43,10 @@ export default {
 </script>
 
 <style>
+.status__attachments{
+	margin-top: 1rem;
+}
+
 /* Media Attachment Grid */
 .attachment-grid{
 	display: flex;
@@ -75,7 +80,7 @@ export default {
 
 .single-attachment img{
 	width: 100%;
-	max-height: 400px;
+	max-height: 80vh;
 	object-fit: cover;
 	height: auto;
 }
@@ -92,11 +97,7 @@ export default {
 }
 
 .status__attachments audio{
-	background-color: green;
-	/*
-	The green is just a placeholder.
-	If we want to keep/build off of this instead of starting from scratch, we should give
-	audio elements some kind of background image.
-	*/
+	background: url('../../assets/audio.png') #000 no-repeat center center;
+	background-size: contain;
 }
 </style>
