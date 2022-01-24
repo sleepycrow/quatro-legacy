@@ -92,7 +92,7 @@ export default {
 	height: 100vh;
 
 	display: grid;
-	grid-template-rows: 5rem auto calc(var(--sidebar-logo-height) + 10px);
+	grid-template-rows: 5rem auto calc(var(--sidebar-logo-height) + 32px);
 	overflow: hidden auto;
 
 	background-color: #347FC4;
@@ -101,10 +101,14 @@ export default {
 	color: #FFF;
 }
 
+.sidebar footer{
+	padding: 16px 0;
+	text-align: center;
+}
+
 .sidebar footer img{
-	width: 100%;
 	height: var(--sidebar-logo-height);
-	object-fit: contain;
+	width: auto;
 }
 
 .sidebar nav ul{

@@ -4,4 +4,4 @@ A (work-in-progress!!) single-column Pleroma frontend built with Vue 3. It aims 
 
 **It's still very heavily under development. Nothing is final, everything is broken :p**
 
-![Screenshot](https://i.postimg.cc/j2z5TmPz/Zrzut-ekranu-z-2022-01-23-15-10-30.png)
+![Screenshot](https://i.postimg.cc/XvsPn8kz/Zrzut-ekranu-z-2022-01-23-21-33-14.png)
