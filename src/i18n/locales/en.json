@@ -4,7 +4,8 @@
 		"search": "Search",
 		"bookmarks": "Bookmarks",
 		"chats": "Chats",
-		"notifications": "Notifications"
+		"notifications": "Notifications",
+		"login": "Log in"
 	},
 
 	"timelines": {

@@ -1,18 +1,22 @@
 <script setup>
-import TheSidebar from './components/TheSidebar/TheSidebar.vue'
+import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout.vue"
+import BlankLayout from "./layouts/BlankLayout/BlankLayout.vue"
 </script>
 
 <template>
-	<TheSidebar />
-
-	<div class="page">
+	<component :is="layout">
 		<router-view :key="$route.fullPath" />
-	</div>
+	</component>
 </template>
 
 <script>
 export default {
-	components: { TheSidebar }
+	components: { DefaultLayout, BlankLayout },
+	computed: {
+		layout(){
+			return (this.$route.meta.layout || 'DefaultLayout')
+		}
+	}
 }
 </script>
 

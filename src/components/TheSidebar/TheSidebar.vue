@@ -2,8 +2,7 @@
 	<div class="sidebar">
 		<!-------------- User ID -------------->
 		<section class="user-section">
-			<!-- DEBUG: the v-if is a temporary thing, in the finished version we will likely want to switch layouts depending on login state, like on misskey -->
-			<div v-if="$store.state.auth.loggedIn" class="sidebar-id"> 
+			<div class="sidebar-id"> 
 				<div class="sidebar-id__avatar">
 					<img
 						:src="$store.state.auth.userInfo.avatar"
@@ -27,7 +26,7 @@
 
 		<!-------------- Navigation -------------->
 		<nav>
-			<ul>
+			<ul class="sidebar__nav">
 				<li>
 					<router-link class="nav__link" :class="(isOnTimelinePage ? 'nav__link--active' : '')" to="/">
 						<span class="nav__icon material-icons">home</span>
@@ -84,101 +83,7 @@ export default {
 </script>
 
 <style>
-.sidebar{
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: var(--sidebar-width);
-	height: 100vh;
-
-	display: grid;
-	grid-template-rows: 5rem auto calc(var(--sidebar-logo-height) + 32px);
-	overflow: hidden auto;
-
-	background-color: #347FC4;
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.75);
-
-	color: #FFF;
-}
-
-.sidebar footer{
-	padding: 16px 0;
-	text-align: center;
-}
-
-.sidebar footer img{
-	height: var(--sidebar-logo-height);
-	width: auto;
-}
-
-.sidebar nav ul{
-	display: block;
-	width: 100%;
-
-	padding: 0;
-	list-style-type: none;
-}
-
-.sidebar nav li{
-	display: block;
-}
-
-.sidebar nav li .nav__link{
-	display: block;
-	cursor: pointer;
-	text-decoration: none;
-	width: 100%;
-	color: #FFF;
-	overflow: hidden;
-	padding: 4px 0;
-	margin: 0;
-	background-color: transparent;
-	transition: background-color 0.25s;
-}
-
-.sidebar nav li .nav__link:hover{
-	background-color: rgba(255, 255, 255, 0.25);
-}
-
-.sidebar nav li .nav__link--active{
-	background-color: transparent;
-}
-
-.sidebar .nav__link--active .nav__icon{
-	color: #FFF;
-}
-
-.sidebar .nav__link--active .nav__label{
-	font-weight: bold;
-}
-
-.sidebar nav .nav__icon{
-	text-align: center;
-	width: 48px;
-	line-height: 48px;
-	color: #CCC;
-}
-
-.sidebar nav .nav__avatar{
-	margin: 8px;
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	line-height: 48px;
-	vertical-align: middle;
-}
-
-.sidebar nav .nav__label{
-	font-weight: normal;
-	line-height: 48px;
-}
-
-.sidebar .separator{
-	width: 100%;
-	padding: 0;
-	margin: 4px 0;
-	border-bottom: 1px solid #CCC;
-}
+@import 'sidebar.css';
 
 .sidebar-id{
 	height: 4rem;
