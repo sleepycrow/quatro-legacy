@@ -27,10 +27,15 @@ const mutations = {
 }
 
 const actions = {
-	attemptTokenRecovery({ dispatch }){
+	async attemptTokenRecovery({ dispatch }){
 		var token = window.localStorage.getItem('authToken')
-		if(token !== null && token.length > 0) 
-			return dispatch('verifyCredentials', token)
+		if(token !== null && token.length > 0){
+			try{
+				await dispatch('verifyCredentials', token)
+			}catch(e){
+				window.localStorage.removeItem('authToken')
+			}
+		}
 	},
 
 	async loginUser({ dispatch }, { username, password }){
@@ -48,6 +53,7 @@ const actions = {
 		oauthRevokeToken(state.token) // we don't care too much if it succeeds or not
 		commit('setLoggedIn', false)
 		commit('unsetAuthToken')
+		window.localStorage.removeItem('authToken')
 	},
 
 	async verifyCredentials({ commit }, token){
@@ -60,9 +66,7 @@ const actions = {
 			commit('setUserInfo', userInfo.data)
 			commit('setLoggedIn', true)
 		}catch(e){
-			//FIXME: ADD A PROPER ERROR MESSAGE HERE
-			window.alert('eror eror o cholercia')
-			console.error(e.response.data)
+			throw e
 		}
 	}
 }
