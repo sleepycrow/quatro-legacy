@@ -10,19 +10,11 @@ const locale = (navigator.language || 'en').split('-')[0]
 const i18n = I18n.createI18n()
 I18n.setLanguage(i18n, locale)
 
-var app
-
 // Set up app
-Promise.all([
-	store.dispatch('fetchInstanceInfo'),
-	store.dispatch('attemptTokenRecovery')
-])
-	.then(() => {
-		app = Vue.createApp(App)
+var app = Vue.createApp(App)
 
-		app.use(i18n)
-		app.use(router)
-		app.use(store)
+app.use(i18n)
+app.use(router)
+app.use(store)
 
-		app.mount('#app')
-	})
+app.mount('#app')
