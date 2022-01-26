@@ -1,4 +1,4 @@
-import * as axios from 'axios'
+import axios from 'axios'
 import store from '../store/'
 
 export const PAGE_SIZE = 20
