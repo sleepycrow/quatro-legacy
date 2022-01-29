@@ -4,10 +4,14 @@ const state = () => ({
 })
 
 const mutations = {
-	setInterfaceValue(state, { key, value }){
+	setInterfaceValues(state, values){
 		/* eslint-disable  no-prototype-builtins */
-		if(state.hasOwnProperty(key) && typeof value !== 'undefined')
-			state[key] = value
+		for(var key in values){
+			let val = values[key]
+
+			if(state.hasOwnProperty(key) && typeof val !== 'undefined')
+				state[key] = val
+		}
 		/* eslint-enable  no-prototype-builtins */
 	}
 }
@@ -16,7 +20,7 @@ const actions = {
 	setPageTitle(ctx, title){
 		if(typeof(title) !== 'string') title = ''
 
-		ctx.commit('setInterfaceValue', { key: 'pageTitle', value: title })
+		ctx.commit('setInterfaceValues', { 'pageTitle': title })
 
 		if(ctx.rootState.instance){
 			if(title.length > 0) title += ' • '
