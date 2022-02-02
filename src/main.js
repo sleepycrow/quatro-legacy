@@ -1,5 +1,7 @@
 import * as Vue from 'vue'
 import * as I18n from './i18n'
+import 'material-icons/iconfont/filled.css';
+import 'material-icons/iconfont/outlined.css';
 
 import App from './App.vue'
 import router from './router.js'
