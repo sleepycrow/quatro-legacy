@@ -181,8 +181,7 @@ export default {
 	},
 
 	mounted(){
-		if(this.status.mentions.length > 0 || this.status.tags.length > 0)
-			this.processLinks()
+		this.processLinks()
 
 		document.addEventListener('click', this.dropdownDocumentClickHandler)
 	},
