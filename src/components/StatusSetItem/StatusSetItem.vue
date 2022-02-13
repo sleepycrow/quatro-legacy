@@ -78,11 +78,28 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			</div>
 				
 			<!-- Status Menu -->
-			<div class="card__menu">
-				<!-- DEBUG: currently used for debugging, make it a dropdown -->
-				<button class="btn icon-btn" @click="logActivityData">
+			<div class="dropdown dropdown--right card__menu" ref="dropdownContainer">
+				<button class="btn icon-btn" @click="toggleDropdown">
 					<span class="material-icons">more_horiz</span>
 				</button>
+
+				<ul class="dropdown__content" ref="dropdownContent">
+					<li>
+						<a :href="status.url" target="_blank">External source</a>
+					</li>
+
+					<li>
+						<a @click="copyLinkToStatus">Copy link to status</a>
+					</li>
+
+					<li>
+						<a :href="status.url" target="_blank">Report</a>
+					</li>
+
+					<li>
+						<a @click="logActivityData">Log activity data</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 		
@@ -107,7 +124,6 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 				<span class="material-icons">bookmark_border</span>
 			</div>
 
-			<!-- DEBUG: just here for debugging -->
 			<router-link class="card__action" :to="'/statuses/'+status.id">
 				<span class="material-icons">arrow_forward</span>
 			</router-link>
@@ -167,6 +183,12 @@ export default {
 	mounted(){
 		if(this.status.mentions.length > 0 || this.status.tags.length > 0)
 			this.processLinks()
+
+		document.addEventListener('click', this.dropdownDocumentClickHandler)
+	},
+
+	unmounted(){
+		document.removeEventListener('click', this.dropdownDocumentClickHandler)
 	},
 
 	methods: {
@@ -178,6 +200,12 @@ export default {
 		logActivityData(){
 			console.log(Object.assign({}, this.activity)) // copy the activity into a new object to avoid logging a Proxy object
 			window.alert("hey debugger, we heard you liek status data so we logged the status data in your console.\nno problem :>")
+		},
+
+		copyLinkToStatus(){
+			navigator.clipboard.writeText(this.status.uri)
+			window.alert('done. now replace me with a toast notification or something')
+			// TODO: Add a toast notification here, so the user sees something happened
 		},
 
 		onLocalizedLinkClick(targetUrl, e){
@@ -224,14 +252,38 @@ export default {
 				else
 					link.target = '_blank'
 			}
-		}
+		},
+
+		// NOTE: Yes, I know this is duplicate code. Yes, ideally this would be in some common file.
+		// I'm not sure what's the best way to go about spinning it off into some common file rn,
+		// accounting for the possibility of an element having multiple dropdowns.
+		// If you have any ideas, open an issue to suggest them!!
+		toggleDropdown(makeVisible = null){
+			var visibleClass = 'dropdown__content--visible'
+
+			if(makeVisible === null)
+				makeVisible = !this.$refs.dropdownContent.classList.contains(visibleClass)
+			
+			if(makeVisible)
+				this.$refs.dropdownContent.classList.add(visibleClass)
+			else
+				this.$refs.dropdownContent.classList.remove(visibleClass)
+		},
+		
+		// Closes the dropdown when appropriate
+		dropdownDocumentClickHandler(e){
+			if(e.target.tagName !== 'A' && this.$refs.dropdownContainer.contains(e.target))
+				return
+			
+			this.toggleDropdown(false)
+		},
 	}
 }
 </script>
 
 <style>
 .status{
-	overflow: auto;
+	padding: 1px 0 0 0; /* holy fuck I hate css. this is here to stop collapsing margins within this element */
 }
 
 .status--highlighted{
@@ -252,7 +304,7 @@ export default {
 	text-align: left;
 	align-items: center;
 	overflow: hidden;
-	margin: 16px 0;
+	margin: 0 0 16px 0; /* this sucks */
 }
 
 .status-meta__avatar img{
@@ -340,5 +392,9 @@ export default {
 .card-note__username{
 	font-weight: bold;
 	color: inherit;
+}
+
+.status .dropdown__content{
+	width: 200px;
 }
 </style>

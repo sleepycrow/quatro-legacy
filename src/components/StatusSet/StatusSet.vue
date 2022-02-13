@@ -49,6 +49,10 @@ export default {
 </script>
 
 <style>
+.status-set{
+	overflow: visible; /* So that the context menus work */
+}
+
 .status-set .status{
 	border-bottom: 1px solid #999;
 }
