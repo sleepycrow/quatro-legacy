@@ -2,13 +2,13 @@
 	<header class="flex-header">
 		<div class="flex-header__title">
 			<!-- Feed Selector Dropdown -->
-			<div v-if="shouldHaveDropdown" ref="dropdownContainer" class="flex-header__dropdown">
+			<div v-if="shouldHaveDropdown" ref="dropdownContainer" class="dropdown">
 				<button class="flex-header__dropdown__title" @click="toggleFeedDropdown()">
 					{{ $t('timelines.'+selectedTl.id) }}
 					<span class="material-icons">arrow_drop_down</span>
 				</button>
 
-				<ul ref="selectorDropdown" class="flex-header__dropdown__content">
+				<ul ref="selectorDropdown" class="dropdown__content">
 					<li v-for="tl in timelines" :key="tl.id">
 						<router-link :to="tl.target">
 							{{ $t('timelines.'+tl.id) }}
@@ -71,7 +71,7 @@ export default {
 
 	methods: {
 		toggleFeedDropdown(makeVisible = null){
-			var visibleClass = 'flex-header__dropdown__content--visible'
+			var visibleClass = 'dropdown__content--visible'
 
 			if(makeVisible === null)
 				makeVisible = !this.$refs.selectorDropdown.classList.contains(visibleClass)
