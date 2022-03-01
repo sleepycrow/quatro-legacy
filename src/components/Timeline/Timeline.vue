@@ -120,6 +120,11 @@ export default {
 	top: 8px;
 	z-index: 10;
 	text-align: center;
+	pointer-events: none;
+}
+
+.load-new-container button{
+	pointer-events: auto;
 }
 
 .load-more-container{
