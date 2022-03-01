@@ -6,6 +6,7 @@ import TagTimelinePage from "./components/TagTimelinePage/TagTimelinePage.vue"
 import StatusPage from "./components/StatusPage/StatusPage.vue"
 import HelloWorld from "./components/HelloWorld/HelloWorld.vue"
 import TestPage from "./components/TestPage/TestPage.vue"
+import NotificationsPage from "./components/NotificationsPage/NotificationsPage.vue"
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -72,6 +73,12 @@ const router = createRouter({
 			path: '/statuses/:statusId',
 			component: StatusPage,
 			props: true
+		},
+
+		{
+			name: 'notifications',
+			path: '/notifications',
+			component: NotificationsPage
 		},
 	]
 })

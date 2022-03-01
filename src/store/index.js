@@ -4,6 +4,7 @@ import timelinesModule from './modules/timelines'
 import instanceModule from './modules/instance'
 import interfaceModule from './modules/interface'
 import authModule from './modules/auth'
+import notifModule from './modules/notifications'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -16,5 +17,6 @@ export default createStore({
 		instance: instanceModule,
 		interface: interfaceModule,
 		auth: authModule,
+		notifs: notifModule,
 	}
 }) 

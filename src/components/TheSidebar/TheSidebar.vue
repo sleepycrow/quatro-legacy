@@ -56,9 +56,10 @@
 				</li>
 
 				<li>
-					<router-link class="nav__link" active-class="nav__link--active" to="/helloworld">
+					<router-link class="nav__link" active-class="nav__link--active" to="/notifications">
 						<span class="nav__icon material-icons">notifications</span>
 						<span class="nav__label">{{ $t('menu.notifications') }}</span>
+						<sup v-if="$store.state.notifs.unread > 0" class="nav__label-badge">{{ $store.state.notifs.unread }}</sup>
 					</router-link>
 				</li>
 			</ul>

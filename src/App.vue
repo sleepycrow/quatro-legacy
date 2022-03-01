@@ -7,7 +7,7 @@ import LoadingScreen from './components/LoadingScreen/LoadingScreen.vue'
 <template>
 	<LoadingScreen v-if="!appLoaded" />
 
-	<component v-if="appLoaded" :is="layout">
+	<component :is="layout" v-if="appLoaded">
 		<router-view :key="$route.fullPath" />
 	</component>
 </template>
@@ -17,12 +17,33 @@ export default {
 	components: { LoadingScreen, DefaultLayout, BlankLayout },
 
 	data: () => ({
-		appLoaded: false
+		appLoaded: false,
+		notifInterval: null
 	}),
 
 	computed: {
 		layout(){
 			return (this.$route.meta.layout || 'DefaultLayout')
+		}
+	},
+
+	watch: {
+		// Start fetching notifications after login
+		'$store.state.auth.loggedIn': async function(isLoggedIn){
+			if(isLoggedIn){
+				// do not play the "new notifications" sound when fetching notifications for the first time lol
+				this.$store.commit('setNotifsValues', { muted: true })
+				await this.$store.dispatch('fetchNotifs')
+				await new Promise((resolve) => { window.setTimeout(resolve, 3000) }) // wait 3 secs, just for safety's sake
+				this.$store.commit('setNotifsValues', { muted: false })
+
+				this.notifInterval = window.setInterval(this.attemptFetchNewNotifs.bind(this), 10000)
+			}else{
+				this.$store.commit('clearNotifs')
+
+				window.clearInterval(this.notifInterval)
+				this.notifInterval = null
+			}
 		}
 	},
 
@@ -34,6 +55,20 @@ export default {
 			.then(() => {
 				this.appLoaded = true
 			})
+	},
+
+	methods: {
+		attemptFetchNewNotifs(){
+			this.$store.dispatch('fetchPrevNotifs')
+				.catch((e) => {
+					if(e.response.status === 403){
+						console.error('The user token seems to be invalid. Cancelling notification polling to save on bandwidth.')
+
+						window.clearInterval(this.notifInterval)
+						this.notifInterval = null
+					}
+				})
+		}
 	}
 }
 </script>

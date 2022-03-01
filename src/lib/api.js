@@ -9,6 +9,7 @@ const TIMELINE_ENDPOINT = timelineId => `/api/v1/timelines/${timelineId}`
 const TAG_TIMELINE_ENDPOINT = tag => `/api/v1/timelines/tag/${tag}`
 const STATUS_ENDPOINT = statusId => `/api/v1/statuses/${statusId}`
 const STATUS_CONTEXT_ENDPOINT = statusId => `/api/v1/statuses/${statusId}/context`
+const NOTIFICATIONS_ENDPOINT = '/api/v1/notifications'
 const OAUTH_TOKEN_ENDPOINT = '/oauth/token'
 const OAUTH_REVOKE_ENDPOINT = '/oauth/revoke'
 const VERIFY_CREDENTIALS_ENDPOINT = '/api/v1/accounts/verify_credentials'
@@ -98,6 +99,26 @@ export function fetchTimeline({
 		endpoint = `/api/v1/accounts/${userId}/statuses`
 	else
 		endpoint = TIMELINE_ENDPOINT(type)
+	
+	// Add the params
+	endpoint += '?'
+	if(typeof(params) == "object"){
+		for(var key in params)
+			endpoint += `&${key}=${params[key]}`
+	}
+	
+	// Go fetch!
+	return fetchJson(endpoint)
+}
+
+
+/**
+ * Fetches notifications (if you're logged in at request time lmaoo)
+ * @param {Object} params - self-explainatory 
+ * @returns go read the pleroma docs, god damn. an array of objects.
+ */
+export function fetchNotifications(params = {}){
+	var endpoint = NOTIFICATIONS_ENDPOINT
 	
 	// Add the params
 	endpoint += '?'
