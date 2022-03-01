@@ -18,8 +18,9 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			<router-link
 				class="card-note__username"
 				:to="getProfileUrl(activity.account)"
-				v-html="rebloggerDisplayName"
-			/>
+			>
+				<bdi v-html="rebloggerDisplayName" />
+			</router-link>
 		</div>
 
 		<!-------------- The Actual Status -------------->
@@ -78,12 +79,12 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			</div>
 				
 			<!-- Status Menu -->
-			<div class="dropdown dropdown--right card__menu" ref="dropdownContainer">
+			<div ref="dropdownContainer" class="dropdown dropdown--right card__menu">
 				<button class="btn icon-btn" @click="toggleDropdown">
 					<span class="material-icons">more_horiz</span>
 				</button>
 
-				<ul class="dropdown__content" ref="dropdownContent">
+				<ul ref="dropdownContent" class="dropdown__content">
 					<li>
 						<a :href="status.url" target="_blank">External source</a>
 					</li>
