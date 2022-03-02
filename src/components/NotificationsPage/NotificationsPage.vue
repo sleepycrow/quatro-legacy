@@ -12,7 +12,7 @@ import { htmlizeCustomEmoji, htmlSpecialChars, getProfileUrl } from '../../lib/u
 			</div>
 
 			<div class="flex-header__buttons">
-				<button class="btn icon-btn">
+				<button class="btn icon-btn" @click="$store.dispatch('markNotifsAsRead', { all: true })">
 					<span class="material-icons">done_all</span>
 				</button>
 			</div>
@@ -25,6 +25,12 @@ import { htmlizeCustomEmoji, htmlSpecialChars, getProfileUrl } from '../../lib/u
 				</router-link>
 				{{ notif.type }}
 			</p>
+
+			<div class="card__menu">
+				<button v-if="!notif.pleroma.is_seen" class="btn icon-btn" @click="$store.dispatch('markNotifsAsRead', { id: notif.id })">
+					<span class="material-icons">done</span>
+				</button>
+			</div>
 		</div>
 
 		<div class="load-more-container">

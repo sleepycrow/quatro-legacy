@@ -10,6 +10,7 @@ const TAG_TIMELINE_ENDPOINT = tag => `/api/v1/timelines/tag/${tag}`
 const STATUS_ENDPOINT = statusId => `/api/v1/statuses/${statusId}`
 const STATUS_CONTEXT_ENDPOINT = statusId => `/api/v1/statuses/${statusId}/context`
 const NOTIFICATIONS_ENDPOINT = '/api/v1/notifications'
+const MARK_NOTIFICATIONS_AS_READ_ENDPOINT = '/api/v1/pleroma/notifications/read'
 const OAUTH_TOKEN_ENDPOINT = '/oauth/token'
 const OAUTH_REVOKE_ENDPOINT = '/oauth/revoke'
 const VERIFY_CREDENTIALS_ENDPOINT = '/api/v1/accounts/verify_credentials'
@@ -129,6 +130,19 @@ export function fetchNotifications(params = {}){
 	
 	// Go fetch!
 	return fetchJson(endpoint)
+}
+
+
+/**
+ * Sends a request to mark notifications as read.
+ * @param {Object} params - Same as in pleroma API. Must contain either 'id' or 'max_id'
+ * @returns {Promise}
+ */
+export function markNotificationsAsRead(params = {}){
+	return fetchJson(MARK_NOTIFICATIONS_AS_READ_ENDPOINT, {
+		method: 'post',
+		data: params
+	})
 }
 
 

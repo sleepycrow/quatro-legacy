@@ -1,4 +1,4 @@
-import { fetchNotifications } from '../../lib/api'
+import { fetchNotifications, markNotificationsAsRead } from '../../lib/api'
 
 const state = () => ({
 	muted: false,
@@ -48,8 +48,13 @@ const mutations = {
 		state.unread = countUnreadNotifs(state.notifs)
 	},
 
-	markNotifsAsRead(state, { id, maxId }){
-		// STUB
+	markNotifsAsRead(state, args){
+		for(var notif of state.notifs){
+			if(args.all || (args.id && args.id === notif.id))
+				notif.pleroma.is_seen = true
+		}
+
+		state.unread = countUnreadNotifs(state.notifs)
 	}
 }
 
@@ -109,8 +114,26 @@ const actions = {
 		})
 	},
 
-	async markNotifsAsRead(){
-		// STUB
+	async markNotifsAsRead(ctx, args){
+		if(ctx.state.notifs.length <= 0)
+			return true
+
+		var reqParams = {}
+		
+		if(args.all)
+			reqParams.max_id = ctx.state.notifs[0].id
+		else if(args.id)
+			reqParams.id = args.id
+		else
+			return true
+		
+		try{
+			ctx.commit('markNotifsAsRead', args)
+			await markNotificationsAsRead(reqParams)
+		}catch(e){
+			console.error(e)
+			window.alert('an eror okurded while dismising notificejszym') // TODO: replace me with something else when toasts are implemented
+		}
 	}
 }
 
