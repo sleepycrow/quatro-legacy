@@ -36,6 +36,22 @@
 		"status_page_title": "Status użytkownika {0}"
 	},
 
+	"notifs": {
+		"follow": "zaczął/ęła Cię obserwować!",
+		"favourite": "dodał/a Twój wpis do ulubionych!",
+		"reblog": "powtórzył/a Twój wpis!",
+		"mention": "wspomniał/a Cię we wpisie!",
+		"pleroma:emoji_reaction": "zareagował/a na Twój status emoji ({emoji})!",
+		"pleroma:chat_mention": "wspomniał/a Cię w czacie!",
+		"pleroma:report": "został/a zgłoszony/na!",
+		"move": "przeniósł/osła swoje konto!",
+		"follow_request": "chciałby/łaby Cię obserwować! Czy zgadzasz się na to?",
+		"poll": "Ankieta w której brałeś/aś udział zakończyła się!",
+
+		"mark_all_as_read": "Oznacz wszystkie jako przeczytane",
+		"mark_as_read": "Oznacz jako przeczytane"
+	},
+
 	"loading": "Ładowanie...",
 	"load_more": "Załaduj Więcej",
 	"load_new_statuses": "Załaduj Nowe Wpisy",

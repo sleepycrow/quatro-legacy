@@ -61,6 +61,10 @@ const mutations = {
 const actions = {
 	async fetchNotifs(ctx, args = {}){
 		if(ctx.rootState.auth && !ctx.rootState.auth.loggedIn) return //,lmao don't work if we aren't logged in lol
+		if(ctx.state.loading){
+			console.error('A notification fetch was requested while one was already in progress! Ignoring.')
+			return
+		}
 
 		ctx.commit('setNotifsValues', { loading: true })
 

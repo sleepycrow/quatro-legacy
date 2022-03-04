@@ -1,39 +1,32 @@
-<!-- TODO: hey fuckface rewrite all of this. idk make it not trash lmaoo -->
-
 <script setup>
-import { htmlizeCustomEmoji, htmlSpecialChars, getProfileUrl } from '../../lib/utils'
+import NotificationCard from '../NotificationCard/NotificationCard.vue'
 </script>
 
 <template>
-	<div class="page-content page-content--feed">
+	<div class="page-content page-content--notifications">
 		<header class="flex-header">
 			<div class="flex-header__title">
 				<h1>{{ $t('menu.notifications') }}</h1>
 			</div>
 
 			<div class="flex-header__buttons">
-				<button class="btn icon-btn" @click="$store.dispatch('markNotifsAsRead', { all: true })">
+				<button
+					class="btn icon-btn"
+					:title="$t('notifs.mark_all_as_read')"
+					@click="markAllAsRead"
+				>
 					<span class="material-icons">done_all</span>
 				</button>
 			</div>
 		</header>
 
-		<div v-for="notif in $store.state.notifs.notifs" :key="notif.id" class="card">
-			<p class="card__content" :style="(!notif.pleroma.is_seen ? 'font-weight: bold' : '')">
-				<router-link :to="getProfileUrl(notif.account)">
-					<bdi v-html="htmlizeCustomEmoji(htmlSpecialChars(notif.account.display_name), notif.account.emojis)" />
-				</router-link>
-				{{ notif.type }}
-			</p>
+		<NotificationCard
+			v-for="notif in notifs"
+			:key="notif.id"
+			:notif="notif"
+		/>
 
-			<div class="card__menu">
-				<button v-if="!notif.pleroma.is_seen" class="btn icon-btn" @click="$store.dispatch('markNotifsAsRead', { id: notif.id })">
-					<span class="material-icons">done</span>
-				</button>
-			</div>
-		</div>
-
-		<div class="load-more-container">
+		<div v-if="notifs.length > 0" class="load-more-container">
 			<button class="btn" :disabled="isLoading" @click="fetchNext()">
 				{{ isLoading ? $t('loading') : $t('load_more') }}
 			</button>
@@ -43,7 +36,7 @@ import { htmlizeCustomEmoji, htmlSpecialChars, getProfileUrl } from '../../lib/u
 
 <script>
 export default {
-	components: {},
+	components: { NotificationCard },
 
 	data: () => ({
 	}),
@@ -51,6 +44,10 @@ export default {
 	computed: {
 		isLoading(){
 			return this.$store.state.notifs.loading
+		},
+
+		notifs(){
+			return this.$store.state.notifs.notifs
 		}
 	},
 
@@ -64,6 +61,10 @@ export default {
 	methods: {
 		fetchNext(){
 			this.$store.dispatch('fetchNextNotifs')
+		},
+
+		markAllAsRead(){
+			this.$store.dispatch('markNotifsAsRead', { all: true })
 		}
 	}
 }

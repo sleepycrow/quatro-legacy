@@ -36,6 +36,22 @@
 		"status_page_title": "Status by {0}"
 	},
 
+	"notifs": {
+		"follow": "started following you!",
+		"favourite": "favourited your status!",
+		"reblog": "reblogged your status!",
+		"mention": "mentioned you in a status!",
+		"pleroma:emoji_reaction": "reacted to your status with an emoji ({emoji})!",
+		"pleroma:chat_mention": "mentioned you in a chat message!",
+		"pleroma:report": "was reported!",
+		"move": "moved their accound!",
+		"follow_request": "would like to follow you! Do you accept?",
+		"poll": "A poll you have created or participated in has ended!",
+
+		"mark_all_as_read": "Mark all as read",
+		"mark_as_read": "Mark as read"
+	},
+
 	"loading": "Loading...",
 	"load_more": "Load More",
 	"load_new_statuses": "Load New Statuses",
