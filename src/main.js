@@ -8,7 +8,7 @@ import router from './router.js'
 import store from './store/'
 
 // Set up I18n
-const locale = (navigator.language || 'en').split('-')[0]
+const locale = (window.localStorage.getItem('locale') || navigator.language || 'en').split('-')[0]
 const i18n = I18n.createI18n()
 I18n.setLanguage(i18n, locale)
 

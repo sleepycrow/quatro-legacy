@@ -283,7 +283,7 @@ export default {
 
 <style>
 .status{
-	padding: 1px 0 0 0; /* holy fuck I hate css. this is here to stop collapsing margins within this element */
+	padding: 0.1px 0 0.1px 0; /* holy fuck I hate css. this is here to stop collapsing margins within this element */
 }
 
 .status--highlighted{
@@ -304,7 +304,6 @@ export default {
 	text-align: left;
 	align-items: center;
 	overflow: hidden;
-	margin: 0 0 16px 0; /* this sucks */
 }
 
 .status-meta__avatar img{

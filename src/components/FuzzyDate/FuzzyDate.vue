@@ -3,8 +3,8 @@ import { getDateText, getFuzzyDate } from '../../lib/time_utils'
 </script>
 
 <template>
-	<time :datetime="datetime" :title="dateText">
-		{{ ( fuzzyDate !== null ? $t(...fuzzyDate) : dateText ) }}
+	<time class="fuzzy-date" :datetime="datetime" :title="dateText" @click="toggleDateType">
+		{{ ( (fuzzyDate !== null && showFuzzy) ? $t(...fuzzyDate) : dateText ) }}
 	</time>
 </template>
 
@@ -16,6 +16,7 @@ export default {
 	},
 
 	data: () => ({
+		showFuzzy: true,
 		interval: null,
 		fuzzyDate: ''
 	}),
@@ -47,7 +48,17 @@ export default {
 	methods: {
 		refreshSelf(){
 			this.fuzzyDate = getFuzzyDate(this.datetime)
+		},
+
+		toggleDateType(){
+			this.showFuzzy = !this.showFuzzy
 		}
 	}
 }
 </script>
+
+<style>
+.fuzzy-date{
+	cursor: pointer;
+}
+</style>
