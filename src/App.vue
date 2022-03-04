@@ -30,6 +30,8 @@ export default {
 	watch: {
 		// Start fetching notifications after login
 		'$store.state.auth.loggedIn': async function(isLoggedIn){
+			this.$store.commit('clearNotifs') // clear notifs after logging out, and after logging in, before first fetch
+			
 			if(isLoggedIn){
 				// do not play the "new notifications" sound when fetching notifications for the first time lol
 				this.$store.commit('setNotifsValues', { muted: true })
@@ -39,8 +41,6 @@ export default {
 
 				this.notifInterval = window.setInterval(this.attemptFetchNewNotifs.bind(this), 10000)
 			}else{
-				this.$store.commit('clearNotifs')
-
 				window.clearInterval(this.notifInterval)
 				this.notifInterval = null
 			}
