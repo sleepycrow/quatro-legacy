@@ -50,6 +50,11 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 
 					<div class="status-meta__date">
 						<FuzzyDate :datetime="status.created_at" :autoupdate="60" />
+						•
+						<i v-if="status.visibility === 'public'" class="material-icons md-18">public</i>
+						<i v-if="status.visibility === 'unlisted'" class="material-icons md-18">lock_open</i>
+						<i v-if="status.visibility === 'private'" class="material-icons md-18">lock</i>
+						<i v-if="status.visibility === 'direct'" class="material-icons md-18">mail</i>
 					</div>
 				</div>
 			</div>
