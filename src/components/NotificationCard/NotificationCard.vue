@@ -5,8 +5,8 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 </script>
 
 <template>
-	<div class="card notif">
-		<section class="card__content notif__info" :class="(!notif.pleroma.is_seen ? 'notif__info--unseen' : '')">
+	<div class="card notif" :class="(!notif.pleroma.is_seen ? 'notif--unseen' : '')">
+		<section class="card__content notif__info">
 			<p>
 				<router-link
 					v-if="notif.type !== 'poll'"
@@ -76,13 +76,17 @@ export default {
 	padding: 0.1px 0 0.1px 0;
 }
 
+.notif--unseen{
+	background-color: #EEE;
+}
+
 .notif__info p{
 	width: calc(100% - var(--icon-button-size));
 	line-height: var(--icon-button-size);
 	vertical-align: middle;
 }
 
-.notif__info--unseen p{
+.notif--unseen .notif__info p{
 	font-weight: bold;
 }
 
