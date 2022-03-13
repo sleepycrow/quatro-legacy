@@ -10,6 +10,7 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 				v-if="shouldHaveDropdown"
 				btn-class="flex-header__dropdown__title"
 				:btn-text="$t('timelines.'+selectedTl.id)"
+				:show-arrow="true"
 			>
 				<li v-for="tl in timelines" :key="tl.id">
 					<router-link :to="tl.target">
