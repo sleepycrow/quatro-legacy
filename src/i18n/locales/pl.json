@@ -33,7 +33,12 @@
 	"statuses": {
 		"part_of_a_thread": "Część dłuższego wątku",
 		"reposted_by": "Powtórzone przez",
-		"status_page_title": "Status użytkownika {0}"
+		"status_page_title": "Status użytkownika {0}",
+
+		"visibility_public": "Publiczny",
+		"visibility_unlisted": "Niewidoczny",
+		"visibility_private": "Tylko dla śledzących",
+		"visibility_direct": "Bezpośredni"
 	},
 
 	"notifs": {

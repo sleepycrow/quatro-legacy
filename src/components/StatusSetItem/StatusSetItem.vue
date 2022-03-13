@@ -52,10 +52,11 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 					<div class="status-meta__date">
 						<FuzzyDate :datetime="status.created_at" :autoupdate="60" />
 						•
-						<i v-if="status.visibility === 'public'" class="material-icons md-18">public</i>
-						<i v-if="status.visibility === 'unlisted'" class="material-icons md-18">lock_open</i>
-						<i v-if="status.visibility === 'private'" class="material-icons md-18">lock</i>
-						<i v-if="status.visibility === 'direct'" class="material-icons md-18">mail</i>
+						<i
+							class="material-icons md-18 status__visibility-icon"
+							:title="$t('statuses.visibility_'+status.visibility)"
+							v-html="statusVisibilityIcon"
+						/>
 					</div>
 				</div>
 			</div>
@@ -176,6 +177,22 @@ export default {
 
 		spoilerText(){
 			return htmlizeCustomEmoji(htmlSpecialChars(this.status.spoiler_text), this.status.emojis)
+		},
+
+		statusVisibilityIcon(){
+			switch(this.status.visibility){
+				case 'public':
+					return 'public'
+				
+				case 'unlisted':
+					return 'lock_open'
+				
+				case 'private':
+					return 'lock'
+				
+				case 'direct':
+					return 'mail'
+			}
 		}
 	},
 
@@ -329,6 +346,10 @@ export default {
 .status-meta__date{
 	font-weight: normal;
 	color: #333;
+}
+
+.status__visibility-icon{
+	cursor: default;
 }
 
 .status-content--hidden{

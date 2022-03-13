@@ -33,7 +33,12 @@
 	"statuses": {
 		"part_of_a_thread": "Part of a Thread",
 		"reposted_by": "Reposted by",
-		"status_page_title": "Status by {0}"
+		"status_page_title": "Status by {0}",
+
+		"visibility_public": "Public",
+		"visibility_unlisted": "Unlisted",
+		"visibility_private": "Followers-only",
+		"visibility_direct": "Direct"
 	},
 
 	"notifs": {
