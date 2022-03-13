@@ -1,21 +1,22 @@
+<script setup>
+import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
+</script>
+
 <template>
 	<header class="flex-header">
 		<div class="flex-header__title">
 			<!-- Feed Selector Dropdown -->
-			<div v-if="shouldHaveDropdown" ref="dropdownContainer" class="dropdown">
-				<button class="flex-header__dropdown__title" @click="toggleFeedDropdown()">
-					{{ $t('timelines.'+selectedTl.id) }}
-					<span class="material-icons">arrow_drop_down</span>
-				</button>
-
-				<ul ref="selectorDropdown" class="dropdown__content">
-					<li v-for="tl in timelines" :key="tl.id">
-						<router-link :to="tl.target">
-							{{ $t('timelines.'+tl.id) }}
-						</router-link>
-					</li>
-				</ul>
-			</div>
+			<DropdownMenu
+				v-if="shouldHaveDropdown"
+				btn-class="flex-header__dropdown__title"
+				:btn-text="$t('timelines.'+selectedTl.id)"
+			>
+				<li v-for="tl in timelines" :key="tl.id">
+					<router-link :to="tl.target">
+						{{ $t('timelines.'+tl.id) }}
+					</router-link>
+				</li>
+			</DropdownMenu>
 
 			<!-- Normal header -->
 			<h1 v-else>
@@ -33,6 +34,8 @@
 
 <script>
 export default {
+
+	components: { DropdownMenu },
 
 	props: {
 		timelines: { type: Array, required: false, default: ()=>([]) },
@@ -59,35 +62,6 @@ export default {
 					this.selectedTl = tl
 					break
 				}
-			}
-		}
-
-		document.addEventListener('click', this.onDocumentClick)
-	},
-
-	unmounted(){
-		document.removeEventListener('click', this.onDocumentClick)
-	},
-
-	methods: {
-		toggleFeedDropdown(makeVisible = null){
-			var visibleClass = 'dropdown__content--visible'
-
-			if(makeVisible === null)
-				makeVisible = !this.$refs.selectorDropdown.classList.contains(visibleClass)
-			
-			if(makeVisible)
-				this.$refs.selectorDropdown.classList.add(visibleClass)
-			else
-				this.$refs.selectorDropdown.classList.remove(visibleClass)
-		},
-
-		onDocumentClick(e){
-			if(this.shouldHaveDropdown){
-				if(this.$refs.dropdownContainer.contains(e.target))
-					return
-			
-				this.toggleFeedDropdown(false)
 			}
 		}
 	}

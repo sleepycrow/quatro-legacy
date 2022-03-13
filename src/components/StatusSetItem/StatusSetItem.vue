@@ -3,6 +3,7 @@ import { htmlizeCustomEmoji, htmlSpecialChars, getProfileUrl } from '../../lib/u
 import PreviewCard from '../PreviewCard/PreviewCard.vue'
 import FuzzyDate from '../FuzzyDate/FuzzyDate.vue'
 import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
+import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 </script>
 
 <template>
@@ -84,29 +85,28 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 			</div>
 				
 			<!-- Status Menu -->
-			<div ref="dropdownContainer" class="dropdown dropdown--right card__menu">
-				<button class="btn icon-btn" @click="toggleDropdown">
-					<span class="material-icons">more_horiz</span>
-				</button>
+			<DropdownMenu
+				horiz-align="right"
+				btn-icon="more_horiz"
+				container-class="dropdown dropdown--right card__menu"
+				btn-class="btn icon-btn"
+			>
+				<li>
+					<a :href="status.url" target="_blank">External source</a>
+				</li>
 
-				<ul ref="dropdownContent" class="dropdown__content">
-					<li>
-						<a :href="status.url" target="_blank">External source</a>
-					</li>
+				<li>
+					<a @click="copyLinkToStatus">Copy link to status</a>
+				</li>
 
-					<li>
-						<a @click="copyLinkToStatus">Copy link to status</a>
-					</li>
+				<li>
+					<a :href="status.url" target="_blank">Report</a>
+				</li>
 
-					<li>
-						<a :href="status.url" target="_blank">Report</a>
-					</li>
-
-					<li>
-						<a @click="logActivityData">Log activity data</a>
-					</li>
-				</ul>
-			</div>
+				<li>
+					<a @click="logActivityData">Log activity data</a>
+				</li>
+			</DropdownMenu>
 		</div>
 		
 		<!-------------- Actions -------------->
@@ -140,7 +140,7 @@ import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 <script>
 export default {
 	// TODO: make long statuses half-hidden (wrapped) by default (so they say, like, "read more" or something)
-	components: { PreviewCard, MediaAttachmentGrid, FuzzyDate },
+	components: { PreviewCard, MediaAttachmentGrid, FuzzyDate, DropdownMenu },
 
 	props: {
 		activity: { type: Object, required: true },
@@ -188,12 +188,6 @@ export default {
 
 	mounted(){
 		this.processLinks()
-
-		document.addEventListener('click', this.dropdownDocumentClickHandler)
-	},
-
-	unmounted(){
-		document.removeEventListener('click', this.dropdownDocumentClickHandler)
 	},
 
 	methods: {
@@ -257,31 +251,7 @@ export default {
 				else
 					link.target = '_blank'
 			}
-		},
-
-		// NOTE: Yes, I know this is duplicate code. Yes, ideally this would be in some common file.
-		// I'm not sure what's the best way to go about spinning it off into some common file rn,
-		// accounting for the possibility of an element having multiple dropdowns.
-		// If you have any ideas, open an issue to suggest them!!
-		toggleDropdown(makeVisible = null){
-			var visibleClass = 'dropdown__content--visible'
-
-			if(makeVisible === null)
-				makeVisible = !this.$refs.dropdownContent.classList.contains(visibleClass)
-			
-			if(makeVisible)
-				this.$refs.dropdownContent.classList.add(visibleClass)
-			else
-				this.$refs.dropdownContent.classList.remove(visibleClass)
-		},
-		
-		// Closes the dropdown when appropriate
-		dropdownDocumentClickHandler(e){
-			if(e.target.tagName !== 'A' && this.$refs.dropdownContainer.contains(e.target))
-				return
-			
-			this.toggleDropdown(false)
-		},
+		}
 	}
 }
 </script>
@@ -396,9 +366,5 @@ export default {
 .card-note__username{
 	font-weight: bold;
 	color: inherit;
-}
-
-.status .dropdown__content{
-	width: 200px;
 }
 </style>

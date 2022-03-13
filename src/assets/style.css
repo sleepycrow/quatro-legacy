@@ -336,6 +336,7 @@ blockquote{
 	top: 100%;
 	left: 0;
 	z-index: 10;
+	min-width: 200px;
 
 	padding: 0;
 	margin: 8px 0;
