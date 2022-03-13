@@ -1,20 +1,17 @@
 <script setup>
 import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout.vue"
 import BlankLayout from "./layouts/BlankLayout/BlankLayout.vue"
-import LoadingScreen from './components/LoadingScreen/LoadingScreen.vue'
 </script>
 
 <template>
-	<LoadingScreen v-if="!appLoaded" />
-
-	<component :is="layout" v-if="appLoaded">
+	<component :is="layout">
 		<router-view :key="$route.fullPath" />
 	</component>
 </template>
 
 <script>
 export default {
-	components: { LoadingScreen, DefaultLayout, BlankLayout },
+	components: { DefaultLayout, BlankLayout },
 
 	data: () => ({
 		appLoaded: false,
@@ -28,10 +25,20 @@ export default {
 	},
 
 	watch: {
-		// Start fetching notifications after login
-		'$store.state.auth.loggedIn': async function(isLoggedIn){
-			this.$store.commit('clearNotifs') // clear notifs after logging out, and after logging in, before first fetch
-			
+		'$store.state.auth.loggedIn': function(isLoggedIn){
+			return this.onLoginStateChange(isLoggedIn)
+		}
+	},
+
+	created(){
+		this.onLoginStateChange(this.$store.state.auth.loggedIn)
+	},
+
+	methods: {
+		onLoginStateChange: async function(isLoggedIn){
+			// Clear everything that could possibly be exclusive to any one user whenever switching users
+			this.$store.commit('clearNotifs')
+
 			if(isLoggedIn){
 				// do not play the "new notifications" sound when fetching notifications for the first time lol
 				this.$store.commit('setNotifsValues', { muted: true })
@@ -44,20 +51,8 @@ export default {
 				window.clearInterval(this.notifInterval)
 				this.notifInterval = null
 			}
-		}
-	},
+		},
 
-	created(){
-		Promise.all([
-			this.$store.dispatch('fetchInstanceInfo'),
-			this.$store.dispatch('attemptTokenRecovery')
-		])
-			.then(() => {
-				this.appLoaded = true
-			})
-	},
-
-	methods: {
 		attemptFetchNewNotifs(){
 			this.$store.dispatch('fetchPrevNotifs')
 				.catch((e) => {

@@ -12,11 +12,18 @@ const locale = (window.localStorage.getItem('locale') || navigator.language || '
 const i18n = I18n.createI18n()
 I18n.setLanguage(i18n, locale)
 
-// Set up app
-var app = Vue.createApp(App)
+// Get info about instance and check if user's logged in before starting app
+Promise.all([
+	store.dispatch('attemptTokenRecovery'),
+	store.dispatch('fetchInstanceInfo')
+])
+	.then(() => {
+		// Set up app
+		var app = Vue.createApp(App)
 
-app.use(i18n)
-app.use(router)
-app.use(store)
+		app.use(i18n)
+		app.use(router)
+		app.use(store)
 
-app.mount('#app')
+		app.mount('#app')
+	})
