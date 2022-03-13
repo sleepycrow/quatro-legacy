@@ -38,6 +38,7 @@ export default {
 		onLoginStateChange: async function(isLoggedIn){
 			// Clear everything that could possibly be exclusive to any one user whenever switching users
 			this.$store.commit('clearNotifs')
+			this.$store.commit('clearAllTimelines')
 
 			if(isLoggedIn){
 				// do not play the "new notifications" sound when fetching notifications for the first time lol

@@ -107,6 +107,11 @@ const mutations = {
 			tl[i] = newTl[i]
 	},
 
+	clearAllTimelines(state){
+		state.info = {}
+		state.state = {}
+	},
+
 	appendStatuses(state, { tlId, statuses }){
 		if(!Array.isArray(statuses)) return false;
 		var timeline = state.state[tlId]
