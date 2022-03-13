@@ -41,7 +41,7 @@ const actions = {
 	async loginUser({ dispatch }, { username, password }){
 		try{
 			var resp = await oauthObtainToken(username, password)
-			dispatch('verifyCredentials', resp.data.access_token)
+			await dispatch('verifyCredentials', resp.data.access_token)
 		}catch(e){
 			//FIXME: ADD A PROPER ERROR MESSAGE HERE
 			window.alert('eror eror o cholercia')

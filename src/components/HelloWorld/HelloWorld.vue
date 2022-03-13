@@ -57,6 +57,9 @@ export default {
 		login(e){
 			e.preventDefault()
 			this.$store.dispatch('loginUser', { username: this.$refs.usr.value, password: this.$refs.pwd.value })
+				.then(() => {
+					this.$router.push('/')
+				})
 
 			this.$refs.usr.value = ''
 			this.$refs.pwd.value = ''

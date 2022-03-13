@@ -15,7 +15,7 @@ const router = createRouter({
 			name: 'root',
 			path: '/',
 			redirect: () => {
-				return '/timelines/global' // placeholder for now uwu
+				return (store.state.auth.loggedIn ? '/timelines/home' : '/helloworld')
 			}
 		},
 
@@ -26,7 +26,7 @@ const router = createRouter({
 			path: '/timelines/home',
 			component: FeedsPage,
 			props: { timeline: 'home' },
-			meta: { auth: true } // FIXME: add auth validation
+			meta: { authRequired: true }
 		},
 		{
 			name: 'communityTimeline',
@@ -78,9 +78,15 @@ const router = createRouter({
 		{
 			name: 'notifications',
 			path: '/notifications',
-			component: NotificationsPage
+			component: NotificationsPage,
+			meta: { authRequired: true }
 		},
 	]
+})
+
+router.beforeEach((to) => {
+	if(to.meta.authRequired && !store.state.auth.loggedIn)
+		return '/'
 })
 
 router.afterEach(() => {
