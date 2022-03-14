@@ -2,17 +2,25 @@
 	<!-- Link/Photo/Video Preview -->
 	<!-- We'll use the same card for all types for now, it works well enough and saves us some headache. -->
 	<template v-if="card.type === 'link' || card.type === 'photo' || card.type === 'video'">
-		<a class="preview-card-wrapper" :href="card.url" :title="card.title" target="_blank">
-			<div class="preview-card preview-card--link">
-				<div v-if="card.image" class="preview-card__preview preview-card__preview--link">
+		<div class="preview-card preview-card--link">
+			<a
+				class="preview-card__link"
+				:class="(card.image ? 'preview-card__link--has-preview' : '')"
+				:href="card.url"
+				:title="card.title"
+				target="_blank"
+			>
+				<div v-if="card.image" class="preview-card__preview">
 					<img :src="card.image" :alt="card.title">
 				</div>
+
 				<div class="preview-card__info">
 					<strong class="preview-card__title">{{ card.title }}</strong>
-					<div class="preview-card__host">{{ previewCardHost }}</div>
+					<div class="preview-card__description">{{ card.description }}</div>
+					<div class="preview-card__host"><i class="material-icons md-18">link</i> {{ previewCardHost }}</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		</div>
 	</template>
 </template>
 
@@ -39,41 +47,43 @@ export default {
 
 <style>
 /* Preview cards */
-.preview-card-wrapper{
+.preview-card{
 	display: block;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	background-color: transparent;
+	margin: 1rem 0;
+}
+
+.preview-card__link{
+	display: table;
+	width: 100%;
 	text-decoration: none;
 	cursor: pointer;
-	margin: 1rem 0;
 	color: #000;
-	text-decoration: none;
-}
-
-.preview-card-wrapper:hover{
-	text-decoration: none;
-}
-
-.preview-card{
-	border: 1px solid #CCC;
-	border-radius: 2px;
 	background-color: transparent;
+	text-decoration: none;
+	transition: background-color 0.15s;
 }
 
-.preview-card:hover{
-	background-color: #EEE;
+.preview-card__link--has-preview{
+	display: grid;
+	grid-template-columns: 64px auto;
 }
 
-.preview-card__preview{
+.preview-card__link:hover{
+	background-color: rgba(0, 0, 0, 0.12);
+	text-decoration: none;
+}
+
+.preview-card__preview img{
 	width: 100%;
-}
-
-.preview-card__preview--link img{
-	width: 100%;
-	height: auto;
-	max-height: 200px;
+	height: 100%;
 	object-fit: cover;
+	background-color: #CCC;
 	background-size: cover;
 	background-position: 50%;
-	border-radius: 2px 2px 0 0;
+	border-radius: 2px 0 0 2px;
 }
 
 .preview-card__info{
@@ -85,6 +95,11 @@ export default {
 	display: block;
 	font-weight: bold;
 	font-size: 1.2rem;
+}
+
+.preview-card__description{
+	display: block;
+	margin: 0.25rem 0;
 }
 
 .preview-card__host{
