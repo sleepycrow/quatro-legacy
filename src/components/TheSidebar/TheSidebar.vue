@@ -42,7 +42,7 @@
 				</li>
 
 				<li>
-					<router-link class="nav__link" active-class="nav__link--active" to="/helloworld">
+					<router-link class="nav__link" active-class="nav__link--active" to="/bookmarks">
 						<span class="nav__icon material-icons">bookmarks</span>
 						<span class="nav__label">{{ $t('menu.bookmarks') }}</span>
 					</router-link>

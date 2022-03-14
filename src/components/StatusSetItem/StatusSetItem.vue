@@ -127,8 +127,8 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 				{{ status.favourites_count }}
 			</div>
 			
-			<div class="card__action">
-				<span class="material-icons">bookmark_border</span>
+			<div class="card__action" :class="( status.bookmarked ? 'card__action--done' : '' )">
+				<span class="material-icons">{{ status.bookmarked ? 'bookmark' : 'bookmark_border' }}</span>
 			</div>
 
 			<router-link class="card__action" :to="'/statuses/'+status.id">

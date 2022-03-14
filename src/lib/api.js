@@ -9,6 +9,8 @@ const TIMELINE_ENDPOINT = timelineId => `/api/v1/timelines/${timelineId}`
 const TAG_TIMELINE_ENDPOINT = tag => `/api/v1/timelines/tag/${tag}`
 const STATUS_ENDPOINT = statusId => `/api/v1/statuses/${statusId}`
 const STATUS_CONTEXT_ENDPOINT = statusId => `/api/v1/statuses/${statusId}/context`
+const USER_TIMELINE_ENDPOINT = userId => `/api/v1/accounts/${userId}/statuses`
+const BOOKMARKS_TIMELINE_ENDPOINT = '/api/v1/bookmarks'
 const NOTIFICATIONS_ENDPOINT = '/api/v1/notifications'
 const MARK_NOTIFICATIONS_AS_READ_ENDPOINT = '/api/v1/pleroma/notifications/read'
 const OAUTH_TOKEN_ENDPOINT = '/oauth/token'
@@ -97,7 +99,9 @@ export function fetchTimeline({
 	if(type === 'tag' && typeof(tag) === 'string')
 		endpoint = TAG_TIMELINE_ENDPOINT(tag)
 	else if(type === 'user' && typeof(userId) === 'string')
-		endpoint = `/api/v1/accounts/${userId}/statuses`
+		endpoint = USER_TIMELINE_ENDPOINT(userId)
+	else if(type === 'bookmarks')
+		endpoint = BOOKMARKS_TIMELINE_ENDPOINT
 	else
 		endpoint = TIMELINE_ENDPOINT(type)
 	

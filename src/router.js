@@ -7,6 +7,7 @@ import StatusPage from "./components/StatusPage/StatusPage.vue"
 import HelloWorld from "./components/HelloWorld/HelloWorld.vue"
 import TestPage from "./components/TestPage/TestPage.vue"
 import NotificationsPage from "./components/NotificationsPage/NotificationsPage.vue"
+import BookmarksPage from "./components/BookmarksPage/BookmarksPage.vue"
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -45,6 +46,12 @@ const router = createRouter({
 			path: '/tags/:tag',
 			component: TagTimelinePage,
 			props: true
+		},
+		{
+			name: 'bookmarksTimeline',
+			path: '/bookmarks',
+			component: BookmarksPage,
+			meta: { authRequired: true }
 		},
 
 
