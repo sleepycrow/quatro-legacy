@@ -76,11 +76,15 @@ export default {
 	text-decoration: none;
 }
 
+.preview-card__preview{
+	background-color: #CCC;
+	overflow: hidden;
+}
+
 .preview-card__preview img{
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	background-color: #CCC;
 	background-size: cover;
 	background-position: 50%;
 	border-radius: 2px 0 0 2px;
@@ -95,6 +99,9 @@ export default {
 	display: block;
 	font-weight: bold;
 	font-size: 1.2rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .preview-card__description{

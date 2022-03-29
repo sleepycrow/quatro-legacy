@@ -112,24 +112,33 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 		
 		<!-------------- Actions -------------->
 		<div class="card__actions">
-			<div class="card__action">
+			<button class="card__action">
 				<span class="material-icons">chat_bubble_outline</span>
 				{{ status.replies_count }}
-			</div>
+			</button>
 			
-			<div class="card__action" :class="( status.reblogged ? 'card__action--done' : '' )">
+			<button
+				class="card__action"
+				:class="( status.reblogged ? 'card__action--done' : '' )"
+			>
 				<span class="material-icons">{{ status.reblogged ? 'repeat_on' : 'repeat' }}</span>
 				{{ status.reblogs_count }}
-			</div>
+			</button>
 			
-			<div class="card__action" :class="( status.favourited ? 'card__action--done' : '' )">
+			<button
+				class="card__action"
+				:class="( status.favourited ? 'card__action--done' : '' )"
+			>
 				<span class="material-icons">{{ status.favourited ? 'favorite' : 'favorite_border' }}</span>
 				{{ status.favourites_count }}
-			</div>
+			</button>
 			
-			<div class="card__action" :class="( status.bookmarked ? 'card__action--done' : '' )">
+			<button
+				class="card__action"
+				:class="( status.bookmarked ? 'card__action--done' : '' )"
+			>
 				<span class="material-icons">{{ status.bookmarked ? 'bookmark' : 'bookmark_border' }}</span>
-			</div>
+			</button>
 
 			<router-link class="card__action" :to="'/statuses/'+status.id">
 				<span class="material-icons">arrow_forward</span>
@@ -181,18 +190,17 @@ export default {
 
 		statusVisibilityIcon(){
 			switch(this.status.visibility){
-				case 'public':
-					return 'public'
+			case 'unlisted':
+				return 'lock_open'
 				
-				case 'unlisted':
-					return 'lock_open'
+			case 'private':
+				return 'lock'
 				
-				case 'private':
-					return 'lock'
-				
-				case 'direct':
-					return 'mail'
+			case 'direct':
+				return 'mail'
 			}
+
+			return 'public'
 		}
 	},
 
@@ -362,6 +370,10 @@ export default {
 
 .status-text{
 	margin: 1rem 0 0 0;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
 }
 
 .status-text .emoji{

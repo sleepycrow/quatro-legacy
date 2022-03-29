@@ -280,6 +280,7 @@ blockquote{
 .card__actions{
 	width: 100%;
 	padding: 0 4px;
+	white-space: nowrap;
 	overflow-x: auto;
 }
 
@@ -288,11 +289,14 @@ blockquote{
 	color: #333;
 	padding: 8px 12px;
 	text-align: center;
+	border: none;
 	background-color: transparent;
 	transition: background-color 0.2s;
 	cursor: pointer;
 	margin: 4px 4px;
 	border-radius: 2px;
+	font-size: inherit;
+	font-family: inherit;
 }
 
 .card__actions .card__action:hover,

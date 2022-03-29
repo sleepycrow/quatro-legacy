@@ -1,7 +1,7 @@
 <template>
 	<div
 		ref="dropdownContainer"
-		:class="containerClass + (this.horizAlign === 'right' ? ' dropdown--right': '')"
+		:class="containerClass + (horizAlign === 'right' ? ' dropdown--right': '')"
 	>
 		<button :class="btnClass" @click="toggleDropdown()">
 			<span v-if="btnIcon.length > 0" class="material-icons" v-html="btnIcon" />
