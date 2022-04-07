@@ -16,7 +16,7 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 			<StatusSet
 				v-for="status in statuses"
 				:key="getActivityKey(status)"
-				:activity="status"
+				:activityIds="status"
 			/>
 
 			<div class="load-more-container">
@@ -76,7 +76,7 @@ export default {
 
 	methods: {
 		getActivityKey(activity){
-			return (Array.isArray(activity) ? activity[activity.length - 1].id : activity.id)
+			return (Array.isArray(activity) ? activity[activity.length - 1] : activity)
 		},
 
 		fetchPrev(){

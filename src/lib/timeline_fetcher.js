@@ -54,7 +54,7 @@ export default class TimelineFetcher {
 		if(resp.data.error) throw resp.data.error //TODO: Consider making a custom class for these kinds of errors???
 		
 		// add the posts to the store
-		this.store.commit({
+		this.store.dispatch({
 			type: config.mutation,
 			tlId: this.tlId,
 			statuses: resp.data

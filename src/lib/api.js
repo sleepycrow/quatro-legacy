@@ -179,16 +179,16 @@ export async function fetchStatus(statusId, includeContext = false){
 	if(includeContext) promises.push(fetchJson(STATUS_CONTEXT_ENDPOINT(statusId)))
 	var results = await Promise.all(promises)
 	
-	var status = results[0].data
+	var output = { status: results[0].data }
 
 	if(includeContext){
 		var context = results[1].data
 		
-		status.ancestors = context.ancestors
-		status.descendants = context.descendants
+		output.ancestors = context.ancestors
+		output.descendants = context.descendants
 	}
 
-	return status
+	return output
 }
 
 

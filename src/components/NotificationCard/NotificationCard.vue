@@ -36,8 +36,8 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 
 		<StatusSetItem
 			v-if="notif.status"
-			:key="notif.status.id"
-			:activity="notif.status"
+			:key="notif.status"
+			:activityId="notif.status"
 		/>
 	</div>
 </template>

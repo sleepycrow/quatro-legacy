@@ -13,6 +13,14 @@ function countUnreadNotifs(notifs){
 	return notifs.reduce((acc, notif) => (notif.pleroma.is_seen ? acc : ++acc), 0)
 }
 
+function prepareNotif(notif){
+	// if a notif has a status attached to it, import it to where we store all peristent statuses
+	if(typeof notif.status === 'object'){
+		this.commit('importStatuses', [notif.status])
+		notif.status = notif.status.id
+	}
+}
+
 const mutations = {
 	setNotifsValues(state, values){
 		/* eslint-disable  no-prototype-builtins */
@@ -81,6 +89,9 @@ const actions = {
 		if(resp.data.error) throw resp.data.error //TODO: Consider making a custom class for these kinds of errors???
 
 		if(resp.data.length > 0){
+			// prepare the notifications
+			resp.data.forEach(prepareNotif.bind(ctx))
+		
 			// add the posts to the store
 			ctx.commit(config.mutation, resp.data)
 

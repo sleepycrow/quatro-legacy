@@ -13,7 +13,7 @@
  * if this is nonsense garbage blah blah just read source and it should make some sense!!
  */
 import { groupThreads } from '../../lib/timeline_utils'
-import { isEqual, cloneDeep } from 'lodash'
+import { isEqual, cloneDeep, assignIn } from 'lodash'
 
 // tlInfo describes a timeline, for fetching
 function generateTlInfo(params = {}){
@@ -40,6 +40,8 @@ function generateTlState(){
 }
 
 const state = () => ({
+	allStatuses: {},
+	
 	// Store the last known states for the timelines, for future reference
 	info: {},
 	state: {}
@@ -99,43 +101,63 @@ const mutations = {
 	},
 
 	clearTimeline(state, tlId){
-		// if I just do `tl = generateTlState` vue reactivity seems to break completely???
-		var newTl = generateTlState()
-		var tl = state.state[tlId]
-
-		for(var i in newTl)
-			tl[i] = newTl[i]
+		assignIn(state.state[tlId], generateTlState()) // Just overwriting the object breaks reactivity, hence this.
 	},
 
 	clearAllTimelines(state){
 		state.info = {}
 		state.state = {}
+		state.allStatuses = {}
+	},
+	
+	importStatuses(state, statuses){
+		for(let status of statuses){
+			if(typeof status !== 'object')
+				continue
+			
+			status.deleted = false // TODO: m,ake this do a th ing pls pls plsd pls pls pls pls
+			
+			if(state.allStatuses[status.id])
+				assignIn(state.allStatuses[status.id], status)
+			else
+				state.allStatuses[status.id] = status
+		}
 	},
 
 	appendStatuses(state, { tlId, statuses }){
 		if(!Array.isArray(statuses)) return false;
 		var timeline = state.state[tlId]
+		
+		var statusIds = statuses.map(status => status.id)
+		var groupedStatusIds = groupThreads(statuses)
 
-		timeline.statuses = timeline.statuses.concat(statuses)
-
-		// Reorder timeline
-		statuses = groupThreads(statuses)
-		timeline.grouped = timeline.grouped.concat(statuses)
+		timeline.statuses = timeline.statuses.concat(statusIds)
+		timeline.grouped = timeline.grouped.concat(groupedStatusIds)
 	},
 
 	prependStatuses(state, { tlId, statuses }){
 		if(!Array.isArray(statuses)) return false;
 		var timeline = state.state[tlId]
+		
+		var statusIds = statuses.map(status => status.id)
+		var groupedStatusIds = groupThreads(statuses)
 
-		timeline.statuses = statuses.concat(timeline.statuses)
-
-		// Reorder timeline
-		statuses = groupThreads(statuses)
-		timeline.grouped = statuses.concat(timeline.grouped)
+		timeline.statuses = statusIds.concat(timeline.statuses)
+		timeline.grouped = groupedStatusIds.concat(timeline.grouped)
 	}
 }
 
-const actions = {}
+const actions = {
+	appendStatuses({ commit }, { tlId, statuses }){
+		commit('importStatuses', statuses)
+		commit('appendStatuses', { tlId, statuses })
+	},
+	
+	prependStatuses({ commit }, { tlId, statuses }){
+		commit('importStatuses', statuses)
+		commit('prependStatuses', { tlId, statuses })
+	}
+}
 
 export default {
 	state,

@@ -30,6 +30,7 @@ export function groupThreads(timeline, hideShown = true){
 
 	// Loop 3: Group posts with their parents
 	for(let i = 0; i < timeline.length; i++){
+		let ancestors = []
 		let post = timeline[i]
 
 		if(needed.includes(post.id) || (post.reblog && needed.includes(post.reblog.id)))
@@ -37,7 +38,6 @@ export function groupThreads(timeline, hideShown = true){
 
 		/* eslint-disable  no-prototype-builtins */
 		if(typeof(post.in_reply_to_id) === "string" && found.hasOwnProperty(post.in_reply_to_id)){
-			let ancestors = []
 			let lastPost = post
 
 			while(typeof(lastPost.in_reply_to_id) === "string" && found.hasOwnProperty(lastPost.in_reply_to_id)){
@@ -46,12 +46,12 @@ export function groupThreads(timeline, hideShown = true){
 
 				if(hideShown) delete found[lastPost.id]
 			}
-
-			post.ancestors = ancestors
 		}
 		/* eslint-enable  no-prototype-builtins */
 
-		outputTimeline.push(post)
+		let grouped = ancestors.map(status => status.id)
+		grouped.push(post.id)
+		outputTimeline.push(grouped)
 	}
 
 	return outputTimeline

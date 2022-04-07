@@ -3,28 +3,17 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 </script>
 
 <template>
-	<article class="card status-set">
+	<article v-if="theActivities.length > 0" class="card status-set">
 		<div v-if="isThreadPart" class="card__note">
 			<span class="material-icons-outlined md-18">library_books</span>
 			{{ $t('statuses.part_of_a_thread') }}
 		</div>
 
 		<StatusSetItem
-			v-for="ancestor in activity.ancestors"
-			:key="ancestor.id"
-			:activity="ancestor"
-		/>
-
-		<StatusSetItem
+			v-for="activity in theActivities"
 			:key="activity.id"
 			:activity="activity"
-			:highlighted="highlightFocus"
-		/>
-
-		<StatusSetItem
-			v-for="descendant in activity.descendants"
-			:key="descendant.id"
-			:activity="descendant"
+			:highlighted="activity.id == highlightId"
 		/>
 	</article>
 </template>
@@ -34,17 +23,32 @@ export default {
 	components: { StatusSetItem },
 
 	props: {
-		activity: { type: Object, required: true },
-		highlightFocus: { type: Boolean, default: false }
+		activityIds: { default: null },
+		activities: { default: null },
+		highlightId: { type: String, default: '' }
 	},
+	
+	data: () => ({
+		theActivities: []
+	}),
 
 	computed: {
 		isThreadPart(){
-			let topStatus = this.activity.reblog !== null ? this.activity.reblog : this.activity
-			topStatus = (Array.isArray(topStatus.ancestors) && topStatus.ancestors.length > 0) ? topStatus.ancestors[0] : topStatus
+			if(!Array.isArray(this.theActivities) && this.theActivities.length > 0) // sanity check
+				return false
+			
+			let topStatus = this.theActivities[0]
+			topStatus = topStatus.reblog !== null ? topStatus.reblog : topStatus
 			return typeof(topStatus.in_reply_to_id) === "string" && topStatus.in_reply_to_id !== ""
 		}
-	}
+	},
+	
+	created(){
+		if(this.$props.activities === null && Array.isArray(this.$props.activityIds))
+			this.theActivities = this.$props.activityIds.map(id => this.$store.state.timelines.allStatuses[id])
+		else if(Array.isArray(this.$props.activities))
+			this.theActivities = this.$props.activities
+	},
 }
 </script>
 

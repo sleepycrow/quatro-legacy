@@ -14,8 +14,8 @@ import { nextTick } from '@vue/runtime-core'
 
 			<StatusSet
 				v-if="loaded && status !== null"
-				:highlight-focus="true"
-				:activity="status"
+				:highlight-id="statusId"
+				:activities="activities"
 			/>
 		</main>
 	</div>
@@ -31,12 +31,13 @@ export default {
 
 	data: () => ({
 		loaded: false,
-		status: null
+		activities: null
 	}),
 
 	mounted(){
 		fetchStatus(this.$props.statusId, true)
-			.then((status) => {
+			.then(({ status, ancestors, descendants }) => {
+				this.activities = ancestors.concat([status]).concat(descendants)
 				this.status = status
 				this.loaded = true
 

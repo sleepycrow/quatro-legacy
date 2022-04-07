@@ -13,12 +13,12 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 		:class="(highlighted ? 'status--highlighted' : '')"
 	>
 		<!-------------- Repost Info -------------->
-		<div v-if="activity.reblog !== null" class="card__note">
+		<div v-if="theActivity.reblog !== null" class="card__note">
 			<span class="material-icons md-18">repeat</span>
 			{{ $t('statuses.reposted_by') }}
 			<router-link
 				class="card-note__username"
-				:to="getProfileUrl(activity.account)"
+				:to="getProfileUrl(theActivity.account)"
 			>
 				<bdi v-html="rebloggerDisplayName" />
 			</router-link>
@@ -153,7 +153,8 @@ export default {
 	components: { PreviewCard, MediaAttachmentGrid, FuzzyDate, DropdownMenu },
 
 	props: {
-		activity: { type: Object, required: true },
+		activity: { default: null },
+		activityId: { default: null },
 		highlighted: { type: Boolean, default: false }
 	},
 
@@ -163,13 +164,13 @@ export default {
 
 	computed: {
 		rebloggerDisplayName(){
-			var display_name = this.activity.account.display_name
+			var display_name = this.theActivity.account.display_name
 			
 			// If no display name is set, use the reblogger's @ as their display name
-			if(this.activity.account.display_name === '' || this.activity.account.display_name === this.activity.account.acct)
-				display_name = `@${this.activity.account.acct}`
+			if(this.theActivity.account.display_name === '' || this.theActivity.account.display_name === this.theActivity.account.acct)
+				display_name = `@${this.theActivity.account.acct}`
 
-			return htmlizeCustomEmoji(htmlSpecialChars(display_name), this.activity.account.emojis)
+			return htmlizeCustomEmoji(htmlSpecialChars(display_name), this.theActivity.account.emojis)
 		},
 
 		authorDisplayName(){
@@ -205,7 +206,12 @@ export default {
 	},
 
 	created(){
-		this.status = this.activity.reblog !== null ? this.activity.reblog : this.activity
+		if(this.$props.activity === null && typeof this.$props.activityId === 'string')
+			this.theActivity = this.$store.state.timelines.allStatuses[this.$props.activityId]
+		else
+			this.theActivity = this.$props.activity
+		
+		this.status = this.theActivity.reblog !== null ? this.theActivity.reblog : this.theActivity
 		this.hasSpoiler = typeof(this.status.spoiler_text) == "string" && this.status.spoiler_text.length > 0
 		this.hasMediaAttachments = this.status.media_attachments && this.status.media_attachments.length > 0
 		this.contentHidden = this.hasSpoiler
@@ -222,7 +228,7 @@ export default {
 
 		// DEBUG: remove before release
 		logActivityData(){
-			console.log(Object.assign({}, this.activity)) // copy the activity into a new object to avoid logging a Proxy object
+			console.log(Object.assign({}, this.theActivity)) // copy the activity into a new object to avoid logging a Proxy object
 			window.alert("hey debugger, we heard you liek status data so we logged the status data in your console.\nno problem :>")
 		},
 
