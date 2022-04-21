@@ -1,7 +1,12 @@
 <script setup>
 import { htmlizeCustomEmoji, htmlSpecialChars, getProfileUrl } from '../../lib/utils'
+import { useNotifsStore } from '../../stores/notifs'
 import FuzzyDate from '../FuzzyDate/FuzzyDate.vue'
 import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
+
+const stores = {
+	notifs: useNotifsStore()
+}
 </script>
 
 <template>
@@ -10,7 +15,7 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 			<p>
 				<router-link
 					v-if="notif.type !== 'poll'"
-					:to="getProfileUrl(notif.account)"
+					:to="notifAcctProfileUrl"
 				>
 					<bdi v-html="notifAcctDisplayName" />
 				</router-link>
@@ -37,7 +42,7 @@ import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
 		<StatusSetItem
 			v-if="notif.status"
 			:key="notif.status"
-			:activityId="notif.status"
+			:activity-id="notif.status"
 		/>
 	</div>
 </template>
@@ -59,12 +64,16 @@ export default {
 				display_name = `@${this.notif.account.acct}`
 
 			return htmlizeCustomEmoji(htmlSpecialChars(display_name), this.notif.account.emojis)
+		},
+
+		notifAcctProfileUrl(){
+			return getProfileUrl(this.notif.account)
 		}
 	},
 
 	methods: {
 		markAsRead(){
-			this.$store.dispatch('markNotifsAsRead', { id: this.notif.id })
+			this.stores.notifs.markNotifsAsRead({ id: this.notif.id })
 		}
 	}
 }

@@ -46,3 +46,19 @@ export function htmlizeCustomEmoji(text, emoji){
 export function getProfileUrl(account){
 	return (account.acct.includes('@') ? `/users/${account.id}` : `/@${account.acct}`)
 }
+
+
+/**
+ * Given a Mastodon API-style account object, returns an HTML string of the user's display name
+ * @param {Object} account 
+ * @returns {string} An HTML string with the user's display name
+ */
+export function getAccountDisplayName(account){
+	let display_name = account.display_name
+
+	// If no display name is set, use the account's @ as their display name
+	if(account.display_name === '' || account.display_name === account.acct)
+		display_name = `@${account.acct}`
+	
+	return htmlizeCustomEmoji(htmlSpecialChars(display_name), account.emojis)
+}

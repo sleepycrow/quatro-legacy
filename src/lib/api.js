@@ -1,5 +1,6 @@
 import axios from 'axios'
-import store from '../store/'
+import { pinia } from '../stores'
+import { useAuthStore } from '../stores/auth'
 
 export const PAGE_SIZE = 20
 const CLIENT_ID = 'ojYoRJrwuugaiy3u0YM0uCAvrh52qlFA4L6-4Dg3_ZA'
@@ -38,8 +39,10 @@ axios.interceptors.response.use((resp) => {
 
 // Inject authorization header if logged in
 axios.interceptors.request.use((config) => {
-	if(store.state.auth.loggedIn && typeof(config.headers['Authorization']) === 'undefined')
-		config.headers['Authorization'] = 'Bearer '+store.state.auth.token
+	let authStore = useAuthStore(pinia)
+	
+	if(authStore.loggedIn && typeof(config.headers['Authorization']) === 'undefined')
+		config.headers['Authorization'] = 'Bearer '+authStore.token
 
 	return config
 })

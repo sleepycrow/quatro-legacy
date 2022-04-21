@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
-import store from "./store"
+import { pinia } from "./stores"
+import { useInterfaceStore } from "./stores/interface"
+import { useAuthStore } from "./stores/auth"
 
 import FeedsPage from "./components/FeedsPage/FeedsPage.vue"
 import TagTimelinePage from "./components/TagTimelinePage/TagTimelinePage.vue"
@@ -16,7 +18,7 @@ const router = createRouter({
 			name: 'root',
 			path: '/',
 			redirect: () => {
-				return (store.state.auth.loggedIn ? '/timelines/home' : '/helloworld')
+				return (useAuthStore(pinia).loggedIn ? '/timelines/home' : '/helloworld')
 			}
 		},
 
@@ -92,13 +94,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-	if(to.meta.authRequired && !store.state.auth.loggedIn)
+	if(to.meta.authRequired && !useAuthStore(pinia).loggedIn)
 		return '/'
 })
 
 router.afterEach(() => {
 	// Reset the page title everytime we navigate.
-	store.dispatch('setPageTitle', '')
+	useInterfaceStore(pinia).setPageTitle('')
 })
 
 export default router

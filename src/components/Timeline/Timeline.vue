@@ -2,6 +2,11 @@
 import { PAGE_SIZE } from '../../lib/api'
 import StatusSet from '../StatusSet/StatusSet.vue'
 import TimelineFetcher from '../../lib/timeline_fetcher'
+import { useTimelinesStore } from '../../stores/timelines'
+
+const stores = {
+	timelines: useTimelinesStore()
+}
 </script>
 
 <template>
@@ -16,7 +21,7 @@ import TimelineFetcher from '../../lib/timeline_fetcher'
 			<StatusSet
 				v-for="status in statuses"
 				:key="getActivityKey(status)"
-				:activityIds="status"
+				:activity-ids="status"
 			/>
 
 			<div class="load-more-container">
@@ -101,7 +106,7 @@ export default {
 		},
 
 		resetFetcher(){
-			this.fetcher = new TimelineFetcher(this.$store, this.$props.storeId, this.$props.info)
+			this.fetcher = new TimelineFetcher(this.stores.timelines, this.$props.storeId, this.$props.info)
 
 			// if the cached timeline is empty, fetch some posts to populate it.
 			// if it's not, check if there are newer posts than what we have

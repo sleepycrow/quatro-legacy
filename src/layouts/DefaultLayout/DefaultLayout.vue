@@ -1,19 +1,18 @@
 <script setup>
 import TheSidebar from "../../components/TheSidebar/TheSidebar.vue";
 import TheGuestSidebar from "../../components/TheGuestSidebar/TheGuestSidebar.vue";
+import { useAuthStore } from "../../stores/auth";
+
+const stores = {
+	auth: useAuthStore()
+}
 </script>
 
 <template>
-	<TheSidebar v-if="$store.state.auth.loggedIn" />
+	<TheSidebar v-if="stores.auth.loggedIn" />
 	<TheGuestSidebar v-else />
 
 	<div class="page">
 		<slot />
 	</div>
 </template>
-
-<script>
-export default {
-	components: { TheSidebar, TheGuestSidebar }
-}
-</script>

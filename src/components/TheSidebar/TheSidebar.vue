@@ -1,3 +1,15 @@
+<script setup>
+import { useAuthStore } from "../../stores/auth";
+import { useInstanceStore } from "../../stores/instance"
+import { useNotifsStore } from "../../stores/notifs";
+
+const stores = {
+	auth: useAuthStore(),
+	notifs: useNotifsStore(),
+	instance: useInstanceStore()
+}
+</script>
+
 <template>
 	<div class="sidebar">
 		<!-------------- User ID -------------->
@@ -5,19 +17,19 @@
 			<div class="sidebar-id"> 
 				<div class="sidebar-id__avatar">
 					<img
-						:src="$store.state.auth.userInfo.avatar"
-						:alt="$store.state.auth.userInfo.display_name"
-						:title="$store.state.auth.userInfo.display_name"
+						:src="stores.auth.userInfo.avatar"
+						:alt="stores.auth.userInfo.display_name"
+						:title="stores.auth.userInfo.display_name"
 					>
 				</div>
 
 				<div class="sidebar-id__info">
-					<div class="sidebar-id__name">{{ $store.state.auth.userInfo.display_name }}</div>
-					<div class="sidebar-id__username">@{{ $store.state.auth.userInfo.username }}</div>
+					<div class="sidebar-id__name">{{ stores.auth.userInfo.display_name }}</div>
+					<div class="sidebar-id__username">@{{ stores.auth.userInfo.username }}</div>
 				</div>
 
 				<div class="sidebar-id__btn">
-					<button class="btn icon-btn" @click="$store.dispatch('fetchUserInfo')">
+					<button class="btn icon-btn" @click="stores.auth.fetchUserInfo()">
 						<span class="material-icons">arrow_drop_down</span>
 					</button>
 				</div>
@@ -59,7 +71,7 @@
 					<router-link class="nav__link" active-class="nav__link--active" to="/notifications">
 						<span class="nav__icon material-icons">notifications</span>
 						<span class="nav__label">{{ $t('menu.notifications') }}</span>
-						<sup v-if="$store.state.notifs.unread > 0" class="nav__label-badge">{{ $store.state.notifs.unread }}</sup>
+						<sup v-if="stores.notifs.unread > 0" class="nav__label-badge">{{ stores.notifs.unread }}</sup>
 					</router-link>
 				</li>
 			</ul>
@@ -68,7 +80,7 @@
 		<!-------------- Footer -------------->
 		<footer>
 			<!-- TODO: make this take the user to an instance info page, like in the old misskey layout -->
-			<img src="../../assets/logo.png" :alt="$store.state.instance.nodeName" :title="$store.state.instance.nodeName">
+			<img src="../../assets/logo.png" :alt="stores.instance.nodeName" :title="stores.instance.nodeName">
 		</footer>
 	</div>
 </template>

@@ -1,7 +1,12 @@
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '../../stores/auth'
 
 const count = ref(0)
+
+const stores = {
+	auth: useAuthStore()
+}
 </script>
 
 <template>
@@ -29,7 +34,7 @@ const count = ref(0)
 
 		<button type="button" @click="count++">count is: {{ count }}</button>
 
-		<form @submit="login">
+		<form v-if="!stores.auth.loggedIn" @submit="login">
 			<h3>Login</h3>
 
 			<input ref="usr" type="text" placeholder="Username"><br>
@@ -37,7 +42,7 @@ const count = ref(0)
 			<button>Log in</button>
 		</form>
 
-		<form @submit="logout">
+		<form v-if="stores.auth.loggedIn" @submit="logout">
 			<h3>Logout</h3>
 
 			<button>Log out</button>
@@ -56,7 +61,7 @@ export default {
 	methods: {
 		login(e){
 			e.preventDefault()
-			this.$store.dispatch('loginUser', { username: this.$refs.usr.value, password: this.$refs.pwd.value })
+			this.stores.auth.loginUser(this.$refs.usr.value, this.$refs.pwd.value)
 				.then(() => {
 					this.$router.push('/')
 				})
@@ -67,7 +72,7 @@ export default {
 
 		logout(e){
 			e.preventDefault()
-			this.$store.dispatch('logoutUser')
+			this.stores.auth.logoutUser()
 		}
 	}
 }

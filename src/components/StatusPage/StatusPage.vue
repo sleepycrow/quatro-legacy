@@ -1,7 +1,12 @@
 <script setup>
 import StatusSet from '../StatusSet/StatusSet.vue'
-import { fetchStatus } from '../../lib/api';
+import { fetchStatus } from '../../lib/api'
 import { nextTick } from '@vue/runtime-core'
+import { useInterfaceStore } from '../../stores/interface'
+
+const stores = {
+	interface: useInterfaceStore()
+}
 </script>
 
 <template>
@@ -42,7 +47,7 @@ export default {
 				this.loaded = true
 
 				var author_name = (this.status.account.display_name !== null ? this.status.account.display_name : this.status.account.acct)
-				this.$store.dispatch('setPageTitle', this.$t('statuses.status_page_title', [author_name]))
+				this.stores.interface.setPageTitle(this.$t('statuses.status_page_title', [author_name]))
 
 				return nextTick()
 			})

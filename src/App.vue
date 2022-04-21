@@ -1,6 +1,21 @@
 <script setup>
 import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout.vue"
 import BlankLayout from "./layouts/BlankLayout/BlankLayout.vue"
+import { useAuthStore } from "./stores/auth"
+import { useNotifsStore } from "./stores/notifs"
+import { usePostsStore } from "./stores/posts"
+import { useInterfaceStore } from "./stores/interface"
+import { useInstanceStore } from "./stores/instance"
+import { useTimelinesStore } from "./stores/timelines"
+
+const stores = {
+	auth: useAuthStore(),
+	posts: usePostsStore(),
+	notifs: useNotifsStore(),
+	interface: useInterfaceStore(),
+	instance: useInstanceStore(),
+	timelines: useTimelinesStore()
+}
 </script>
 
 <template>
@@ -25,27 +40,37 @@ export default {
 	},
 
 	watch: {
-		'$store.state.auth.loggedIn': function(isLoggedIn){
+		'stores.auth.loggedIn': function(isLoggedIn){
 			return this.onLoginStateChange(isLoggedIn)
+		},
+
+		'stores.interface.pageTitle': function(){
+			return this.updateTitle()
+		},
+
+		'stores.instance.nodeName': function(){
+			return this.updateTitle()
 		}
 	},
 
 	created(){
-		this.onLoginStateChange(this.$store.state.auth.loggedIn)
+		this.onLoginStateChange(this.stores.auth.loggedIn)
+		this.updateTitle()
 	},
 
 	methods: {
 		onLoginStateChange: async function(isLoggedIn){
 			// Clear everything that could possibly be exclusive to any one user whenever switching users
-			this.$store.commit('clearNotifs')
-			this.$store.commit('clearAllTimelines')
+			this.stores.notifs.$reset()
+			this.stores.posts.$reset()
+			this.stores.timelines.$reset()
 
 			if(isLoggedIn){
 				// do not play the "new notifications" sound when fetching notifications for the first time lol
-				this.$store.commit('setNotifsValues', { muted: true })
-				await this.$store.dispatch('fetchNotifs')
+				this.stores.notifs.muted = true
+				await this.stores.notifs.fetchNotifs()
 				await new Promise((resolve) => { window.setTimeout(resolve, 3000) }) // wait 3 secs, just for safety's sake
-				this.$store.commit('setNotifsValues', { muted: false })
+				this.stores.notifs.muted = false
 
 				this.notifInterval = window.setInterval(this.attemptFetchNewNotifs.bind(this), 10000)
 			}else{
@@ -55,7 +80,7 @@ export default {
 		},
 
 		attemptFetchNewNotifs(){
-			this.$store.dispatch('fetchPrevNotifs')
+			this.stores.notifs.fetchPrevNotifs()
 				.catch((e) => {
 					if(e.response.status === 403){
 						console.error('The user token seems to be invalid. Cancelling notification polling to save on bandwidth.')
@@ -64,6 +89,12 @@ export default {
 						this.notifInterval = null
 					}
 				})
+		},
+
+		updateTitle(){
+			let pageTitle = this.stores.interface.pageTitle
+			let instanceName = this.stores.instance.nodeName
+			document.title = pageTitle + (pageTitle.length > 0 ? ' • ' : '') + instanceName
 		}
 	}
 }

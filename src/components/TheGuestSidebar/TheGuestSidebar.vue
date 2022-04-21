@@ -1,10 +1,18 @@
+<script setup>
+import { useInstanceStore } from "../../stores/instance"
+
+const stores = {
+	instance: useInstanceStore()
+}
+</script>
+
 <template>
 	<div class="sidebar sidebar--guest">
 		<!-------------- Navigation -------------->
 		<div>
 			<div class="sidebar__blurb">
-				<header>{{ $store.state.instance.nodeName }}</header>
-				<p>{{ $store.state.instance.nodeDescription }}</p>
+				<header>{{ stores.instance.nodeName }}</header>
+				<p>{{ stores.instance.nodeDescription }}</p>
 			</div>
 
 			<nav>
@@ -22,7 +30,7 @@
 		<!-------------- Footer -------------->
 		<footer>
 			<!-- TODO: make this take the user to an instance info page, like in the old misskey layout -->
-			<img src="../../assets/logo.png" :alt="$store.state.instance.nodeName" :title="$store.state.instance.nodeName">
+			<img src="../../assets/logo.png" :alt="stores.instance.nodeName" :title="stores.instance.nodeName">
 		</footer>
 	</div>
 </template>

@@ -10,98 +10,79 @@ export default class TimelineFetcher {
 		
 		this.store = store
 		
-		this.store.commit({
-			type: 'prepareTimeline',
-			tlId: tlId,
-			info: tlInfo
-		})
+		this.store.prepareTimeline(tlId, tlInfo)
 
 		// set up some shorthands, for ease of reading/writing
 		this.tlId = tlId
-		this.cache = {
-			info: this.store.state.timelines.info[this.tlId],
-			state: this.store.state.timelines.state[this.tlId]
-		}
-		this.tlInfo = this.cache.info
+		this.info = this.store.info[this.tlId]
+		this.state = this.store.state[this.tlId]
 	}
 
 	get statuses(){
-		return this.cache.state.statuses
+		return this.state.statuses
 	}
 
 	get grouped(){
-		return this.cache.state.grouped
-	}
-
-	get state(){
-		return this.cache.state
+		return this.state.grouped
 	}
 
 	async fetchStatuses(params = {}, config = {}){
-		if(this.cache.state.loading) console.error("no don't do that") //TODO: DO SOMETHING!!!
+		if(this.state.loading) console.error("no don't do that") //TODO: DO SOMETHING!!!
 
-		this.store.commit('markTimelineAsLoading', this.tlId)
+		this.state.loading = true
 
 		// Populate the config with default values
 		config = Object.assign({
-			mutation: 'appendStatuses',
+			mode: 'append',
 			setPrev: false,
 			setNext: false
 		}, config)
 
-		var requestParams = Object.assign({}, this.tlInfo.params, params)
-		var resp = await api.fetchTimeline(this.tlInfo, requestParams)
+		var requestParams = Object.assign({}, this.info.params, params)
+		var resp = await api.fetchTimeline(this.info, requestParams)
 		if(resp.data.error) throw resp.data.error //TODO: Consider making a custom class for these kinds of errors???
 		
 		// add the posts to the store
-		this.store.dispatch({
-			type: config.mutation,
-			tlId: this.tlId,
-			statuses: resp.data
-		})
+		this.store.addPosts(this.tlId, resp.data, config.mode)
 
 		// if wanted, set the params for next and prev
-		if((config.setNext || config.setPrev) && resp.links){
-			var values = { tlId: this.tlId }
-
-			if(config.setNext && resp.links.next){
-				delete resp.links.next.href
-				values.next = resp.links.next
-			}
-			if(config.setPrev && resp.links.prev){
-				delete resp.links.prev.href
-				values.prev = resp.links.prev
-			}
-
-			this.store.commit('setTimelineStateValues', values)
+		if(config.setNext && resp.links.next){
+			delete resp.links.next.href
+			this.state.next = resp.links.next
 		}
 
-		this.store.commit('unmarkTimelineAsLoading', this.tlId)
+		if(config.setPrev && resp.links.prev){
+			delete resp.links.prev.href
+			this.state.prev = resp.links.prev
+		}
+
+		this.state.loading = false
 	}
 
 	async fetchPrev(){
-		return this.fetchStatuses(this.cache.state.prev, { mutation: 'prependStatuses', setPrev: true })
+		return this.fetchStatuses(this.state.prev, { mode: 'prepend', setPrev: true })
 			.then(() => {
-				this.store.commit('unmarkTimelineAsStale', this.tlId)
+				this.state.staleBy = 0
 			})
 	}
 
 	async fetchNext(){
-		return this.fetchStatuses(this.cache.state.next, { setNext: true })
+		return this.fetchStatuses(this.state.next, { setNext: true })
 	}
 
 	async checkForNewer(){
-		var requestParams = Object.assign({}, this.cache.state.prev)
-		var resp = await api.fetchTimeline(this.tlInfo, requestParams)
+		var requestParams = Object.assign({}, this.state.prev)
+		var resp = await api.fetchTimeline(this.info, requestParams)
 		if(resp.data.error || !Array.isArray(resp.data)) throw resp.data.error //TODO: Consider making a custom class for these kinds of errors???
 
-		if(resp.data.length > 0) this.store.commit('markTimelineAsStale', { tlId: this.tlId, amount: resp.data.length })
+		if(resp.data.length > 0)
+			this.state.staleBy = resp.data.length
 		
 		return resp.data.length
 	}
 
 	clearTimeline(){
-		this.store.commit('clearTimeline', this.tlId)
+		this.store.clearTimeline(this.tlId)
 	}
 
 }

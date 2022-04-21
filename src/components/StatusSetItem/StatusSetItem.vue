@@ -4,6 +4,11 @@ import PreviewCard from '../PreviewCard/PreviewCard.vue'
 import FuzzyDate from '../FuzzyDate/FuzzyDate.vue'
 import MediaAttachmentGrid from '../MediaAttachmentGrid/MediaAttachmentGrid.vue'
 import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
+import { usePostsStore } from '../../stores/posts'
+
+const stores = {
+	posts: usePostsStore()
+}
 </script>
 
 <template>
@@ -18,7 +23,7 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 			{{ $t('statuses.reposted_by') }}
 			<router-link
 				class="card-note__username"
-				:to="getProfileUrl(theActivity.account)"
+				:to="rebloggerProfileUrl"
 			>
 				<bdi v-html="rebloggerDisplayName" />
 			</router-link>
@@ -28,13 +33,13 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu.vue'
 		<div class="card__content">
 			<!-- Author Info -->
 			<div class="status-meta">
-				<router-link class="status-meta__avatar" :to="getProfileUrl(status.account)">
+				<router-link class="status-meta__avatar" :to="authorProfileUrl">
 					<img :src="status.account.avatar" :alt="status.account.acct">
 				</router-link>
 			
 				<div class="status-meta__info">
 					<div class="status-meta__author">
-						<router-link :to="getProfileUrl(status.account)">
+						<router-link :to="authorProfileUrl">
 							<span v-if="authorDisplayName !== null" class="author__name">
 								<bdi v-html="authorDisplayName" />
 							</span>
@@ -181,6 +186,14 @@ export default {
 			return htmlizeCustomEmoji(htmlSpecialChars(this.status.account.display_name), this.status.account.emojis)
 		},
 
+		rebloggerProfileUrl(){
+			return getProfileUrl(this.theActivity.account)
+		},
+
+		authorProfileUrl(){
+			return getProfileUrl(this.status.account)
+		},
+
 		statusContent(){
 			return htmlizeCustomEmoji(this.status.content, this.status.emojis)
 		},
@@ -207,7 +220,7 @@ export default {
 
 	created(){
 		if(this.$props.activity === null && typeof this.$props.activityId === 'string')
-			this.theActivity = this.$store.state.timelines.allStatuses[this.$props.activityId]
+			this.theActivity = this.stores.posts.getPost(this.$props.activityId)
 		else
 			this.theActivity = this.$props.activity
 		

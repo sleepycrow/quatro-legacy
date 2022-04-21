@@ -1,5 +1,10 @@
 <script setup>
+import { usePostsStore } from '../../stores/posts'
 import StatusSetItem from '../StatusSetItem/StatusSetItem.vue'
+
+const stores = {
+	posts: usePostsStore()
+}
 </script>
 
 <template>
@@ -36,7 +41,7 @@ export default {
 		isThreadPart(){
 			if(!Array.isArray(this.theActivities) && this.theActivities.length > 0) // sanity check
 				return false
-			
+
 			let topStatus = this.theActivities[0]
 			topStatus = topStatus.reblog !== null ? topStatus.reblog : topStatus
 			return typeof(topStatus.in_reply_to_id) === "string" && topStatus.in_reply_to_id !== ""
@@ -45,7 +50,7 @@ export default {
 	
 	created(){
 		if(this.$props.activities === null && Array.isArray(this.$props.activityIds))
-			this.theActivities = this.$props.activityIds.map(id => this.$store.state.timelines.allStatuses[id])
+			this.theActivities = this.$props.activityIds.map(id => this.stores.posts.getPost(id))
 		else if(Array.isArray(this.$props.activities))
 			this.theActivities = this.$props.activities
 	},

@@ -1,5 +1,12 @@
 <script setup>
+import { useInterfaceStore } from '../../stores/interface'
+import { useNotifsStore } from '../../stores/notifs'
 import NotificationCard from '../NotificationCard/NotificationCard.vue'
+
+const stores = {
+	notifs: useNotifsStore(),
+	interface: useInterfaceStore()
+}
 </script>
 
 <template>
@@ -38,16 +45,13 @@ import NotificationCard from '../NotificationCard/NotificationCard.vue'
 export default {
 	components: { NotificationCard },
 
-	data: () => ({
-	}),
-
 	computed: {
 		isLoading(){
-			return this.$store.state.notifs.loading
+			return this.stores.notifs.loading
 		},
 
 		notifs(){
-			return this.$store.state.notifs.notifs
+			return this.stores.notifs.notifs
 		}
 	},
 
@@ -55,16 +59,16 @@ export default {
 	},
 
 	mounted(){
-		this.$store.dispatch('setPageTitle', this.$t('menu.notifications'))
+		this.stores.interface.setPageTitle(this.$t('menu.notifications'))
 	},
 
 	methods: {
 		fetchNext(){
-			this.$store.dispatch('fetchNextNotifs')
+			this.stores.notifs.fetchNextNotifs()
 		},
 
 		markAllAsRead(){
-			this.$store.dispatch('markNotifsAsRead', { all: true })
+			this.stores.notifs.markNotifsAsRead({ all: true })
 		}
 	}
 }

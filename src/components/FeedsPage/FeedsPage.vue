@@ -1,6 +1,11 @@
 <script setup>
+import { useInterfaceStore } from '../../stores/interface'
 import FeedHeader from '../FeedHeader/FeedHeader.vue'
 import Timeline from '../Timeline/Timeline.vue'
+
+const stores = {
+	interface: useInterfaceStore()
+}
 </script>
 
 <template>
@@ -64,7 +69,7 @@ export default {
 	},
 
 	mounted(){
-		this.$store.dispatch('setPageTitle', this.$t('timelines.'+this.tlId))
+		this.stores.interface.setPageTitle(this.$t('timelines.'+this.tlId))
 	}
 }
 </script>

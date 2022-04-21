@@ -11,6 +11,7 @@ module.exports = {
 		'vue/html-indent': ['error', 'tab'],
 		'vue/max-attributes-per-line': 'off',
 		'vue/singleline-html-element-content-newline': 'off',
-		'vue/no-v-html': 'off'
+		'vue/no-v-html': 'off',
+		'no-prototype-builtins': 'off'
 	}
 }
