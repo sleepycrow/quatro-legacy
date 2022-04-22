@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
 			var token = window.localStorage.getItem('authToken')
 			if(token !== null && token.length > 0){
 				try{
-					this.verifyCredentials(token)
+					await this.verifyCredentials(token)
 				}catch(e){
 					window.localStorage.removeItem('authToken')
 				}
